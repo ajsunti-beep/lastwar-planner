@@ -218,7 +218,7 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 #planNote{resize:vertical;overflow:hidden;font-size:1.04rem!important;line-height:1.55}
 .tl .legend,.tl .track,.tl .scrub,#tlNow,#tlSteps,.tl-head label.chk,#tlAdd,#tlCopyA{display:none!important}
 .duties{list-style:none;margin:.2rem 0 0;padding:0;display:grid;gap:.35rem}
-.duties li{display:grid;grid-template-columns:minmax(8.5rem,auto) 1fr;gap:.25rem .6rem;align-items:baseline;padding:.45rem .5rem;border-radius:8px;background:var(--panel)}
+.duties li{display:grid;grid-template-columns:15.5rem 1fr;gap:.25rem .6rem;align-items:baseline;padding:.45rem .5rem;border-radius:8px;background:var(--panel)}
 .duties .bn{font-weight:600;font-size:1rem;display:flex;flex-wrap:wrap;gap:.3rem;align-items:baseline}
 .duties .bn small{font-weight:500;color:var(--muted)}
 .duties .dt{font-size:1.04rem;line-height:1.5;white-space:pre-wrap}
@@ -229,7 +229,7 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .dutyE label{display:block;font-size:.86rem;font-weight:600;margin-bottom:.2rem}
 .dutyE textarea{min-height:0;margin:0}
 @media (max-width:600px){.duties li{grid-template-columns:1fr}}
-.opent{display:inline-block;margin-top:3px;font:600 .7rem/1.35 "Chakra Petch","Sarabun",sans-serif;padding:.05rem .45rem;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--panel)}
+.opent{display:inline-block;margin-top:3px;font:600 .7rem/1.35 "Chakra Petch","Sarabun",sans-serif;padding:.05rem .45rem;border-radius:999px;border:1px solid #9fcfae;color:#1f6b3a;background:#e3f3e7}
 .opent.late{color:#fff;background:var(--rust);border-color:var(--rust)}
 .card .icrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:6px;width:100%}
 .card .icrow .opent{justify-self:start;margin:0;white-space:nowrap}
@@ -241,6 +241,7 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .vchip{display:inline-flex;align-items:center;padding:.1rem .45rem;border-radius:999px;border:1.5px dashed var(--teal);color:var(--teal);background:transparent;font-weight:600;font-size:inherit;line-height:1.35;white-space:nowrap}
 #exportArea>.pool{margin:.6rem 0 .2rem}
 .exporting .pool{display:none!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .opent:not(.late){background:#1f3a29;color:#9fdcb2;border-color:#2f5c40}}
 [hidden]{display:none!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1146,7 +1147,7 @@ function renderRouteUI(){
   $('#tl').classList.toggle('empty',!rows.length);
   $('#rtView').hidden=tlEdit;
   const KC={vl:'var(--rust)',pt:'var(--ochre)',mid:'var(--teal)',wh:'var(--slate)'};
-  $('#rtView').innerHTML=rows.length?'<ul class="duties">'+rows.map(({id,n,st,sb,txt})=>`<li style="border-left:4px solid ${KC[BM[id].k]}"><span class="bn">${esc(BM[id].th)}<span class="opent${openMin(id)?' late':''}">${openTxt(id)}</span><small>${n?st+' คน'+(sb?' + สำรอง '+sb:''):'ไม่มีคนประจำ'}</small></span><span class="dt${txt?'':' none'}">${txt?esc(txt):'ยังไม่ได้ระบุหน้าที่'}</span></li>`).join('')+'</ul>':'<p class="tip">ยังไม่มีหน้าที่ของแผนนี้ กด "แก้ไขหน้าที่" เพื่อเพิ่ม</p>';
+  $('#rtView').innerHTML=rows.length?'<ul class="duties">'+rows.map(({id,n,st,sb,txt})=>`<li style="border-left:4px solid ${KC[BM[id].k]}"><span class="bn">${esc(BM[id].th)}<span class="opent${openMin(id)?' late':''}">${openTxt(id)}</span></span><span class="dt${txt?'':' none'}">${txt?esc(txt):'ยังไม่ได้ระบุหน้าที่'}</span></li>`).join('')+'</ul>':'<p class="tip">ยังไม่มีหน้าที่ของแผนนี้ กด "แก้ไขหน้าที่" เพื่อเพิ่ม</p>';
   if(tlEdit)$('#dutyList').innerHTML=ORDER.map(id=>`<li><label for="du-${id}">${esc(BM[id].th)} <span class="tip">${membersOf(id).length} คน</span></label><textarea id="du-${id}" rows="2" data-duty="${id}" placeholder="หน้าที่ของคนประจำอาคารนี้">${esc(du[D(id)]||'')}</textarea></li>`).join('');
   $('#rtEdit').hidden=!tlEdit;
   if(!tlEdit)return;
