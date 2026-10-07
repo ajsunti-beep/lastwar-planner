@@ -37,7 +37,7 @@ header p{margin:.25rem 0 0;color:var(--muted)}
 .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:1rem;align-items:start}
-@media (max-width:1000px){.grid{grid-template-columns:1fr}}
+@media (max-width:1000px){.grid{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}
 .pick{display:flex;flex-wrap:wrap;gap:.5rem}
 .phasebar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;margin-bottom:.75rem}
@@ -110,15 +110,135 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
 .mapresize{display:flex;align-items:center;justify-content:center;gap:.6rem;height:26px;margin-top:4px;cursor:ns-resize;touch-action:none;user-select:none;font-size:.78rem;color:var(--muted);border-radius:6px}
 .mapresize:hover{background:var(--panel2)}
 .mapresize span{width:40px;height:4px;border-radius:2px;background:var(--line)}
-/*wide*/.mapscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-#exportArea{min-width:820px;background:var(--panel);border-radius:10px}
-#noteView{display:none;white-space:pre-wrap;font-size:.9rem;line-height:1.6}
+.mapscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
+.mapbox{min-width:820px}
+#exportArea{background:var(--panel);border-radius:10px}
+.exporting .mapbox{zoom:1!important}
+/* timeline */
+.tl{margin-top:.75rem;padding:.75rem .85rem;background:var(--panel2);border-radius:10px;border-left:4px solid var(--teal)}
+.tl-head{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;margin-bottom:.3rem}
+.tl-head h3{margin:0;font-size:1.05rem}
+input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--text)}
+.track{position:relative;height:84px;margin:0 18px}
+.track .bar{position:absolute;left:0;right:0;top:50px;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.band{position:absolute;top:0;bottom:0;opacity:.75}
+.band.teal{background:var(--teal)}.band.ochre{background:var(--ochre)}.band.slate{background:var(--slate)}.band.rust{background:var(--rust)}
+.tick{position:absolute;top:62px;transform:translateX(-50%);font-size:.72rem;color:var(--muted);font-family:"Chakra Petch","Sarabun",sans-serif;line-height:1}
+.tick::before{content:"";display:block;width:1px;height:5px;background:var(--muted);margin:0 auto 2px}
+.pin{position:absolute;transform:translateX(-50%);height:22px;min-width:32px;padding:0 .35rem;border-radius:6px;border:1.5px solid var(--text);background:var(--panel);color:var(--text);font:600 .76rem/1 "Chakra Petch","Sarabun",sans-serif;cursor:pointer}
+.pin::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;margin-left:-.75px;background:var(--text);height:var(--stem,4px)}
+.pin.on{background:var(--text);color:var(--bg)}
+.cur{position:absolute;top:45px;height:20px;width:3px;margin-left:-1.5px;background:var(--text);border-radius:2px;pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;gap:.2rem .9rem;font-size:.78rem;color:var(--muted);margin:0 0 .35rem}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:.3rem;vertical-align:-1px;opacity:.75}
+.scrub{display:flex;gap:.6rem;align-items:center;margin:.1rem 0}
+.scrub input{flex:1;accent-color:var(--rust);min-height:28px}
+.tl-now{font-size:.88rem;color:var(--muted);margin:0 0 .3rem;min-height:1.4em}
+.tl-now b{color:var(--text);font-family:"Chakra Petch","Sarabun",sans-serif}
+.steps{list-style:none;margin:.3rem 0 0;padding:0;display:grid;gap:.25rem}
+.step{display:grid;grid-template-columns:3rem 1fr;gap:.5rem;padding:.4rem .5rem;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.step:hover{background:var(--panel)}
+.step.on{background:var(--panel);border-color:var(--ochre)}
+.step .min{font:600 1rem/1.45 "Chakra Petch","Sarabun",sans-serif;color:var(--rust)}
+.step .tx{font-size:.9rem}
+.bl,.bpick{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.btag{font:inherit;font-size:.72rem;padding:.05rem .45rem;border-radius:999px;border:1px solid var(--slate);color:var(--text);background:var(--panel)}
+.btag.vl{border-color:var(--rust)}.btag.pt{border-color:var(--ochre)}.btag.mid{border-color:var(--teal)}
+.bpick .btag{cursor:pointer;color:var(--muted);padding:.25rem .55rem}
+.bpick .btag[aria-pressed="true"]{color:var(--bg);background:var(--text);border-color:var(--text)}
+.stepE{padding:.5rem;border-radius:8px;background:var(--panel);border:1px solid var(--line)}
+.stepE .er{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:start}
+.stepE .mn{display:flex;flex-direction:column;align-items:center;font-size:.72rem;color:var(--muted)}
+.stepE .mn input{width:3.6rem;font:600 1rem "Chakra Petch","Sarabun",sans-serif;text-align:center;padding:.3rem;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--text)}
+.stepE textarea{min-height:0;margin:0}
+.stepE .x{border:0;background:none;color:var(--muted);cursor:pointer;font:inherit;padding:.35rem}
+.lnk{border:0;background:none;color:var(--teal);font:inherit;cursor:pointer;padding:0 .2rem;text-decoration:underline}
+#map.tlfocus .card{opacity:.3;transition:opacity .15s}
+#map.tlfocus .card.focus{opacity:1;outline:3px solid var(--ochre);z-index:4}
+.exporting .scrub,.exporting #tlNow{display:none}
+.exporting .tl.empty{display:none}
+/* tap to move */
+.chip.sel{outline:2px solid var(--ochre);outline-offset:1px;background:var(--ochre-s)}
+.selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:45;width:min(560px,calc(100% - 1.2rem));background:var(--panel);border:1.5px solid var(--ochre);border-radius:12px;padding:.6rem .75rem;box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between}
+.selbar .sb-t{display:flex;flex-direction:column;min-width:0}
+.selbar select{font:inherit;padding:.5rem;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);max-width:62vw}
+.fitbtn{display:none}
+.mnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.mnav a{flex:1;text-align:center;padding:.8rem .25rem;color:var(--muted);text-decoration:none;font-weight:500;font-size:.92rem}
+.mnav a.on{color:var(--text);box-shadow:inset 0 3px 0 var(--rust)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media (prefers-reduced-motion:reduce){#map.tlfocus .card{transition:none}}
+@media (max-width:860px){.fitbtn{display:inline-block}}
+@media (max-width:760px){
+  body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+  .wrap{padding:.6rem}
+  h1{font-size:1.3rem}
+  header{align-items:stretch;gap:.6rem}
+  header .controls{width:100%}
+  .controls .seg{flex:1 1 auto}
+  .seg button{flex:1;padding:.6rem .5rem}
+  .btn{padding:.6rem .8rem}
+  .pick{width:100%}.pick .seg{flex:1 1 100%}
+  .panel{padding:.75rem}
+  .mnav{display:flex}
+  .toast{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  .selbar{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  .rosterwrap{max-height:none}
+  .roster input,.roster select,textarea,input.mini,.selbar select{font-size:16px}
+  .chip{padding:.25rem .55rem;font-size:.85rem}
+  .track{margin:0 14px}
+  .stepE .er{grid-template-columns:auto 1fr}
+  .stepE .x{grid-column:1/-1;justify-self:end;padding:0 .2rem}
+}
+#noteView{display:none;white-space:pre-wrap;font-size:1.04rem;line-height:1.55}
 .exporting #planNote{display:none}
 .exporting #noteView{display:block}
 .exporting .note{margin-top:.6rem}
 .overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px))}
 .overlay img{max-width:100%;max-height:75vh;border-radius:8px;background:#fff}
 .overlay p{color:#fff;margin:0;text-align:center}
+.routes{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:visible}
+.rlabel{position:absolute;transform:translate(-50%,-50%);z-index:3;pointer-events:none;background:var(--panel);border:1.5px dashed currentColor;border-radius:6px;padding:.05rem .4rem;font:600 .72rem/1.3 "Chakra Petch","Sarabun",sans-serif;white-space:nowrap}
+.card.ally{opacity:.5;border-style:dashed}
+.card .allytag{display:block;font-size:.66rem;font-weight:600;color:var(--muted);margin-top:1px}
+.band.dark{background:var(--text)}
+.rtv{margin:.2rem 0 0;font-size:.86rem}
+.rtv b{font-family:"Chakra Petch","Sarabun",sans-serif;font-weight:600}
+.rtv ul{margin:.2rem 0 0;padding-left:1.1rem}
+.rtE{margin-top:.75rem;padding-top:.6rem;border-top:1px dashed var(--line)}
+.rtE h4{margin:0 0 .2rem;font-size:.95rem;font-family:"Chakra Petch","Sarabun",sans-serif}
+.rtE ul{list-style:none;margin:.4rem 0;padding:0;display:grid;gap:.35rem}
+.rtE li{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;font-size:.86rem;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:.4rem .5rem}
+.rtE select,.rtE input{font:inherit;font-size:.86rem;padding:.3rem .35rem;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--text);max-width:100%}
+.rtE input{width:3.6rem;text-align:center}
+.rtE .x{border:0;background:none;color:var(--muted);cursor:pointer;font:inherit;margin-left:auto}
+@media (max-width:760px){.rtE select,.rtE input{font-size:16px}}
+.notehd{display:flex;flex-wrap:wrap;gap:.3rem .75rem;align-items:baseline;justify-content:space-between;margin-bottom:.2rem}
+.notehd label{margin:0}
+#planNote{resize:vertical;overflow:hidden;line-height:1.6}
+.tl .legend,.tl .track,.tl .scrub,#tlNow,#tlSteps,.tl-head label.chk,#tlAdd,#tlCopyA{display:none!important}
+.duties{list-style:none;margin:.2rem 0 0;padding:0;display:grid;gap:.35rem}
+.duties li{display:grid;grid-template-columns:minmax(8.5rem,auto) 1fr;gap:.25rem .6rem;align-items:baseline;padding:.45rem .5rem;border-radius:8px;background:var(--panel)}
+.duties .bn{font-weight:600;font-size:1rem;display:flex;flex-wrap:wrap;gap:.3rem;align-items:baseline}
+.duties .bn small{font-weight:500;color:var(--muted)}
+.duties .dt{font-size:1.04rem;line-height:1.5;white-space:pre-wrap}
+.duties .dt.none{color:var(--muted)}
+.duties .bar{display:inline-block;width:4px;align-self:stretch;border-radius:2px}
+.dutyE{list-style:none;margin:.4rem 0;padding:0;display:grid;gap:.35rem}
+.dutyE li{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:.4rem .5rem}
+.dutyE label{display:block;font-size:.86rem;font-weight:600;margin-bottom:.2rem}
+.dutyE textarea{min-height:0;margin:0}
+@media (max-width:600px){.duties li{grid-template-columns:1fr}}
+.opent{display:inline-block;margin-top:3px;font:600 .7rem/1.35 "Chakra Petch","Sarabun",sans-serif;padding:.05rem .45rem;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--panel)}
+.opent.late{color:#fff;background:var(--rust);border-color:var(--rust)}
+.card .icrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:6px;width:100%}
+.card .icrow .opent{justify-self:start;margin:0;white-space:nowrap}
+.duties .bn .opent{margin-top:0}
+.card.ally .opent{display:none}
+.grp.vis{border-top:1px dashed var(--line);padding-top:3px;margin-top:1px}
+.body>.grp.vis:first-child{border-top:0;padding-top:0;margin-top:0}
+.grp.vis .cap{color:var(--teal);font-weight:600}
+.vchip{display:inline-flex;align-items:center;padding:.1rem .45rem;border-radius:999px;border:1.5px dashed var(--teal);color:var(--teal);background:transparent;font-weight:600;font-size:inherit;line-height:1.35;white-space:nowrap}
 [hidden]{display:none!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -128,7 +248,7 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
   <header>
     <div>
       <h1 id="pageTitle">วางแผนสนามรบพายุหุบเขา</h1>
-      <p>ตัวจริง 20 คน สำรอง 10 คน ลากชื่อไปวางบนอาคาร</p>
+      <p>ตัวจริง 20 คน สำรอง 10 คน แตะหรือลากชื่อไปวางบนอาคาร</p>
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="สนามรบ">
@@ -146,15 +266,19 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
   </header>
 
   <div class="grid">
-    <section class="panel">
+    <section class="panel" id="secMap">
       <div class="phasebar">
         <div class="pick"><div class="seg" role="group" aria-label="ทีม">
           <button data-team="A">ทีม A</button>
           <button data-team="B">ทีม B</button>
         </div>
-        <div class="seg" role="group" aria-label="แผน">
-          <button data-plan="0">แผน A · เจอทีมแข็ง</button>
-          <button data-plan="1">แผน B · เจอทีมอ่อน</button>
+        <div class="seg" role="group" aria-label="แผน" id="planSeg">
+          <button data-plan="0">แผน A</button>
+          <button data-plan="1">แผน B</button>
+        </div>
+        <div class="seg" role="group" aria-label="ฝั่งของเรา" id="sideSeg">
+          <button data-side="L">เราฝั่งซ้าย</button>
+          <button data-side="R">เราฝั่งขวา</button>
         </div></div>
         <div class="row">
           <label class="chk"><input type="checkbox" id="autoLayChk"> จัดผังอัตโนมัติ</label>
@@ -162,31 +286,63 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
           <button class="btn" id="copyFromA" hidden>คัดลอกจากแผน A</button>
           
           <button class="btn primary" id="autoBtn">จัดอัตโนมัติตามพลัง</button>
+          <button class="btn fitbtn" id="fitBtn">ขยายแผนที่</button>
           <button class="btn primary" id="saveImg" style="background:var(--rust);border-color:var(--rust)">บันทึกภาพแผน</button>
         </div>
       </div>
       <p class="tip" id="facTip"></p>
       <div style="height:.6rem"></div>
       <p class="tip" id="emptyNote" style="margin:0 0 .5rem">อัปโหลดภาพแคปแผนที่จากในเกม แล้วลากหัวการ์ดอาคารไปวางให้ตรงตำแหน่งจริง</p>
-      <div class="mapscroll"><div id="exportArea">
+      <div id="exportArea">
+      <div class="mapscroll" id="mapScroll"><div class="mapbox" id="mapBox">
       <div class="mapframe" id="map">
         <img id="bgimg" alt="" hidden>
         <div class="teamtag" id="teamTag" aria-hidden="true"></div>
       </div>
       <div class="mapresize" id="mapResize" data-html2canvas-ignore="true" role="separator" aria-label="ลากเพื่อปรับความสูงแผนที่" title="ลากขึ้นลงเพื่อปรับความสูงแผนที่"><span></span>ลากเพื่อปรับความสูงแผนที่<span></span></div>
+      </div></div>
+      <div class="tl" id="tl">
+        <div class="tl-head">
+          <h3 class="disp">หน้าที่ผู้ประจำแต่ละอาคาร <span class="tip" id="tlDurLbl"></span></h3>
+          <div class="row" data-html2canvas-ignore="true">
+            <label class="chk">เกมยาว <input type="number" id="tlDur" class="mini" min="10" max="90" step="1"> นาที</label>
+            <button class="btn" id="tlEditBtn">แก้ไขไทม์ไลน์</button>
+          </div>
+        </div>
+        <div class="legend" id="tlLegend"></div>
+        <div class="track" id="tlTrack"></div>
+        <div class="scrub" data-html2canvas-ignore="true"><input type="range" id="tlRange" min="0" max="30" step="1" value="0" aria-label="เลื่อนดูนาที"></div>
+        <p class="tl-now" id="tlNow" data-html2canvas-ignore="true"></p>
+        <ol class="steps" id="tlSteps"></ol>
+        <div class="rtv" id="rtView"></div>
+        <div class="rtE" id="rtEdit" data-html2canvas-ignore="true" hidden>
+          <h4>หน้าที่ของแต่ละอาคาร</h4>
+          <ul class="dutyE" id="dutyList"></ul>
+          <h4 style="margin-top:.8rem">เส้นประบนแผนที่</h4>
+          <p class="tip">ทีมของอาคารไหน ไปยึดจุดไหนรอไว้ก่อนอาคารตัวเองเปิด จนถึงนาทีที่เท่าไร</p>
+          <ul id="rtList"></ul>
+          <button class="btn" id="rtAdd">เพิ่มเส้นทาง</button>
+        </div>
+        <div class="row" id="tlEditBar" data-html2canvas-ignore="true" style="margin-top:.5rem" hidden>
+          <button class="btn primary" id="tlAdd">เพิ่มช่วงเวลา</button>
+          <button class="btn" id="tlCopyA">คัดลอกจากแผน A</button>
+          <button class="btn" id="tlDefault">ใช้ค่าเริ่มต้น</button>
+        </div>
+      </div>
       <div class="note">
-        <label for="planNote" class="disp">คำอธิบายแผน</label>
-        <textarea id="planNote" rows="8"></textarea>
+        <div class="notehd"><label for="planNote" class="disp">คำอธิบายแผน</label>
+          <span class="row" data-html2canvas-ignore="true"><span class="tip" id="noteSaved">พิมพ์แก้ได้เลย บันทึกอัตโนมัติ</span><button class="lnk" id="noteReset">คืนค่าเริ่มต้น</button></span></div>
+        <textarea id="planNote" rows="8" spellcheck="false"></textarea>
         <div id="noteView"></div>
       </div>
-      </div></div>
+      </div>
       <div class="pool" id="pool" data-pool="1">
-        <h3>ยังไม่ได้จัด (ลากชื่อกลับมาที่นี่เพื่อเอาออกจากอาคาร)</h3>
+        <h3>ยังไม่ได้จัด (แตะชื่อแล้วแตะอาคารเพื่อย้าย หรือลากวางก็ได้ ลากกลับมาที่นี่เพื่อเอาออก)</h3>
         <div class="chips" id="poolChips"></div>
       </div>
     </section>
 
-    <aside class="panel">
+    <aside class="panel" id="secRoster">
       <h2>รายชื่อผู้เล่น <span id="teamLbl" class="tip"></span></h2>
       <p class="tip">พลังรบใส่เป็นหน่วยล้าน (M) เช่น 85.4</p>
       <details>
@@ -210,7 +366,7 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
     </aside>
   </div>
 
-  <section class="panel" style="margin-top:1rem">
+  <section class="panel" style="margin-top:1rem" id="secSum">
     <div class="phasebar">
       <h2 style="margin:0">สรุปแผน <span id="sumPhase" class="tip"></span></h2>
       <button class="btn primary" id="copyText">คัดลอกแผนไปแชทพันธมิตร</button>
@@ -218,6 +374,11 @@ label.chk{display:inline-flex;gap:.35rem;align-items:center;font-size:.9rem;colo
     <div class="sumgrid" id="summary"></div>
   </section>
 </div>
+<div class="selbar" id="selBar" role="region" aria-label="ย้ายผู้เล่น" hidden>
+  <div class="sb-t"><b id="selName"></b><span class="tip">แตะอาคารบนแผนที่ หรือเลือกจากรายการ</span></div>
+  <div class="row"><select id="selTo" aria-label="ย้ายไปอาคาร"></select><button class="btn" id="selCancel">ยกเลิก</button></div>
+</div>
+<nav class="mnav" id="mnav" aria-label="ไปยังส่วนต่างๆ"><a href="#secMap">แผนที่</a><a href="#tl">หน้าที่</a><a href="#secRoster">รายชื่อ</a><a href="#secSum">สรุป</a></nav>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -236,7 +397,7 @@ const B_CANYON=[
  {id:'wh4',name:'Sample Warehouse IV',th:'คลังตัวอย่าง IV',pts:15,k:'wh',x:87,y:89}
 ];
 const B_DESERT=[
- {id:'silo',name:'Nuclear Silo',th:'ฐานยิงนิวเคลียร์',pts:75,k:'vl',x:50,y:45},
+ {id:'silo',name:'Nuclear Silo',th:'ฐานยิงนิวเคลียร์',pts:80,k:'vl',x:50,y:45},
  {id:'ars',name:'Arsenal',th:'โรงงานคลังแสงสรรพาวุธ',pts:10,k:'wh',x:50,y:15},
  {id:'merc',name:'Mercenary Factory',th:'โรงงานทหารรับจ้าง',pts:10,k:'wh',x:50,y:75},
  {id:'info',name:'Info Center (L1)',th:'ศูนย์ข้อมูล',pts:10,k:'wh',x:18,y:10},
@@ -246,9 +407,7 @@ const B_DESERT=[
  {id:'fh3',name:'Field Hospital (R1)',th:'โรงพยาบาลสนาม III',pts:30,k:'mid',x:82,y:10},
  {id:'fh4',name:'Field Hospital (R2)',th:'โรงพยาบาลสนาม IV',pts:30,k:'mid',x:82,y:32},
  {id:'or2',name:'Oil Refinery (R3)',th:'โรงกลั่นน้ำมัน II',pts:50,k:'pt',x:82,y:55},
- {id:'sci',name:'Science Hub (R4)',th:'ศูนย์เทคโนโลยี',pts:10,k:'wh',x:82,y:77},
- {id:'of1',name:'Oil Field I',th:'บ่อน้ำมัน I',pts:4,k:'wh',x:30,y:94},
- {id:'of2',name:'Oil Field II',th:'บ่อน้ำมัน II',pts:4,k:'wh',x:70,y:94}
+ {id:'sci',name:'Science Hub (R4)',th:'ศูนย์เทคโนโลยี',pts:10,k:'wh',x:82,y:77}
 ];
 const L=b=>b.th+' / '+b.name;
 let B,BM,ORDER,PRESET;
@@ -267,13 +426,16 @@ const NOTE_DEFAULT='1. ศูนย์วิจัยไวรัส 5 คน (�
 const NOTE_DA='1. จุดตรงกลาง 3 จุด (ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ โรงงานทหารรับจ้าง) 4 คนพลังสูงสุด เล่นเต็มเวลา ช่วง 10 นาทีแรกไล่ตีช่วยจุดอื่น เมื่อจุดตรงกลางเปิด พยายามยึดให้ได้ทั้ง 3 จุด จุดไหนสู้ไม่ไหวให้ถอย\n2. 3 นาทีสุดท้าย ทีมตรงกลางโฟกัสฐานยิงนิวเคลียร์\n3. จุดอื่น 8 จุด (โรงกลั่นน้ำมัน โรงพยาบาลสนาม ศูนย์ข้อมูล ศูนย์เทคโนโลยี) จุดละ 2 คน พร้อมผู้เล่นสำรองประจำจุด\n4. ช่วง 3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n5. เมื่อเริ่มเกม หากตัวจริงยังไม่เข้าร่วมกิจกรรม ให้ตัวสำรองเข้าประจำจุดแทนทันที';
 const NOTE_DB='1. จุดตรงกลาง 4 คนพลังสูงสุด เล่นเต็มเวลา ช่วง 10 นาทีแรกไล่ตีช่วยจุดอื่น เมื่อจุดตรงกลางเปิด ไม่แย่งฐานยิงนิวเคลียร์ ปล่อยให้ศัตรูยึดไปก่อน แต่ยึดโรงงานคลังแสงสรรพาวุธและโรงงานทหารรับจ้างไว้ถ้าทำได้ เพื่อใช้บัฟตอนบุก\n2. ทุกคนรักษากำลังทหาร ไม่สู้จนทหารหมดก่อนช่วงท้าย ใช้โรงพยาบาลสนามฟื้นทหารให้เต็ม\n3. ประมาณนาทีที่ 36 ทีมตรงกลางและคนที่ได้รับมอบหมายจากจุดอื่น ขยับมารวมใกล้ฐานยิงนิวเคลียร์\n4. 3 นาทีสุดท้าย รุมตีฐานยิงนิวเคลียร์ให้แตกแล้วยึดคืน จากนั้นแย่งเก็บกล่องเสบียงที่เกิดรอบอาคารเพื่อพลิกคะแนน\n5. จุดอื่น 8 จุด จุดละ 2 คน พร้อมผู้เล่นสำรอง ช่วง 3 นาทีสุดท้ายแต่ละจุดส่ง 1 คนไปช่วยรุมตรงกลาง อีก 1 คนเฝ้าจุดไว้\n6. ต้องยึดศูนย์ข้อมูลไว้ให้ได้ เพื่อให้อาคารที่ยึดคืนเริ่มให้แต้มเร็วขึ้น\n7. เมื่อเริ่มเกม หากตัวจริงยังไม่เข้าร่วมกิจกรรม ให้ตัวสำรองเข้าประจำจุดแทนทันที';
 const NOTE_DC='1. จุดตรงกลาง 3 จุด (ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ โรงงานทหารรับจ้าง) 4 คนพลังสูงสุด เล่นเต็มเวลา ช่วง 10 นาทีแรกไล่ตีช่วยจุดอื่น เมื่อจุดตรงกลางเปิด 3 คนแบ่งกันยึดคนละจุด คนพลังสูงสุดช่วยไล่ตีคนที่มาแย่งยึด\n2. จุดอื่น 8 จุด (โรงกลั่นน้ำมัน โรงพยาบาลสนาม ศูนย์ข้อมูล ศูนย์เทคโนโลยี) จุดละ 2 คน พร้อมผู้เล่นสำรองประจำจุด\n3. ช่วง 3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n4. เมื่อเริ่มเกม หากตัวจริงยังไม่เข้าร่วมกิจกรรม ให้ตัวสำรองเข้าประจำจุดแทนทันที';
+const OPEN_T={canyon:{sf1:5,sf2:5,df1:8,df2:8,vl:12},desert:{silo:10,ars:10,merc:10}};
+const openMin=id=>(OPEN_T[S.field]||{})[id]||0;
+const openTxt=id=>{const m=openMin(id);return m?'เปิด '+String(m).padStart(2,'0')+':00':'เปิดทันที'};
 const FIELDS={
  canyon:{name:'พายุหุบเขา',slug:'canyon-storm',B:B_CANYON,ORDER:['vl','pt','dc1','dc2','df1','df2','sf1','sf2','wh1','wh2','wh3','wh4'],
-  PRESET:[{vl:6,pt:4,dc1:2,dc2:2,df1:2,df2:2,sf1:1,sf2:1},{vl:4,pt:2,dc1:2,dc2:2,df1:2,df2:2,sf1:2,sf2:2,wh1:2},{}],
+  PRESET:[{vl:5,pt:3,dc1:2,dc2:2,df1:2,df2:2,sf1:2,sf2:2},{vl:5,pt:3,dc1:2,sf1:3,df1:3,wh1:2,wh2:2},{vl:5,pt:3,dc1:2,dc2:2,df1:2,df2:2,sf1:2,sf2:2}],
   cols:{L:['dc1','sf1','df1'],C:['pt','vl'],R:['dc2','df2','sf2'],Bot:['wh1','wh2','wh3','wh4']},ft:['vl','pt'],faction:true},
- desert:{name:'พายุทะเลทราย',slug:'desert-storm',B:B_DESERT,ORDER:['silo','ars','merc','or1','or2','fh1','fh2','fh3','fh4','sci','info','of1','of2'],
-  PRESET:[{ars:2,merc:2,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,sci:2,info:2},{silo:2,ars:1,merc:1,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,sci:2,info:2},{}],
-  cols:{L:['info','or1','fh1','fh2'],C:['ars','silo','merc'],R:['fh3','fh4','or2','sci'],Bot:['of1','of2']},ft:['silo','ars','merc'],faction:false}
+ desert:{name:'พายุทะเลทราย',slug:'desert-storm',B:B_DESERT,ORDER:['silo','ars','merc','or1','or2','fh1','fh2','fh3','fh4','sci','info'],
+  PRESET:[{silo:6,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,info:1,sci:1},{silo:6,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,info:1,sci:1},{}],
+  cols:{L:['info','or1','fh1','fh2'],C:['ars','silo','merc'],R:['fh3','fh4','or2','sci'],Bot:[]},ft:['silo','ars','merc'],faction:false}
 };
 function setField(f){const F=FIELDS[f];B=F.B;BM=Object.fromEntries(B.map(b=>[b.id,b]));ORDER=F.ORDER;PRESET=F.PRESET}
 const off=()=>S.field==='desert'?3:0;
@@ -283,6 +445,216 @@ const TIPS={
  rule:'Rulebringers: คนน้อยกว่าแต่มีสกิล Judicator (คูลดาวน์ 300 วิ ใช้ได้ 120 วิ) ให้คนพลังสูงและตัดสินใจดีที่สุดถือ Judicator อย่าทิ้งไว้ตีจุดข้าง ควรเก็บไว้ช่วงชิง Power Tower หรือ Virus Lab',
  dawn:'Dawnbreakers: ได้เปรียบเรื่องจำนวน ตกลงกับอีกพันธมิตรก่อนเริ่มว่าใครบุก Virus Lab ใครเฝ้าอาคารอื่น เมื่ออีกฝ่ายเปิด Judicator ให้กระจายตัว อย่าจับกลุ่ม'
 };
+const TL_DUR={canyon:30,desert:30};
+const TL_BANDS={
+ canyon:d=>[[0,5,'slate','ศูนย์ข้อมูล หอคอย คลังตัวอย่าง'],[5,8,'teal','เซรุ่มเปิด'],[8,12,'ochre','ระบบป้องกันเปิด'],[12,d-3,'rust','ศูนย์วิจัยไวรัสเปิด'],[d-3,d,'dark','3 นาทีสุดท้าย']],
+ desert:d=>[[0,10,'teal','จุดกลางยังไม่เปิด'],[10,20,'ochre','จุดกลางเปิด'],[20,d-3,'slate','บ่อน้ำมันเปิด'],[d-3,d,'rust','3 นาทีสุดท้าย']]
+};
+const sid=()=>'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const mkStep=(t,text,b)=>({id:sid(),t,text,b:b||[]});
+const SIDE_C=['dc1','dc2','df1','df2','sf1','sf2'],SIDE_D=['or1','or2','fh1','fh2','fh3','fh4','info','sci'];
+const SUBS_LINE='ตัวสำรองประจำอาคาร: เมื่อเริ่มเกม หากตัวจริงยังไม่เข้าร่วมกิจกรรม ให้ตัวสำรองเข้าประจำจุดแทนทันที ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร';
+const NOTE_CA_V1='1. ทีมบุก 6 คน (พลังสูงสุด ประจำศูนย์วิจัยไวรัส): เริ่ม → ช่วยยึดหอคอยพลังงานและช่วยจุดที่โดนรุม → 12:00 ศูนย์วิจัยไวรัสเปิด ยึดให้ได้ ห้ามแบ่งคนออก\n2. หอคอยพลังงาน 4 คน: เริ่ม → ยึดและเฝ้า ห้ามทิ้งจุด\n3. ศูนย์ข้อมูล I, II จุดละ 2 คน: เริ่ม → ยึดและเฝ้า\n4. โรงงานเซรุ่ม I, II จุดละ 1 คน: เริ่ม → คลังตัวอย่าง II / IV → 05:00 เซรุ่มเปิด ย้ายไปยึด\n5. ระบบป้องกัน I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง I / III → 08:00 ระบบป้องกันเปิด ย้ายไปยึด\n6. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n7. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n8. '+SUBS_LINE;
+const NOTE_CB_V1='ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งเราดูแลศูนย์ข้อมูล โรงงานเซรุ่ม ระบบป้องกัน และคลังตัวอย่าง 2 จุดฝั่งเรา ฝั่งตรงข้ามพันธมิตรดูแล\n1. ทีมบุก 5 คน (พลังสูงสุด ประจำศูนย์วิจัยไวรัส): เริ่ม → วนช่วยจุดฝั่งเรา → 08:00 หอคอยพลังงาน → 12:00 ศูนย์วิจัยไวรัส ร่วมกับพันธมิตร\n2. ศูนย์ข้อมูลฝั่งเรา 5 คน: เริ่ม → ยึดและเฝ้า\n3. โรงงานเซรุ่มฝั่งเรา 5 คน: เริ่ม → คลังตัวอย่างใกล้เซรุ่ม → 05:00 ย้ายไปยึดเซรุ่ม → 12:00 ส่ง 3 คนไปเฝ้าหอคอยพลังงานแทนทีมบุก อีก 2 คนเฝ้าเซรุ่ม\n4. ระบบป้องกันฝั่งเรา 5 คน: เริ่ม → คลังตัวอย่างใกล้ระบบป้องกัน → 08:00 ย้ายไปยึดระบบป้องกัน\n5. จุดไหนโดนรุม แจ้งในแชททันที ถ้าพันธมิตรขอช่วย ทีมบุกไปช่วยก่อน\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n7. '+SUBS_LINE;
+const NOTE_CR_V1='1. ทีมบุก 6 คน (พลังสูงสุด ประจำศูนย์วิจัยไวรัส มีคนถือ Judicator 1 คน): เริ่ม → ช่วยยึดหอคอยพลังงาน → 12:00 ศูนย์วิจัยไวรัสเปิด ยึดให้ได้\n2. หอคอยพลังงาน 4 คน: เริ่ม → ยึดและเฝ้า หลัง 12:00 ต้องเฝ้าเองเพราะไม่มีพันธมิตรช่วย\n3. ศูนย์ข้อมูล I, II จุดละ 2 คน: เริ่ม → ยึดและเฝ้า\n4. โรงงานเซรุ่ม I, II จุดละ 1 คน: เริ่ม → คลังตัวอย่าง II / IV → 05:00 เซรุ่มเปิด ย้ายไปยึด\n5. ระบบป้องกัน I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง I / III → 08:00 ระบบป้องกันเปิด ย้ายไปยึด\n6. Judicator (คูลดาวน์ 300 วินาที ใช้ได้ 120 วินาที) ใช้ตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น อย่าใช้ตีจุดข้าง\n7. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n8. '+SUBS_LINE;
+const NOTE_CR_V2='1. ทีมบุก 5 คน (พลังสูงสุด ประจำศูนย์วิจัยไวรัส มีคนถือ Judicator 1 คน): เริ่ม → ช่วยยึดหอคอยพลังงาน → 12:00 ศูนย์วิจัยไวรัสเปิด ยึดให้ได้\n2. หอคอยพลังงาน 3 คน: เริ่ม → ยึดและเฝ้า หลัง 12:00 ต้องเฝ้าเองเพราะไม่มีพันธมิตรช่วย\n3. ตรงกลาง (ศูนย์วิจัยไวรัสและหอคอยพลังงาน) เล่นเต็มเวลา ไม่มีตัวสำรอง\n4. ศูนย์ข้อมูล I, II จุดละ 2 คน: เริ่ม → ยึดและเฝ้า\n5. โรงงานเซรุ่ม I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง II / IV → 05:00 เซรุ่มเปิด ย้ายไปยึด\n6. ระบบป้องกัน I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง I / III → 08:00 ระบบป้องกันเปิด ย้ายไปยึด\n7. Judicator (คูลดาวน์ 300 วินาที ใช้ได้ 120 วินาที) ใช้ตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น อย่าใช้ตีจุดข้าง\n8. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n9. '+SUBS_LINE;
+const NOTE_CA='1. ทีมศูนย์วิจัยไวรัส 6 คน (พลังสูงสุด เล่นเต็มเวลา): นาทีที่ 0–12 อิสระ ไล่ตีศัตรูช่วยให้ทีมยึดอาคารได้ → 12:00–30:00 ประจำที่ศูนย์วิจัยไวรัส ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีศัตรูให้ทีมยึดอาคารได้ตามความเหมาะสม\n2. หอคอยพลังงาน 4 คน: เริ่ม → ยึดและเฝ้า ห้ามทิ้งจุด\n3. ศูนย์ข้อมูล I, II จุดละ 2 คน: เริ่ม → ยึดและเฝ้า\n4. โรงงานเซรุ่ม I, II จุดละ 1 คน: เริ่ม → คลังตัวอย่าง II / IV → 05:00 เซรุ่มเปิด ย้ายไปยึด\n5. ระบบป้องกัน I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง I / III → 08:00 ระบบป้องกันเปิด ย้ายไปยึด\n6. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n7. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n8. '+SUBS_LINE;
+const NOTE_CB='ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งเราดูแลศูนย์ข้อมูล โรงงานเซรุ่ม ระบบป้องกัน และคลังตัวอย่าง 2 จุดฝั่งเรา ฝั่งตรงข้ามพันธมิตรดูแล\n1. ทีมศูนย์วิจัยไวรัส 5 คน (พลังสูงสุด เล่นเต็มเวลา): นาทีที่ 0–12 อิสระ ไล่ตีศัตรูช่วยให้ทีมฝั่งเรายึดอาคารได้ → 12:00–30:00 ประจำที่ศูนย์วิจัยไวรัสร่วมกับพันธมิตร ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีศัตรูให้ทีมยึดอาคารได้ตามความเหมาะสม\n2. ศูนย์ข้อมูลฝั่งเรา 5 คน: เริ่ม → ยึดและเฝ้า\n3. โรงงานเซรุ่มฝั่งเรา 5 คน: เริ่ม → คลังตัวอย่างใกล้เซรุ่ม → 05:00 ย้ายไปยึดเซรุ่ม → 12:00 ส่ง 3 คนไปช่วยเฝ้าหอคอยพลังงาน อีก 2 คนเฝ้าเซรุ่ม\n4. ระบบป้องกันฝั่งเรา 5 คน: เริ่ม → คลังตัวอย่างใกล้ระบบป้องกัน → 08:00 ย้ายไปยึดระบบป้องกัน\n5. จุดไหนโดนรุม แจ้งในแชททันที ถ้าพันธมิตรขอช่วยช่วงนาทีที่ 0–12 ทีมศูนย์วิจัยไวรัสไปช่วยก่อน\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n7. '+SUBS_LINE;
+const NOTE_CR='1. ทีมศูนย์วิจัยไวรัส 5 คน (พลังสูงสุด เล่นเต็มเวลา มีคนถือ Judicator 1 คน): นาทีที่ 0–12 อิสระ ไล่ตีศัตรูช่วยให้ทีมยึดอาคารได้ → 12:00–30:00 ประจำที่ศูนย์วิจัยไวรัส ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีศัตรูให้ทีมยึดอาคารได้ตามความเหมาะสม\n2. หอคอยพลังงาน 3 คน: เริ่ม → ยึดและเฝ้า หลัง 12:00 ต้องเฝ้าเองเพราะไม่มีพันธมิตรช่วย\n3. ตรงกลาง (ศูนย์วิจัยไวรัสและหอคอยพลังงาน) เล่นเต็มเวลา ไม่มีตัวสำรอง\n4. ศูนย์ข้อมูล I, II จุดละ 2 คน: เริ่ม → ยึดและเฝ้า\n5. โรงงานเซรุ่ม I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง II / IV → 05:00 เซรุ่มเปิด ย้ายไปยึด\n6. ระบบป้องกัน I, II จุดละ 2 คน: เริ่ม → คลังตัวอย่าง I / III → 08:00 ระบบป้องกันเปิด ย้ายไปยึด\n7. Judicator (คูลดาวน์ 300 วินาที ใช้ได้ 120 วินาที) ใช้ตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น อย่าใช้ตีจุดข้าง\n8. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู\n9. '+SUBS_LINE;
+const TL_CA=()=>[mkStep(0,'หอคอยพลังงานยึดทันที ทีมศูนย์วิจัยไวรัสอิสระ ไล่ตีศัตรูช่วยให้ทีมยึดอาคารได้',['pt','vl']),mkStep(0,'ศูนย์ข้อมูล I, II ยึดและเฝ้า ทีมเซรุ่มไปคลังตัวอย่าง II / IV ทีมระบบป้องกันไปคลังตัวอย่าง I / III',['dc1','dc2','wh1','wh2','wh3','wh4']),mkStep(5,'โรงงานเซรุ่มเปิด ทีมเซรุ่มย้ายจากคลังไปยึด',['sf1','sf2']),mkStep(8,'ระบบป้องกันเปิด ทีมระบบป้องกันย้ายจากคลังไปยึด',['df1','df2']),mkStep(12,'ศูนย์วิจัยไวรัสเปิด ทีมศูนย์วิจัยไวรัสประจำที่ ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีตามความเหมาะสม',['vl']),mkStep(27,'3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู',[])];
+const NOTE_CA4='1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CB4='ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งตรงข้ามพันธมิตรดูแล\n1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. ถ้าพันธมิตรขอช่วยช่วงนาทีที่ 0–12 ทีมศูนย์วิจัยไวรัสไปช่วยก่อน\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CR4='1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. Judicator คูลดาวน์ 300 วินาที ใช้ได้ 120 วินาที ใช้ตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น อย่าใช้ตีจุดข้าง\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CA5='1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. การรักษาทหาร (Global Healing): ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. การใช้สกิล: เก็บสกิลไว้ใช้ตอนชิงอาคารหลัก ไม่ใช้ทิ้งกับจุดเล็ก เมื่อฝ่ายพิทักษ์กฎระเบียบเปิด Judicator ให้กระจายตัว อย่าจับกลุ่ม\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CB5='ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งตรงข้ามพันธมิตรดูแล\n1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. ถ้าพันธมิตรขอช่วยช่วงนาทีที่ 0–12 ทีมศูนย์วิจัยไวรัสไปช่วยก่อน\n5. การรักษาทหาร (Global Healing): ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n6. การใช้สกิล: เก็บสกิลไว้ใช้ตอนชิงอาคารหลัก ไม่ใช้ทิ้งกับจุดเล็ก เมื่อฝ่ายพิทักษ์กฎระเบียบเปิด Judicator ให้กระจายตัว อย่าจับกลุ่ม\n7. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CR5='1. มาก่อนเวลา 3–5 นาที หากเกมเริ่มแล้วตัวจริงยังไม่มา ให้ตัวสำรองประจำอาคารนั้นทำหน้าที่แทนทันที\n2. ถ้าตัวจริงไม่มาหลายคนแต่มีสำรองคนเดียว ให้ดูความเหมาะสมแล้วแจ้งในแชทพันธมิตร\n3. จุดไหนโดนรุม แจ้งในแชทพันธมิตรทันที จุดใกล้ที่สุดไปช่วย\n4. การรักษาทหาร (Global Healing): ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. การใช้สกิล: Judicator (คูลดาวน์ 300 วินาที ใช้ได้ 120 วินาที) ใช้ตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น อย่าใช้ตีจุดข้าง สกิลอื่นเก็บไว้ใช้ตอนชิงอาคารหลัก ไม่ใช้ทิ้งกับจุดเล็ก\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู';
+const NOTE_CB6=NOTE_CB5.replace('ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งตรงข้ามพันธมิตรดูแล','ตกลงแบ่งฝั่งกับพันธมิตรก่อนเริ่ม ฝั่งตรงข้ามพันธมิตรดูแล ตรงกลาง (ศูนย์วิจัยไวรัสและหอคอยพลังงาน) ดูแลร่วมกันทั้งสองพันธมิตร');
+const NOTE_CA8='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงอาคารหลัก · ศัตรูเปิด Judicator ให้กระจายตัว\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_CB8='ฝั่งตรงข้ามพันธมิตรดูแล ตรงกลางดูแลร่วมกัน\n1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. พันธมิตรขอช่วยช่วง 0–12 นาที ทีมศูนย์วิจัยไวรัสไปก่อน\n4. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. สกิล: เก็บไว้ชิงอาคารหลัก · ศัตรูเปิด Judicator ให้กระจายตัว\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_CR8='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงอาคารหลัก · Judicator (คูลดาวน์ 5 นาที ใช้ได้ 2 นาที) ใช้ชิงหอคอยหรือศูนย์วิจัยไวรัสเท่านั้น\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_DSA9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงฐานยิงนิวเคลียร์ · ศัตรูเปิด Judicator ให้กระจายตัว\n5. 27:00 (3 นาทีสุดท้าย) จุดที่มี 2 คนส่ง 1 คนไปช่วยรุมฐานยิง อีกคนเฝ้าจุด · แย่งเก็บกล่องเสบียงรอบฐานยิงเพื่อพลิกแต้ม';
+const NOTE_DSB9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงฐานยิงนิวเคลียร์ · ศัตรูเปิด Judicator ให้กระจายตัว\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+function defaultTL(i){
+  switch(i){
+  case 0:return TL_CA();
+  case 1:return[mkStep(0,'ศูนย์ข้อมูลฝั่งเรายึดและเฝ้า ทีมเซรุ่มและทีมระบบป้องกันไปยึดคลังตัวอย่างฝั่งเรา ทีมศูนย์วิจัยไวรัสอิสระ ไล่ตีศัตรูช่วยฝั่งเรา',['dc1','wh1','wh2','vl']),mkStep(5,'โรงงานเซรุ่มเปิด ทีมเซรุ่มย้ายไปยึด',['sf1']),mkStep(8,'ระบบป้องกันเปิด ทีมระบบป้องกันย้ายไปยึด',['df1']),mkStep(12,'ศูนย์วิจัยไวรัสเปิด ทีมศูนย์วิจัยไวรัสประจำที่ร่วมกับพันธมิตร ส่งตัวแทน 1–2 คนช่วยไล่ตีได้ถ้าศัตรูไม่แข็งแกร่ง ทีมเซรุ่มส่ง 3 คนไปช่วยเฝ้าหอคอย',['vl','pt','sf1']),mkStep(27,'3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด',[])];
+  case 2:{const t=TL_CA();t[4].text='ศูนย์วิจัยไวรัสเปิด ทีมศูนย์วิจัยไวรัสประจำที่ ใช้ Judicator ตอนชิงศูนย์ ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตี ทีมหอคอยเฝ้าเอง';t[4].b=['vl','pt'];return t}
+  case 3:return[mkStep(0,'จุดรอบนอกจุดละ 2 คนยึดให้ได้ ทีมกลาง 4 คนไล่ตีช่วยจุดอื่น',SIDE_D),mkStep(10,'จุดกลางเปิด ทีมกลางยึดให้ได้ทั้ง 3 จุด สู้ไม่ไหวให้ถอย',['silo','ars','merc']),mkStep(20,'บ่อน้ำมันเปิด',['of1','of2']),mkStep(37,'3 นาทีสุดท้าย ทีมกลางโฟกัสฐานยิงนิวเคลียร์ ทุกคนอยู่ประจำจุด',['silo'])];
+  case 4:return[mkStep(0,'จุดรอบนอกจุดละ 2 คน ทีมกลางไล่ตีช่วยจุดอื่น ทุกคนรักษากำลังทหาร',SIDE_D),mkStep(10,'จุดกลางเปิด ไม่แย่งฐานยิงนิวเคลียร์ ยึดคลังแสงสรรพาวุธกับทหารรับจ้างไว้',['ars','merc']),mkStep(20,'บ่อน้ำมันเปิด',['of1','of2']),mkStep(36,'ทีมกลางและคนที่ได้รับมอบหมายรวมพลใกล้ฐานยิงนิวเคลียร์ ฟื้นทหารให้เต็ม',['silo','fh1','fh2','fh3','fh4']),mkStep(37,'รุมตีฐานยิงนิวเคลียร์ให้แตกแล้วยึดคืน เก็บกล่องเสบียงรอบอาคาร แต่ละจุดส่ง 1 คนไปช่วย',['silo'])];
+  default:return[];
+  }
+}
+const mkRt=(from,to,until)=>({id:sid(),from,to,until});
+const DU_LAB='เล่นเต็มเวลา ไม่มีตัวสำรอง นาทีที่ 0–12 อิสระ ไล่ตีศัตรูช่วยให้ทีมยึดอาคารได้ 12:00–30:00 ประจำที่ศูนย์วิจัยไวรัส ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีศัตรูให้ทีมยึดอาคารได้ตามความเหมาะสม';
+const DU_DC='ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด จุดโดนรุมให้แจ้งในแชทพันธมิตรทันที';
+const DU_SF=w=>'เริ่มเกมไปยึดคลังตัวอย่าง '+w+' รอไว้ก่อน 05:00 โรงงานเซรุ่มเปิด ย้ายกลับมายึดและเฝ้า';
+const DU_DF=w=>'เริ่มเกมไปยึดคลังตัวอย่าง '+w+' รอไว้ก่อน 08:00 ระบบป้องกันเปิด ย้ายกลับมายึดและเฝ้า';
+function defaultDuties(i){
+  const LAB='0–12 นาที เคลื่อนที่อิสระ ช่วยไล่ศัตรูให้ทีมอื่นยึดจุด → 12:00 ยึดและเฝ้าศูนย์ · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนออกไปช่วยได้';
+  const DC='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม';
+  const SF=w=>'เริ่ม → ยึดคลัง '+w+' รอ → 05:00 ย้ายมายึดเซรุ่ม · ศัตรูไม่แข็งแกร่ง แบ่งคนกลับไปยึดคลัง '+w+' ได้ แต่ห้ามให้เซรุ่มหลุด';
+  const DF=w=>'เริ่ม → ยึดคลัง '+w+' รอ → 08:00 ย้ายมายึดระบบป้องกัน · ศัตรูไม่แข็งแกร่ง แบ่งคนกลับไปยึดคลัง '+w+' ได้ แต่ห้ามให้ระบบป้องกันหลุด';
+  const PT='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม ห้ามทิ้งจุด · หลัง 12:00 ต้องเฝ้าเอง';
+  if(i===0||i===2)return{vl:LAB+(i===2?' · มีคนถือ Judicator 1 คน':''),pt:PT,dc1:DC,dc2:DC,sf1:SF('II'),sf2:SF('IV'),df1:DF('I'),df2:DF('III')};
+  if(i===1)return{vl:'0–12 นาที เคลื่อนที่อิสระ ช่วยไล่ศัตรูฝั่งเรา → 12:00 ยึดศูนย์ร่วมกับพันธมิตร · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนออกไปช่วยได้',pt:'ยึดและเฝ้าร่วมกับพันธมิตรตลอดเกม',dc1:DC,
+    sf1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างเซรุ่ม → 05:00 ย้ายมายึดเซรุ่ม',df1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างระบบป้องกัน → 08:00 ย้ายมายึดระบบป้องกัน',
+    wh1:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมระบบป้องกันช่วยถึง 08:00)',wh2:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมเซรุ่มช่วยถึง 05:00)'};
+  if(i===3||i===4){
+    const HOLD='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม';
+    const o={or1:HOLD+' ห้ามทิ้งจุด',or2:HOLD+' ห้ามทิ้งจุด',fh1:HOLD,fh2:HOLD,fh3:HOLD,fh4:HOLD,
+      info:HOLD+' · ห้ามหลุด ช่วยให้อาคารที่ยึดคืนได้แต้มเร็วขึ้น',sci:HOLD};
+    const OPEN0='0–10 นาที เคลื่อนที่อิสระ ไล่ตีศัตรูตัวแรง ช่วยโรงกลั่นก่อน แล้วโรงพยาบาล';
+    if(i===3){o.silo=OPEN0+' → 10:00 ไม่แย่งฐานยิง รักษาทหารไว้ → 26:00 รวมพลใกล้ฐานยิง ฟื้นทหารให้เต็ม → 27:00 รุมชิงฐานยิง';
+      o.ars=o.merc='ศัตรูไม่แข็งแกร่ง ทีมบุกแวะยึดได้'}
+    else{o.silo=OPEN0+' → 10:00 ชิงฐานยิงแล้วเฝ้าไว้ · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนไปยึดคลังแสงและทหารรับจ้าง';
+      o.ars=o.merc='ทีมบุกส่งคนมายึดหลัง 10:00 ถ้าศัตรูไม่แข็งแกร่ง'}
+    return o}
+  return defaultDutiesV7(i)}
+function defaultDutiesV7(i){const o=defaultDutiesV6(i);
+  if(i===1){
+    o.sf1='เริ่มเกมไปช่วยทีมคลังตัวอย่างที่อยู่ใกล้เซรุ่มยึดคลังก่อน 05:00 โรงงานเซรุ่มเปิด ย้ายกลับมายึดและเฝ้า';
+    o.df1='เริ่มเกมไปช่วยทีมคลังตัวอย่างที่อยู่ใกล้ระบบป้องกันยึดคลังก่อน 08:00 ระบบป้องกันเปิด ย้ายกลับมายึดและเฝ้า';
+    o.wh1='ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด ก่อน 08:00 มีทีมระบบป้องกันมาช่วย หลังจากนั้นเฝ้าเอง';
+    o.wh2='ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด ก่อน 05:00 มีทีมเซรุ่มมาช่วย หลังจากนั้นเฝ้าเอง';
+  }
+  return o}
+function defaultDutiesV6(i){const o=defaultDutiesV5(i);
+  if(i===0)o.pt='เล่นเต็มเวลา ไม่มีตัวสำรอง ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด หลัง 12:00 ต้องเฝ้าเองเพราะไม่ได้ตกลงกับพันธมิตร';
+  if(i===1){o.pt='เล่นเต็มเวลา ไม่มีตัวสำรอง ยึดและเฝ้าร่วมกับพันธมิตรตั้งแต่เริ่มเกม';o.vl=o.vl.replace('เล่นเต็มเวลา','เล่นเต็มเวลา ไม่มีตัวสำรอง');o.sf1=o.sf1.replace(' 12:00 ส่ง 3 คนไปช่วยเฝ้าหอคอยพลังงาน อีก 2 คนเฝ้าเซรุ่ม','')}
+  return o}
+function defaultDutiesV5(i){const o=defaultDutiesV4(i);
+  const WH=w=>' คลังตัวอย่าง '+w+' ยังเป็นความรับผิดชอบของทีมนี้ ถ้าศัตรูไม่แข็งแกร่ง ส่งทัพกลับไปยึดได้ตามสถานการณ์ แต่เน้นยึดอาคารหลักไว้ก่อน';
+  if(i===0||i===2){o.sf1+=WH('II');o.sf2+=WH('IV');o.df1+=WH('I');o.df2+=WH('III')}
+  if(i===1){const w=' คลังตัวอย่างนั้นยังเป็นความรับผิดชอบของทีมนี้ ถ้าศัตรูไม่แข็งแกร่ง ส่งทัพกลับไปยึดได้ตามสถานการณ์ แต่เน้นยึดอาคารหลักไว้ก่อน';o.sf1+=w;o.df1+=w}
+  return o}
+function defaultDutiesV4(i){const o=defaultDutiesV1(i);if(o.dc1)o.dc1='ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด';if(o.dc2)o.dc2='ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด';if(i===2)o.vl=DU_LAB+' มีคนถือ Judicator 1 คน';return o}
+function defaultDutiesV1(i){
+  if(i===0)return{vl:DU_LAB,pt:'เล่นเต็มเวลา ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด ห้ามทิ้งจุด',dc1:DU_DC,dc2:DU_DC,sf1:DU_SF('II'),sf2:DU_SF('IV'),df1:DU_DF('I'),df2:DU_DF('III')};
+  if(i===2)return{vl:DU_LAB+' คนถือ Judicator ใช้สกิลตอนชิงหอคอยพลังงานหรือศูนย์วิจัยไวรัสเท่านั้น',pt:'เล่นเต็มเวลา ไม่มีตัวสำรอง ยึดตั้งแต่เริ่มเกมและเฝ้าตลอด หลัง 12:00 ต้องเฝ้าเองเพราะไม่มีพันธมิตรช่วย',dc1:DU_DC,dc2:DU_DC,sf1:DU_SF('II'),sf2:DU_SF('IV'),df1:DU_DF('I'),df2:DU_DF('III')};
+  if(i===1)return{vl:'เล่นเต็มเวลา นาทีที่ 0–12 อิสระ ไล่ตีศัตรูช่วยให้ทีมฝั่งเรายึดอาคารได้ 12:00–30:00 ประจำที่ศูนย์วิจัยไวรัสร่วมกับพันธมิตร ถ้าศัตรูไม่แข็งแกร่ง ส่งตัวแทน 1–2 คนไปช่วยไล่ตีตามความเหมาะสม',dc1:DU_DC,sf1:'เริ่มเกมไปยึดคลังตัวอย่างใกล้เซรุ่มรอไว้ก่อน 05:00 ย้ายกลับมายึดเซรุ่ม 12:00 ส่ง 3 คนไปช่วยเฝ้าหอคอยพลังงาน อีก 2 คนเฝ้าเซรุ่ม',df1:'เริ่มเกมไปยึดคลังตัวอย่างใกล้ระบบป้องกันรอไว้ก่อน 08:00 ย้ายกลับมายึดและเฝ้า'};
+  return{};
+}
+function defaultRoutes(i){
+  if(i===0||i===2)return[mkRt('sf1','wh2',5),mkRt('sf2','wh4',5),mkRt('df1','wh1',8),mkRt('df2','wh3',8)];
+  if(i===1)return[mkRt('sf1','wh2',5),mkRt('df1','wh1',8)];
+  return[];
+}
+/* plan B side mirroring (canonical data = เราฝั่งซ้าย) */
+const MIR={dc1:'dc2',dc2:'dc1',sf1:'sf2',sf2:'sf1',df1:'df2',df2:'df1',wh1:'wh3',wh3:'wh1',wh2:'wh4',wh4:'wh2'};
+const SIDE_L=['dc1','sf1','df1','wh1','wh2'],SIDE_R=['dc2','sf2','df2','wh3','wh4'];
+function side(){if(!S.sides)S.sides={A:'L',B:'L'};return S.sides[S.team]||'L'}
+function isSplit(){return S.field==='canyon'&&S.phase===1}
+function isMir(){return isSplit()&&side()==='R'}
+const D=id=>isMir()?(MIR[id]||id):id;
+function autoFor(players,pre){const st=players.filter(p=>!p.sub).sort((a,b)=>b.power-a.power),a={};let i=0;
+  FIELDS.canyon.ORDER.forEach(id=>{for(let n=0;n<(pre[id]||0)&&i<st.length;n++)a[st[i++].id]=id});return a}
+function migrateV3(){
+  if(S.canyonV===3)return;
+  S.notes[0]=NOTE_CA8;S.notes[1]=NOTE_CB8;S.notes[2]=NOTE_CR8;
+  for(let i=0;i<3;i++){S.timeline[i]=defaultTL(i);S.routes[i]=defaultRoutes(i)}
+  const P=FIELDS.canyon.PRESET;
+  const fix=(players,assign)=>{if(!players||!assign)return;padAssign(assign);assign[1]=autoFor(players,P[1]);assign[2]=autoFor(players,P[2])};
+  fix(S.players,S.assign);Object.values(S.teamData||{}).forEach(d=>{if(d)fix(d.players,d.assign)});
+  S.sides={A:'L',B:'L'};S.canyonV=3;S.ruleV=2;S.labV=1;S.notesV=8;
+}
+function migrateRuleV2(){
+  if(S.ruleV===2)return;
+  if(S.notes[2]===NOTE_CR_V1)S.notes[2]=NOTE_CR_V2;
+  const oldP={vl:6,pt:4,dc1:2,dc2:2,df1:2,df2:2,sf1:1,sf2:1},P2=FIELDS.canyon.PRESET[2];
+  const fix=(players,assign)=>{if(!players||!assign||!assign[2])return;const c={};Object.entries(assign[2]).forEach(([pid,b])=>{const p=players.find(x=>x.id===pid);if(p&&!p.sub)c[b]=(c[b]||0)+1});
+    const same=Object.keys(oldP).every(k=>c[k]===oldP[k])&&Object.keys(c).length===8;if(same)assign[2]=autoFor(players,P2)};
+  fix(S.players,S.assign);Object.values(S.teamData||{}).forEach(d=>{if(d)fix(d.players,d.assign)});
+  S.ruleV=2;
+}
+const OLD_TL_TEXT=new Set(["3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด", "3 นาทีสุดท้าย ทุกคนอยู่ประจำจุด ไม่ออกไปตีฐานศัตรู", "ทีมบุกและทีมหอคอยยึดหอคอยพลังงานทันที", "ระบบป้องกันเปิด ทีมระบบป้องกันย้ายจากคลังไปยึด", "ระบบป้องกันเปิด ทีมระบบป้องกันย้ายไปยึด ทีมบุกไปหอคอยพลังงาน", "ศูนย์ข้อมูล I, II ยึดและเฝ้า ทีมเซรุ่มไปคลังตัวอย่าง II / IV ทีมระบบป้องกันไปคลังตัวอย่าง I / III", "ศูนย์ข้อมูลฝั่งเรายึดและเฝ้า ทีมเซรุ่มและทีมระบบป้องกันไปยึดคลังตัวอย่างฝั่งเรา ทีมบุกวนช่วยฝั่งเรา", "ศูนย์วิจัยไวรัสเปิด ทีมบุกยึดให้ได้ ห้ามแบ่งคนออก", "ศูนย์วิจัยไวรัสเปิด ทีมบุกยึดให้ได้ ใช้ Judicator ตอนชิงศูนย์ ทีมหอคอยเฝ้าเอง", "ศูนย์วิจัยไวรัสเปิด ทีมบุกไปยึดร่วมกับพันธมิตร ทีมเซรุ่มส่ง 3 คนไปเฝ้าหอคอยแทน", "หอคอยพลังงาน 4 คนยึดทันที ทีมบุกช่วยยึดหอคอยและช่วยจุดที่โดนรุม", "โรงงานเซรุ่มเปิด ทีมเซรุ่มย้ายจากคลังไปยึด", "โรงงานเซรุ่มเปิด ทีมเซรุ่มย้ายไปยึด"]);
+function migrateLabV1(){
+  if(S.labV===1)return;
+  const pairs=[[NOTE_CA_V1,NOTE_CA],[NOTE_CB_V1,NOTE_CB],[NOTE_CR_V2,NOTE_CR]];
+  pairs.forEach(([o,n],i)=>{if(S.notes[i]===o)S.notes[i]=n});
+  for(let i=0;i<3;i++){
+    const t=S.timeline[i];if(t&&t.length&&t.every(x=>OLD_TL_TEXT.has(x.text)))S.timeline[i]=defaultTL(i);
+    if(S.routes[i])S.routes[i]=S.routes[i].filter(r=>!(r.from==='vl'&&r.to==='pt'&&r.until===12));
+  }
+  S.labV=1;
+}
+function migrateNotesV4(){
+  if(S.notesV>=4)return;
+  [[NOTE_CA,NOTE_CA4],[NOTE_CB,NOTE_CB4],[NOTE_CR,NOTE_CR4]].forEach(([o,n],i)=>{if(S.notes[i]===o)S.notes[i]=n});
+  if(S.duties)for(let i=0;i<3;i++){if(JSON.stringify(S.duties[i])===JSON.stringify(defaultDutiesV1(i)))S.duties[i]=defaultDuties(i)}
+  S.notesV=4;
+}
+function migrateNotesV5(){
+  if(S.notesV>=5)return;
+  [[NOTE_CA4,NOTE_CA5],[NOTE_CB4,NOTE_CB5],[NOTE_CR4,NOTE_CR5]].forEach(([o,n],i)=>{if(S.notes[i]===o)S.notes[i]=n});
+  if(S.duties)for(let i=0;i<3;i++){if(JSON.stringify(S.duties[i])===JSON.stringify(defaultDutiesV4(i)))S.duties[i]=defaultDuties(i)}
+  S.notesV=5;
+}
+function migrateDawnV6(){
+  if(S.notesV>=6)return;
+  if(S.notes[1]===NOTE_CB5)S.notes[1]=NOTE_CB6;
+  if(S.duties)for(let i=0;i<2;i++){if(JSON.stringify(S.duties[i])===JSON.stringify(defaultDutiesV5(i)))S.duties[i]=defaultDuties(i)}
+  const OA={vl:6,pt:4,dc1:2,dc2:2,df1:2,df2:2,sf1:1,sf2:1},OB={vl:5,dc1:5,sf1:5,df1:5},P=FIELDS.canyon.PRESET;
+  const cnt=(players,a)=>{const c={};Object.entries(a||{}).forEach(([pid,b])=>{const p=players.find(x=>x.id===pid);if(p&&!p.sub)c[b]=(c[b]||0)+1});return c};
+  const eq=(c,o)=>Object.keys(o).length===Object.keys(c).length&&Object.keys(o).every(k=>c[k]===o[k]);
+  const mir=o=>{const r={};Object.entries(o).forEach(([k,v])=>{r[MIR[k]||k]=v});return r};
+  const fix=(team,players,assign)=>{if(!players||!assign)return;
+    if(eq(cnt(players,assign[0]),OA))assign[0]=autoFor(players,P[0]);
+    const right=(S.sides||{})[team]==='R',ob=right?mir(OB):OB;
+    if(eq(cnt(players,assign[1]),ob))assign[1]=autoFor(players,right?mir(P[1]):P[1]);};
+  fix(S.team,S.players,S.assign);Object.entries(S.teamData||{}).forEach(([t,d])=>{if(d)fix(t,d.players,d.assign)});
+  S.notesV=6;
+}
+function migrateWhV7(){
+  if(S.notesV>=7)return;
+  if(S.duties&&JSON.stringify(S.duties[1])===JSON.stringify(defaultDutiesV6(1)))S.duties[1]=defaultDuties(1);
+  const OB={vl:5,pt:3,dc1:4,sf1:4,df1:4},P=FIELDS.canyon.PRESET;
+  const cnt=(players,a)=>{const c={};Object.entries(a||{}).forEach(([pid,b])=>{const p=players.find(x=>x.id===pid);if(p&&!p.sub)c[b]=(c[b]||0)+1});return c};
+  const eq=(c,o)=>Object.keys(o).length===Object.keys(c).length&&Object.keys(o).every(k=>c[k]===o[k]);
+  const mir=o=>{const r={};Object.entries(o).forEach(([k,v])=>{r[MIR[k]||k]=v});return r};
+  const fix=(team,players,assign)=>{if(!players||!assign)return;const right=(S.sides||{})[team]==='R';
+    if(eq(cnt(players,assign[1]),right?mir(OB):OB))assign[1]=autoFor(players,right?mir(P[1]):P[1])};
+  fix(S.team,S.players,S.assign);Object.entries(S.teamData||{}).forEach(([t,d])=>{if(d)fix(t,d.players,d.assign)});
+  S.notesV=7;
+}
+function migrateTextV8(){
+  if(S.notesV===8)return;
+  [[NOTE_CA5,NOTE_CA8],[NOTE_CB6,NOTE_CB8],[NOTE_CR5,NOTE_CR8]].forEach(([o,n],i)=>{if(S.notes[i]===o)S.notes[i]=n});
+  if(S.duties)for(let i=0;i<3;i++){if(JSON.stringify(S.duties[i])===JSON.stringify(defaultDutiesV7(i)))S.duties[i]=defaultDuties(i)}
+  S.notesV=8;
+}
+function dropOilFields(){
+  const kill=a=>{if(a)Object.keys(a).forEach(k=>{if(a[k]==='of1'||a[k]==='of2')delete a[k]})};
+  (S.assign||[]).forEach(kill);Object.values(S.teamData||{}).forEach(d=>{if(d&&d.assign)d.assign.forEach(kill)});
+  (S.duties||[]).forEach(d=>{if(d){delete d.of1;delete d.of2}});
+  (S.routes||[]).forEach((r,i)=>{if(r)S.routes[i]=r.filter(x=>!['of1','of2'].includes(x.from)&&!['of1','of2'].includes(x.to))});
+}
+function migrateDesertV9(){
+  if(S.desertV===9)return;
+  [3,4].forEach(i=>{if([NOTE_DA,NOTE_DB,NOTE_DC].includes(S.notes[i]))S.notes[i]=i===3?NOTE_DSA9:NOTE_DSB9;
+    if(S.duties&&(!S.duties[i]||!Object.keys(S.duties[i]).length))S.duties[i]=defaultDuties(i)});
+  if(S.tlDur&&S.tlDur.desert===40)S.tlDur.desert=30;
+  const OLD=[{ars:2,merc:2,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,sci:2,info:2},{silo:2,ars:1,merc:1,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,sci:2,info:2}];
+  const NP=FIELDS.desert.PRESET;
+  const cnt=(players,a)=>{const c={};Object.entries(a||{}).forEach(([pid,b])=>{const p=players.find(x=>x.id===pid);if(p&&!p.sub)c[b]=(c[b]||0)+1});return c};
+  const eq=(c,o)=>Object.keys(o).length===Object.keys(c).length&&Object.keys(o).every(k=>c[k]===o[k]);
+  const auto=(players,pre)=>{const st=players.filter(p=>!p.sub).sort((a,b)=>b.power-a.power),a={};let k=0;FIELDS.desert.ORDER.forEach(id=>{for(let n=0;n<(pre[id]||0)&&k<st.length;n++)a[st[k++].id]=id});return a};
+  const fix=(players,assign)=>{if(!players||!assign)return;padAssign(assign);[0,1].forEach(j=>{const c=cnt(players,assign[3+j]);if(!Object.keys(c).length||eq(c,OLD[j]))assign[3+j]=auto(players,NP[j])})};
+  fix(S.players,S.assign);Object.values(S.teamData||{}).forEach(d=>{if(d)fix(d.players,d.assign)});
+  S.desertV=9;
+}
+function normPhase(){const p=S.phase%3;if(S.field==='desert')S.phase=3+(p===2?0:p);else S.phase=S.faction==='rule'?2:(p===2?0:p)}
+function planName(){const p=S.phase%3;
+  if(S.field==='canyon'){if(p===2)return'แผนพิทักษ์กฎระเบียบ'}
+  return p===0?'แผน A':'แผน B'}
+function planCode(){return S.field==='canyon'&&S.phase%3===2?'Rule':'ABC'[S.phase%3]}
+function presetFor(){const pre=PRESET[S.phase%3];if(!isMir())return pre;const o={};Object.entries(pre).forEach(([k,v])=>{o[MIR[k]||k]=v});return o}
+function ensureTL(){
+  if(!Array.isArray(S.timeline)||S.timeline.length!==6)S.timeline=[0,1,2,3,4,5].map(defaultTL);
+  if(!Array.isArray(S.routes)||S.routes.length!==6)S.routes=[0,1,2,3,4,5].map(defaultRoutes);
+  if(!Array.isArray(S.duties)||S.duties.length!==6)S.duties=[0,1,2,3,4,5].map(defaultDuties);
+  if(!S.tlDur)S.tlDur={...TL_DUR};
+}
+let tlEdit=false,tlMin=null,selPid=null;
 function freshPlayers(){const players=[];for(let i=0;i<30;i++)players.push({id:'p'+i,name:i<20?'ตัวจริง '+(i+1):'สำรอง '+(i-19),power:0,sub:i>=20});return players}
 function fresh(){
   const players=[];
@@ -306,16 +678,18 @@ function switchTeam(t){
 }
 if(typeof S.note!=='string'||S.note===OLD_NOTE||S.note===PREV_NOTE||S.note===PREV2_NOTE||S.note===PREV3_NOTE)S.note=NOTE_DEFAULT;
 if(!Array.isArray(S.notes))S.notes=[S.note,NOTE_B,NOTE_C];
-if(S.notes[1]===NOTE_DEFAULT||!S.notes[1])S.notes[1]=NOTE_B;
-if(S.notes[2]===NOTE_DEFAULT||!S.notes[2])S.notes[2]=NOTE_C;
+const LEGACY=S.canyonV!==3;
+if(LEGACY&&(S.notes[1]===NOTE_DEFAULT||!S.notes[1]))S.notes[1]=NOTE_B;
+if(LEGACY&&(S.notes[2]===NOTE_DEFAULT||!S.notes[2]))S.notes[2]=NOTE_C;
 function padAssign(a){while(a.length<6)a.push({});return a}
 if(S.notes.length<6)S.notes.push(NOTE_DA,NOTE_DB,NOTE_DC);S.notes.length=6;
 if(S.desertNotesV!==2){S.notes[3]=NOTE_DA;S.notes[4]=NOTE_DB;S.notes[5]=NOTE_DC;S.desertNotesV=2}
 if(S.desertNotesBV!==1){S.notes[4]=NOTE_DB;S.desertNotesBV=1}
-for(let i=3;i<6;i++){S.notes[i]=S.notes[i].replace(/ไซโลนิวเคลียร์/g,'ฐานยิงนิวเคลียร์').replace(/ไซโล/g,'ฐานยิง').replace(/ศูนย์วิทยาศาสตร์/g,'ศูนย์เทคโนโลยี').replace(/ศูนย์ข้อมูลข่าวสาร/g,'ศูนย์ข้อมูล').replace(/(?<!โรงงาน)คลังแสง(?!สรรพาวุธ)/g,'โรงงานคลังแสงสรรพาวุธ')}
+if(LEGACY)for(let i=3;i<6;i++){S.notes[i]=S.notes[i].replace(/ไซโลนิวเคลียร์/g,'ฐานยิงนิวเคลียร์').replace(/ไซโล/g,'ฐานยิง').replace(/ศูนย์วิทยาศาสตร์/g,'ศูนย์เทคโนโลยี').replace(/ศูนย์ข้อมูลข่าวสาร/g,'ศูนย์ข้อมูล').replace(/(?<!โรงงาน)คลังแสง(?!สรรพาวุธ)/g,'โรงงานคลังแสงสรรพาวุธ')}
 padAssign(S.assign);
+ensureTL();
 const SUB_RULE='เมื่อเริ่มเกม หากตัวจริงยังไม่เข้าร่วมกิจกรรม ให้ตัวสำรองเข้าประจำจุดแทนทันที';
-S.notes=S.notes.map(n=>{if(!n||n.includes(SUB_RULE))return n;const nums=(n.match(/^\s*(\d+)\./gm)||[]).map(x=>parseInt(x));const k=nums.length?Math.max(...nums)+1:1;return n.replace(/\s*$/,'')+'\n'+k+'. '+SUB_RULE});
+if(LEGACY)S.notes=S.notes.map(n=>{if(!n||n.includes(SUB_RULE))return n;const nums=(n.match(/^\s*(\d+)\./gm)||[]).map(x=>parseInt(x));const k=nums.length?Math.max(...nums)+1:1;return n.replace(/\s*$/,'')+'\n'+k+'. '+SUB_RULE});
 if(S.plansV!==2){
   const sh=a=>{if(!a)return a;padAssign(a);a[0]=a[1];a[1]=a[2];a[2]={};a[3]=a[4];a[4]=a[5];a[5]={};return a};
   sh(S.assign);Object.values(S.teamData||{}).forEach(d=>{if(d&&d.assign)sh(d.assign)});
@@ -323,7 +697,8 @@ if(S.plansV!==2){
   const pl=S.phase%3,o=S.phase>=3?3:0;S.phase=o+(pl===2?1:0);
   S.plansV=2;
 }
-if(S.notes[1]===NOTE_C_OLD||S.notes[1]===NOTE_C2_OLD)S.notes[1]=NOTE_C;
+if(LEGACY&&(S.notes[1]===NOTE_C_OLD||S.notes[1]===NOTE_C2_OLD))S.notes[1]=NOTE_C;
+migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();normPhase();setField(S.field);
 if(!S.icons)S.icons={...ICON_DEFAULT};
 Object.entries(ICON_DESERT).forEach(([k,v])=>{if(!S.icons[k])S.icons[k]=v});
 let saveT;
@@ -337,6 +712,12 @@ function cur(){return S.assign[S.phase]}
 function membersOf(bid){return S.players.filter(p=>cur()[p.id]===bid).sort((a,b)=>b.power-a.power)}
 function chipHTML(p){return `<span class="chip${p.sub?' sub':''}" data-pid="${p.id}" title="${esc(p.name)} ${fmt(p.power)}M"><b>${esc(p.name)}</b>${p.power?`<small>${fmt(p.power)}</small>`:''}</span>`}
 
+function visitorsHTML(bid){
+  return routes().filter(r=>D(r.to)===bid&&BM[D(r.from)]).sort((a,b)=>a.until-b.until).map(r=>{
+    const f=D(r.from),list=membersOf(f).filter(p=>!p.sub);if(!list.length)return'';
+    return `<div class="grp vis"><span class="cap">ทีม${esc(BM[f].th)} · ถึง ${String(r.until).padStart(2,'0')}:00</span>${list.map(p=>`<span class="vchip">${esc(p.name)}</span>`).join('')}</div>`;
+  }).join('');
+}
 function grp(list,label,cls){return list.length?`<div class="grp${cls}"><span class="cap">${label}</span>${list.map(chipHTML).join('')}</div>`:''}
 function renderMap(){
   const m=$('#map');
@@ -350,14 +731,62 @@ function renderMap(){
   B.forEach(b=>{
     const mem=membersOf(b.id),pw=mem.reduce((s,p)=>s+(+p.power||0),0);
     const d=document.createElement('div');
-    d.className='card '+b.k;d.dataset.bid=b.id;
+    const ally=isSplit()&&(side()==='L'?SIDE_R:SIDE_L).includes(b.id);
+    d.className='card '+b.k+(ally?' ally':'');d.dataset.bid=b.id;
     d.style.left=S.markers[b.id].x+'%';d.style.top=S.markers[b.id].y+'%';
-    d.innerHTML=`<div class="hd" data-move="${b.id}">${S.icons[b.id]?`<img class="ic" src="${S.icons[b.id]}" alt="" draggable="false">`:''}<span class="th">${esc(b.th)}</span><span class="enrow"><span class="en">${esc(b.name)}</span>${b.pts?`<span class="pts">+${b.pts}/s</span>`:''}</span></div><div class="body">${grp(mem.filter(p=>!p.sub),FIELDS[S.field].ft.includes(b.id)?'ตัวจริง (เล่นเต็มเวลา)':'ตัวจริง','')}${grp(mem.filter(p=>p.sub),'ตัวสำรอง',' sb')}</div>`;
+    d.innerHTML=`<div class="hd" data-move="${b.id}"><span class="icrow"><span></span>${S.icons[b.id]?`<img class="ic" src="${S.icons[b.id]}" alt="" draggable="false">`:'<span></span>'}<span class="opent${openMin(b.id)?' late':''}">${openTxt(b.id)}</span></span><span class="th">${esc(b.th)}</span><span class="enrow"><span class="en">${esc(b.name)}</span>${b.pts?`<span class="pts">+${b.pts}/s</span>`:''}</span>${ally?'<span class="allytag">พันธมิตรดูแล</span>':''}</div><div class="body">${grp(mem.filter(p=>!p.sub),FIELDS[S.field].ft.includes(b.id)?'ตัวจริง (เล่นเต็มเวลา)':'ตัวจริง','')}${grp(mem.filter(p=>p.sub),'ตัวสำรอง',' sb')}${visitorsHTML(b.id)}</div>`;
     m.appendChild(d);
   });
   if(S.autoLayout!==false&&!S.bg)layoutCards();
+  renderRoutes();applyFocus();
 }
-function layoutCards(){
+function layoutCards(){const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';try{layoutCards0()}finally{bx.style.zoom=oz}renderRoutes()}
+function routes(){return (S.routes&&S.routes[S.phase])||[]}
+function renderRoutes(){
+  const m=$('#map');if(!m)return;m.querySelectorAll('.routes,.rlabel').forEach(n=>n.remove());
+  const list=routes().filter(r=>BM[D(r.from)]&&BM[D(r.to)]&&D(r.from)!==D(r.to));if(!list.length)return;
+  const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';
+  try{
+    const W=m.clientWidth,H=m.clientHeight;if(!W||!H)return;
+    const cs=getComputedStyle(document.documentElement),cv=v=>cs.getPropertyValue(v).trim();
+    const COL={vl:cv('--rust'),pt:cv('--ochre'),mid:cv('--teal'),wh:cv('--slate')};
+    const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');
+    svg.setAttribute('class','routes');svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    let defs='',body='';const labels=[];
+    Object.entries(COL).forEach(([k,c])=>{defs+=`<marker id="ah-${k}" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M1,1.5 L11,6 L1,10.5 Q3,6 1,1.5 z" fill="${c}"/></marker>`});
+    const halo=cv('--panel')||'#fff';
+    const box=el=>{const id=el.dataset.bid,cx=S.markers[id].x/100*W,cy=S.markers[id].y/100*H,w=el.offsetWidth,h=el.offsetHeight;return{cx,cy,l:cx-w/2,r:cx+w/2,t:cy-h/2,b:cy+h/2}};
+    list.forEach(r=>{
+      const f=D(r.from),t=D(r.to),cf=m.querySelector(`.card[data-bid="${f}"]`),ct=m.querySelector(`.card[data-bid="${t}"]`);if(!cf||!ct)return;
+      const A=box(cf),B=box(ct),ov=Math.min(A.r,B.r)-Math.max(A.l,B.l);let pts,lab;
+      if(ov>40&&(B.t>=A.b+8||A.t>=B.b+8)){
+        /* stacked: straight line through the gap */
+        const x=(Math.max(A.l,B.l)+Math.min(A.r,B.r))/2;
+        pts=B.t>=A.b?[[x,A.b+5],[x,B.t-5]]:[[x,A.t-5],[x,B.b+5]];
+        lab=[x,(pts[0][1]+pts[1][1])/2];
+      }else{
+        /* elbow: out of the side, down the gap beside the column, then into the target */
+        const right=B.cx>A.cx,sx=right?A.r+5:A.l-5,cx=sx+(right?24:-24),below=B.t>A.cy,y=below?B.t-26:B.b+26;
+        pts=[[sx,A.cy],[cx,A.cy],[cx,y],[B.cx,y],[B.cx,below?B.t-5:B.b+5]];
+        lab=Math.abs(B.cx-cx)>90?[(cx+B.cx)/2,y]:[cx,(A.cy+y)/2];
+      }
+      const f1=v=>v.toFixed(1);let d='M'+f1(pts[0][0])+','+f1(pts[0][1]);
+      for(let q=1;q<pts.length;q++){const [x,y]=pts[q];
+        if(q<pts.length-1){const [px,py]=pts[q-1],[nx,ny]=pts[q+1],l1=Math.hypot(x-px,y-py),l2=Math.hypot(nx-x,ny-y),rr=Math.min(10,l1/2,l2/2);
+          if(rr>1){d+=` L${f1(x+(px-x)/l1*rr)},${f1(y+(py-y)/l1*rr)} Q${f1(x)},${f1(y)} ${f1(x+(nx-x)/l2*rr)},${f1(y+(ny-y)/l2*rr)}`;continue}}
+        d+=` L${f1(x)},${f1(y)}`}
+      const k=BM[f].k,c=COL[k]||COL.mid;
+      body+=`<path d="${d}" fill="none" stroke="${halo}" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>`;
+      body+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="8 6" stroke-linejoin="round" stroke-linecap="round" marker-start="url(#ah-${k in COL?k:'mid'})" marker-end="url(#ah-${k in COL?k:'mid'})"/>`;
+      const who=f==='vl'?'ทีมบุก':BM[f].th.replace('โรงงาน','').replace('ระบบ','');
+      labels.push({x:lab[0]/W*100,y:lab[1]/H*100,c,txt:who+' ถึง '+String(r.until).padStart(2,'0')+':00'});
+    });
+    svg.innerHTML=`<defs>${defs}</defs>${body}`;
+    m.insertBefore(svg,$('#bgimg').nextSibling);
+    if(false)labels.forEach(l=>{const d=document.createElement('div');d.className='rlabel';d.style.left=l.x+'%';d.style.top=l.y+'%';d.style.color=l.c;d.textContent=l.txt;m.appendChild(d)});
+  }finally{bx.style.zoom=oz}
+}
+function layoutCards0(){
   const m=$('#map'),W=m.clientWidth;if(!W)return;
   const card=id=>m.querySelector('.card[data-bid="'+id+'"]');
   const h=id=>card(id).offsetHeight,cw=card(ORDER[0]).offsetWidth;
@@ -373,10 +802,10 @@ function layoutCards(){
   }
   const xl=Math.max(cw/2+12,W*0.2),xr=W-xl;
   stack(L,xl,false);stack(Rt,xr,false);stack(C,W/2,true);
-  const rowTop=TOP+colH+30,rowH=Math.max(...Wh.map(h));
+  const rowTop=TOP+colH+56,rowH=Math.max(...Wh.map(h));
   const n=Wh.length,span=Math.min(Math.max(W-24,cw*n+30),n<4?W*0.6:1e9),x0=(W-span)/2;
   Wh.forEach((id,i)=>{pos[id]={x:x0+span*(i+.5)/n,y:rowTop+h(id)/2}});
-  const H=Math.round(rowTop+rowH+26);
+  const H=Math.round(Wh.length?rowTop+rowH+26:TOP+colH+26);
   S.mapH=H;m.classList.add('sized');m.style.height=H+'px';
   Object.entries(pos).forEach(([id,p])=>{
     const x=p.x/W*100,y=p.y/H*100;S.markers[id]={x,y};
@@ -386,6 +815,7 @@ function layoutCards(){
 function renderPool(){
   const un=S.players.filter(p=>!cur()[p.id]);
   $('#poolChips').innerHTML=un.length?un.map(chipHTML).join(''):'<span class="tip">จัดครบทุกคนแล้ว</span>';
+  markSel();
 }
 function optionList(sel){return `<option value="">ยังไม่จัด</option>`+B.map(b=>`<option value="${b.id}"${sel===b.id?' selected':''}>${esc(L(b))}</option>`).join('')}
 function renderRoster(){
@@ -398,7 +828,7 @@ function renderRoster(){
   $('#roster').innerHTML=h+'</tbody>';
 }
 function renderSummary(){
-  $('#sumPhase').textContent='ทีม '+S.team+' · แผน '+'ABC'[S.phase%3];
+  $('#sumPhase').textContent='ทีม '+S.team+' · '+planName();
   
   $('#summary').innerHTML=ORDER.map(id=>{
     const b=BM[id],mem=membersOf(id);if(!mem.length)return'';
@@ -414,25 +844,35 @@ function renderTop(){
   document.querySelectorAll('[data-ph]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.ph===S.phase));
   document.querySelectorAll('[data-team]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.team===S.team));
   $('#teamLbl').textContent='ทีม '+S.team;
-  $('#teamTag').textContent=FIELDS[S.field].name+' · ทีม '+S.team+' · แผน '+'ABC'[S.phase%3];
+  $('#teamTag').textContent=FIELDS[S.field].name+' · ทีม '+S.team+' · '+planName();
+  const pl=S.field==='canyon'?['แผน A · ไม่คุยกัน','แผน B · แบ่งฝั่ง']:['แผน A · เจอทีมแข็ง','แผน B · เจอทีมอ่อน'];
+  document.querySelectorAll('[data-plan]').forEach(b=>b.textContent=pl[+b.dataset.plan]);
+  $('#planSeg').hidden=S.field==='canyon'&&S.faction==='rule';
+  $('#sideSeg').hidden=!isSplit();
+  document.querySelectorAll('[data-side]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.side===side()));
   $('#facTip').textContent=FIELDS[S.field].faction?TIPS[S.faction]:TIPS.desert;
   $('#compactChk').checked=!!S.compact;
   $('#autoLayChk').checked=S.autoLayout!==false&&!S.bg;
   $('#autoLayChk').disabled=!!S.bg;
-  if(document.activeElement!==$('#planNote'))$('#planNote').value=S.notes[S.phase];
+  if(document.activeElement!==$('#planNote')){$('#planNote').value=S.notes[S.phase];requestAnimationFrame(growNote)}
   document.querySelectorAll('[data-plan]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.plan===S.phase%3));
-  $('#copyFromA').hidden=S.phase%3===0;
+  $('#copyFromA').hidden=S.phase%3===0||isSplit();
 }
 function renderIcons(){
   $('#icons').innerHTML=ORDER.map(id=>{const b=BM[id],src=S.icons[id];
     return `<div class="r">${src?`<img src="${src}" alt="">`:'<span class="ph"></span>'}<span>${esc(b.th)}<br><span class="tip">${esc(b.name)}</span></span><span><label>เลือกรูป<input type="file" accept="image/*" hidden data-icon="${id}"></label>${src?`<button data-rmicon="${id}" aria-label="ลบรูป ${esc(b.th)}">ลบ</button>`:''}</span></div>`}).join('');
 }
-function renderAll(){renderTop();renderMap();renderPool();renderRoster();renderSummary();renderIcons()}
-function refreshLive(){renderMap();renderPool();renderSummary()}
+function renderAll(){renderTop();renderMap();renderPool();renderRoster();renderSummary();renderIcons();renderTimeline();applyFit()}
+function refreshLive(){renderMap();renderPool();renderSummary();if(!tlEdit)renderRouteUI()}
 function syncRosterSelects(){document.querySelectorAll('select[data-f="as"]').forEach(s=>{s.value=cur()[s.dataset.pid]||''})}
 
-document.querySelectorAll('[data-field]').forEach(b=>b.onclick=()=>{if(S.field===b.dataset.field)return;S.field=b.dataset.field;S.phase=off()+S.phase%3;setField(S.field);renderAll();save()});
-document.querySelectorAll('[data-fac]').forEach(b=>b.onclick=()=>{S.faction=b.dataset.fac;renderTop();save()});
+document.querySelectorAll('[data-field]').forEach(b=>b.onclick=()=>{if(S.field===b.dataset.field)return;S.field=b.dataset.field;normPhase();setField(S.field);renderAll();save()});
+document.querySelectorAll('[data-side]').forEach(b=>b.onclick=()=>{
+  const v=b.dataset.side;if(v===side())return;
+  const a=S.assign[1];Object.keys(a).forEach(pid=>{a[pid]=MIR[a[pid]]||a[pid]});
+  S.sides[S.team]=v;renderAll();save();toast(v==='L'?'ทีม '+S.team+' อยู่ฝั่งซ้าย':'ทีม '+S.team+' อยู่ฝั่งขวา');
+});
+document.querySelectorAll('[data-fac]').forEach(b=>b.onclick=()=>{if(S.faction===b.dataset.fac)return;S.faction=b.dataset.fac;normPhase();renderAll();save()});
 document.querySelectorAll('[data-ph]').forEach(b=>b.onclick=()=>{S.phase=+b.dataset.ph;renderAll();save()});
 $('#icons').addEventListener('change',e=>{
   const id=e.target.dataset.icon,f=e.target.files&&e.target.files[0];if(!id||!f)return;
@@ -444,7 +884,15 @@ $('#icons').addEventListener('change',e=>{
   };im.src=r.result};r.readAsDataURL(f);
 });
 $('#icons').addEventListener('click',e=>{const id=e.target.dataset.rmicon;if(!id)return;delete S.icons[id];renderMap();renderIcons();save()});
-$('#planNote').oninput=e=>{S.notes[S.phase]=e.target.value;save()};
+function growNote(){const t=$('#planNote');t.style.height='auto';t.style.height=Math.max(170,t.scrollHeight+4)+'px'}
+const DEFAULT_NOTES=()=>[NOTE_CA8,NOTE_CB8,NOTE_CR8,NOTE_DSA9,NOTE_DSB9,''];
+let noteT;
+$('#planNote').oninput=e=>{S.notes[S.phase]=e.target.value;save();growNote();
+  const m=$('#noteSaved');m.textContent='กำลังบันทึก...';clearTimeout(noteT);noteT=setTimeout(()=>{m.textContent='บันทึกแล้ว'},400)};
+$('#noteReset').onclick=()=>{
+  if(!confirm('แทนที่คำอธิบายของ'+planName()+'ด้วยข้อความเริ่มต้น? ข้อความที่แก้ไว้จะหายไป'))return;
+  S.notes[S.phase]=DEFAULT_NOTES()[S.phase];$('#planNote').value=S.notes[S.phase];growNote();refreshLive();save();toast('คืนค่าเริ่มต้นแล้ว');
+};
 document.querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>{S.phase=off()+ +b.dataset.plan;renderAll();save()});
 $('#copyFromA').onclick=()=>{
   if(Object.keys(S.assign[S.phase]).length&&!confirm('แทนที่การจัดคนของแผนนี้ด้วยแผน A?'))return;
@@ -476,7 +924,7 @@ $('#bulkBtn').onclick=()=>{
 };
 function autoAssign(){
   const starters=S.players.filter(p=>!p.sub).sort((a,b)=>b.power-a.power);
-  const a={},pre=PRESET[S.phase%3];let i=0;
+  const a={},pre=presetFor();let i=0;
   ORDER.forEach(id=>{for(let n=0;n<(pre[id]||0)&&i<starters.length;n++)a[starters[i++].id]=id});
   S.assign[S.phase]=a;
 }
@@ -489,7 +937,7 @@ $('#autoBtn').onclick=()=>{autoAssign();refreshLive();syncRosterSelects();save()
 })();
 $('#resetBtn').onclick=()=>{
   if(!confirm('ล้างรายชื่อ แผน และภาพแผนที่ทั้งหมด?'))return;
-  S=fresh();S.team='A';S.teamData={A:null,B:{players:freshPlayers(),assign:[{},{},{},{},{},{}]}};try{localStorage.removeItem(KEY)}catch(e){}renderAll();
+  S=fresh();ensureTL();S.team='A';S.teamData={A:null,B:{players:freshPlayers(),assign:[{},{},{},{},{},{}]}};migrateV3();try{localStorage.removeItem(KEY)}catch(e){}renderAll();
 };
 $('#bgfile').onchange=e=>{
   const f=e.target.files[0];if(!f)return;
@@ -504,9 +952,11 @@ $('#bgfile').onchange=e=>{
 };
 $('#copyText').onclick=async()=>{
   const fac=FIELDS[S.field].faction?(S.faction==='rule'?'Rulebringers':'Dawnbreakers'):'1 ต่อ 1';
-  const PL='ABC'[S.phase%3];
-  let out=`แผน${FIELDS[S.field].name} ทีม ${S.team} · แผน ${PL} (${fac})\n`;
+  const PL=planCode();
+  let out=`แผน${FIELDS[S.field].name} ทีม ${S.team} · ${planName()} (${fac})\n`;
   const nt=S.notes[S.phase].trim();if(nt)out+=`\n${nt}\n`;
+  const dr=dutyRows().filter(r=>r.txt);
+  if(dr.length){out+='\nหน้าที่ผู้ประจำแต่ละอาคาร\n';dr.forEach(r=>{out+=`${BM[r.id].th} (${openTxt(r.id)}): ${r.txt}\n`})}
   out+='\n';
   ORDER.forEach(id=>{
     const mem=S.players.filter(p=>S.assign[S.phase][p.id]===id).sort((a,b)=>b.power-a.power);
@@ -518,19 +968,16 @@ $('#copyText').onclick=async()=>{
   catch(e){const ta=document.createElement('textarea');ta.value=out;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('คัดลอกแผนแล้ว')}catch(_){toast('คัดลอกไม่สำเร็จ')}ta.remove()}
 };
 
-let drag=null;
+let drag=null,pend=null;
 function mapRect(){return $('#map').getBoundingClientRect()}
+function zf(){const z=parseFloat($('#mapBox').style.zoom);return z>0?z:1}
 document.addEventListener('pointerdown',e=>{
+  if(e.button>0)return;
   if(e.target.closest('#mapResize')){e.preventDefault();stopAuto();drag={type:'resize',y0:e.clientY,h0:$('#map').offsetHeight};return}
-  const mv=e.target.closest('[data-move]');
   const chip=e.target.closest('.chip');
-  if(chip){
-    e.preventDefault();
-    const g=chip.cloneNode(true);g.classList.add('ghost');g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';
-    document.body.appendChild(g);drag={type:'chip',pid:chip.dataset.pid,g};
-  }else if(mv){
-    e.preventDefault();stopAuto();drag={type:'card',bid:mv.dataset.move,el:mv.parentElement};
-  }
+  const mv=e.target.closest('[data-move]');
+  if(chip){e.preventDefault();pend={type:'chip',pid:chip.dataset.pid,chip,x:e.clientX,y:e.clientY}}
+  else if(mv){e.preventDefault();pend={type:'card',bid:mv.dataset.move,el:mv.parentElement,x:e.clientX,y:e.clientY}}
 });
 function dropTargetAt(x,y){
   const el=document.elementFromPoint(x,y);if(!el)return null;
@@ -540,6 +987,12 @@ function dropTargetAt(x,y){
 }
 let lastHi=null;
 document.addEventListener('pointermove',e=>{
+  if(pend&&!drag){
+    if(Math.hypot(e.clientX-pend.x,e.clientY-pend.y)<6)return;
+    if(pend.type==='chip'){const g=pend.chip.cloneNode(true);g.classList.add('ghost');g.classList.remove('sel');g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';document.body.appendChild(g);drag={type:'chip',pid:pend.pid,g}}
+    else{stopAuto();drag={type:'card',bid:pend.bid,el:pend.el}}
+    pend=null;
+  }
   if(!drag)return;
   if(drag.type==='chip'){
     drag.g.style.left=e.clientX+'px';drag.g.style.top=e.clientY+'px';
@@ -547,24 +1000,173 @@ document.addEventListener('pointermove',e=>{
     if(lastHi&&(!t||t.el!==lastHi)){lastHi.classList.remove('drop');lastHi=null}
     if(t&&t.el!==lastHi){t.el.classList.add('drop');lastHi=t.el}
   }else if(drag.type==='resize'){
-    S.mapH=Math.round(Math.max(400,Math.min(2400,drag.h0+e.clientY-drag.y0)));
-    const m=$('#map');m.classList.add('sized');m.style.height=S.mapH+'px';
+    S.mapH=Math.round(Math.max(400,Math.min(2400,drag.h0+(e.clientY-drag.y0)/zf())));
+    const m=$('#map');m.classList.add('sized');m.style.height=S.mapH+'px';renderRoutes();
   }else{
     const r=mapRect();
     const x=Math.max(2,Math.min(98,(e.clientX-r.left)/r.width*100)),y=Math.max(2,Math.min(98,(e.clientY-r.top)/r.height*100));
-    S.markers[drag.bid]={x,y};drag.el.style.left=x+'%';drag.el.style.top=y+'%';
+    S.markers[drag.bid]={x,y};drag.el.style.left=x+'%';drag.el.style.top=y+'%';renderRoutes();
   }
 });
 document.addEventListener('pointerup',e=>{
+  if(pend){const p=pend;pend=null;
+    if(p.type==='chip')selectChip(selPid===p.pid?null:p.pid);
+    else if(selPid)assignSel(p.bid);
+    return;
+  }
   if(!drag)return;
   if(drag.type==='chip'){
     drag.g.remove();if(lastHi){lastHi.classList.remove('drop');lastHi=null}
     const t=dropTargetAt(e.clientX,e.clientY);
-    if(t){if(t.pool)delete cur()[drag.pid];else cur()[drag.pid]=t.bid;refreshLive();syncRosterSelects()}
+    if(t){if(t.pool)delete cur()[drag.pid];else cur()[drag.pid]=t.bid;if(selPid===drag.pid)selectChip(null);refreshLive();syncRosterSelects()}
   }
   save();drag=null;
 });
-document.addEventListener('pointercancel',()=>{if(drag&&drag.g)drag.g.remove();if(lastHi)lastHi.classList.remove('drop');lastHi=null;drag=null});
+document.addEventListener('pointercancel',()=>{if(drag&&drag.g)drag.g.remove();if(lastHi)lastHi.classList.remove('drop');lastHi=null;drag=null;pend=null});
+document.addEventListener('click',e=>{
+  if(!selPid||e.target.closest('.chip')||e.target.closest('#selBar'))return;
+  const c=e.target.closest('#map .card');if(c){assignSel(c.dataset.bid);return}
+  if(e.target.closest('[data-pool]'))assignSel(null);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&selPid)selectChip(null)});
+function markSel(){document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('sel',c.dataset.pid===selPid))}
+function selectChip(pid){
+  selPid=pid;markSel();
+  const bar=$('#selBar');
+  if(!pid){bar.hidden=true;return}
+  const p=P(pid);$('#selName').textContent=p.name+(p.sub?' (สำรอง)':'')+(p.power?' · '+fmt(p.power)+'M':'');
+  $('#selTo').innerHTML=optionList(cur()[pid]);bar.hidden=false;
+}
+function assignSel(bid){
+  const p=P(selPid);if(!p)return;
+  if(bid)cur()[p.id]=bid;else delete cur()[p.id];
+  selectChip(null);refreshLive();syncRosterSelects();save();
+  toast(bid?'ย้าย '+p.name+' ไป '+BM[bid].th:'เอา '+p.name+' ออกจากอาคารแล้ว');
+}
+$('#selTo').onchange=e=>assignSel(e.target.value||null);
+$('#selCancel').onclick=()=>selectChip(null);
+
+/* ---- fit map on small screens ---- */
+function applyFit(){
+  const sc=$('#mapScroll'),bx=$('#mapBox'),w=sc.clientWidth,on=S.fit!==false;
+  const z=on&&w>0&&w<820?w/820:1;bx.style.zoom=z===1?'':z.toFixed(4);
+  $('#fitBtn').textContent=on?'ขยายแผนที่':'ย่อพอดีจอ';
+}
+$('#fitBtn').onclick=()=>{S.fit=S.fit===false;applyFit();save()};
+
+/* ---- timeline ---- */
+function tl(){return S.timeline[S.phase]}
+function dur(){return (S.tlDur&&S.tlDur[S.field])||TL_DUR[S.field]}
+function sortedTL(){return tl().slice().sort((a,b)=>a.t-b.t)}
+function activeSteps(){
+  if(tlMin==null)return[];
+  const s=sortedTL().filter(x=>x.t<=tlMin);if(!s.length)return[];
+  const t=s[s.length-1].t;return s.filter(x=>x.t===t);
+}
+function applyFocus(){
+  const act=activeSteps(),set=new Set(act.flatMap(x=>x.b.map(D)));
+  const m=$('#map');m.classList.toggle('tlfocus',set.size>0);
+  m.querySelectorAll('.card').forEach(c=>c.classList.toggle('focus',set.has(c.dataset.bid)));
+  const now=$('#tlNow');
+  if(tlMin==null)now.innerHTML='เลื่อนแถบหรือแตะช่วงเวลา เพื่อดูว่านาทีไหนต้องทำอะไร อาคารที่เกี่ยวข้องจะสว่างบนแผนที่';
+  else now.innerHTML=`<b>นาทีที่ ${tlMin}</b> ${act.length?esc(act.map(x=>x.text).join(' / ')):'ยังไม่มีคำสั่ง'} <button class="lnk" id="tlClear">ล้าง</button>`;
+}
+function renderTrack(){
+  const d=dur(),pct=t=>Math.max(0,Math.min(100,t/d*100)),bands=TL_BANDS[S.field](d);
+  $('#tlLegend').innerHTML=bands.map(([a,b,c,l])=>`<span><i class="band ${c}" style="position:static"></i>${a}–${b} ${esc(l)}</span>`).join('');
+  let h='<div class="bar">'+bands.map(([a,b,c])=>`<div class="band ${c}" style="left:${pct(a)}%;width:${pct(b)-pct(a)}%"></div>`).join('')+'</div>';
+  for(let m=0;m<=d;m+=5)h+=`<div class="tick" style="left:${pct(m)}%">${m}</div>`;
+  const act=activeSteps(),at=act.length?act[0].t:null;
+  const ts=[...new Set(sortedTL().map(x=>x.t))];let prev=null,prevLane=1;
+  ts.forEach(t=>{const lane=(prev!=null&&pct(t)-pct(prev)<8&&prevLane===0)?1:0;prev=t;prevLane=lane;
+    h+=`<button class="pin${t===at?' on':''}" data-tlmin="${t}" style="left:${pct(t)}%;top:${lane?0:24}px;--stem:${lane?28:4}px" aria-label="นาทีที่ ${t}">${t}′</button>`});
+  if(tlMin!=null)h+=`<div class="cur" style="left:${pct(tlMin)}%"></div>`;
+  $('#tlTrack').innerHTML=h;
+  const r=$('#tlRange');r.max=d;r.value=tlMin==null?0:tlMin;
+}
+function renderSteps(){
+  const steps=sortedTL(),ids=new Set(activeSteps().map(x=>x.id)),d=dur();
+  if(tlEdit){
+    $('#tlSteps').innerHTML=steps.map(x=>`<li class="stepE" data-step="${x.id}"><div class="er"><label class="mn"><input type="number" min="0" max="${d}" step="1" value="${x.t}" data-tf="t" aria-label="นาทีที่">นาที</label><textarea rows="2" data-tf="text" placeholder="ทำอะไร ใครไปไหน" aria-label="รายละเอียด">${esc(x.text)}</textarea><button class="x" data-tdel aria-label="ลบช่วงเวลานี้">ลบ</button></div><div class="bpick">${ORDER.map(id=>`<button type="button" class="btag ${BM[id].k}" data-tb="${id}" aria-pressed="${x.b.map(D).includes(id)}">${esc(BM[id].th)}</button>`).join('')}</div></li>`).join('')||'<li class="tip">ยังไม่มีช่วงเวลา กด "เพิ่มช่วงเวลา"</li>';
+  }else{
+    $('#tlSteps').innerHTML=steps.map(x=>`<li class="step${ids.has(x.id)?' on':''}" data-step="${x.id}"><span class="min">${x.t}′</span><div><div class="tx">${x.text.trim()?esc(x.text):'<span class="tip">ยังไม่มีรายละเอียด</span>'}</div>${x.b.map(D).filter(id=>BM[id]).length?`<div class="bl">${x.b.map(D).filter(id=>BM[id]).map(id=>`<span class="btag ${BM[id].k}">${esc(BM[id].th)}</span>`).join('')}</div>`:''}</div></li>`).join('')||'<li class="tip">ยังไม่มีไทม์ไลน์ของแผนนี้ กด "แก้ไขไทม์ไลน์" เพื่อเพิ่ม</li>';
+  }
+  renderRouteUI();
+  $('#tlEditBar').hidden=!tlEdit;
+  $('#tlEditBtn').textContent=tlEdit?'เสร็จ':'แก้ไขหน้าที่';
+  $('#tlEditBtn').classList.toggle('primary',tlEdit);
+  $('#tlCopyA').hidden=S.phase%3===0||isSplit();
+}
+function renderTimeline(){
+  const d=dur();$('#tlDur').value=d;
+  $('#tlDurLbl').textContent=planName();
+  if(tlMin!=null&&tlMin>d)tlMin=d;
+  renderTrack();renderSteps();applyFocus();
+}
+const stepById=id=>tl().find(x=>x.id===id);
+$('#tlRange').oninput=e=>{tlMin=+e.target.value;renderTrack();if(!tlEdit)renderSteps();applyFocus()};
+$('#tlDur').onchange=e=>{const v=Math.round(Math.max(10,Math.min(90,+e.target.value||TL_DUR[S.field])));S.tlDur[S.field]=v;renderTimeline();save()};
+$('#tl').addEventListener('click',e=>{
+  const t=e.target;
+  if(t.closest('#tlClear')){tlMin=null;renderTimeline();return}
+  const pin=t.closest('[data-tlmin]');
+  if(pin){const m=+pin.dataset.tlmin;tlMin=tlMin===m?null:m;renderTimeline();return}
+  if(t.closest('#tlEditBtn')){tlEdit=!tlEdit;renderTimeline();return}
+  if(t.closest('#tlAdd')){const s=sortedTL(),last=s.length?s[s.length-1].t:-5,st=mkStep(Math.min(dur(),last+5),'',[]);tl().push(st);renderTimeline();save();const ta=$(`[data-step="${st.id}"] textarea`);if(ta)ta.focus();return}
+  if(t.closest('#tlCopyA')){const src=S.timeline[off()];S.routes[S.phase]=S.routes[off()].map(x=>({...x,id:sid()}));if(tl().length&&!confirm('แทนที่ไทม์ไลน์ของแผนนี้ด้วยของแผน A?'))return;S.timeline[S.phase]=src.map(x=>({...x,id:sid(),b:[...x.b]}));renderTimeline();save();toast('คัดลอกไทม์ไลน์จากแผน A แล้ว');return}
+  if(t.closest('#tlDefault')){if(!confirm('แทนที่หน้าที่และเส้นประของแผนนี้ด้วยค่าเริ่มต้น?'))return;S.timeline[S.phase]=defaultTL(S.phase);S.routes[S.phase]=defaultRoutes(S.phase);S.duties[S.phase]=defaultDuties(S.phase);renderTimeline();renderRoutes();save();return}
+  const li=t.closest('[data-step]');if(!li)return;const st=stepById(li.dataset.step);if(!st)return;
+  if(t.closest('[data-tdel]')){S.timeline[S.phase]=tl().filter(x=>x!==st);renderTimeline();save();return}
+  const tb=t.closest('[data-tb]');
+  if(tb){const id=D(tb.dataset.tb),i=st.b.indexOf(id);if(i>=0)st.b.splice(i,1);else st.b.push(id);tb.setAttribute('aria-pressed',i<0);applyFocus();save();return}
+  if(!tlEdit){tlMin=tlMin===st.t&&activeSteps().some(x=>x.id===st.id)?null:st.t;renderTimeline()}
+});
+$('#tlSteps').addEventListener('input',e=>{
+  const f=e.target.dataset.tf;if(!f)return;const li=e.target.closest('[data-step]'),st=li&&stepById(li.dataset.step);if(!st)return;
+  if(f==='text')st.text=e.target.value;
+  if(f==='t'){st.t=Math.round(Math.max(0,Math.min(dur(),+e.target.value||0)));renderTrack()}
+  applyFocus();save();
+});
+$('#tlSteps').addEventListener('change',e=>{if(e.target.dataset.tf==='t'){e.target.value=stepById(e.target.closest('[data-step]').dataset.step).t;renderSteps()}});
+
+window.addEventListener('pagehide',()=>{clearTimeout(saveT);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}});
+/* ---- duties ---- */
+function duties(){if(!S.duties)S.duties=[0,1,2,3,4,5].map(defaultDuties);return S.duties[S.phase]||(S.duties[S.phase]={})}
+function dutyRows(){const du=duties();return ORDER.map(id=>{const m=membersOf(id);return{id,n:m.length,st:m.filter(p=>!p.sub).length,sb:m.filter(p=>p.sub).length,txt:(du[D(id)]||'').trim()}}).filter(r=>r.n||r.txt)}
+document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.duty;if(!id)return;duties()[D(id)]=e.target.value;save()});
+/* ---- routes UI ---- */
+function renderRouteUI(){
+  const list=routes(),ok=list.filter(r=>BM[D(r.from)]&&BM[D(r.to)]),nm=id=>esc(BM[D(id)].th);
+  const du=duties(),rows=dutyRows();
+  $('#tl').classList.toggle('empty',!rows.length);
+  $('#rtView').hidden=tlEdit;
+  const KC={vl:'var(--rust)',pt:'var(--ochre)',mid:'var(--teal)',wh:'var(--slate)'};
+  $('#rtView').innerHTML=rows.length?'<ul class="duties">'+rows.map(({id,n,st,sb,txt})=>`<li style="border-left:4px solid ${KC[BM[id].k]}"><span class="bn">${esc(BM[id].th)}<span class="opent${openMin(id)?' late':''}">${openTxt(id)}</span><small>${n?st+' คน'+(sb?' + สำรอง '+sb:''):'ไม่มีคนประจำ'}</small></span><span class="dt${txt?'':' none'}">${txt?esc(txt):'ยังไม่ได้ระบุหน้าที่'}</span></li>`).join('')+'</ul>':'<p class="tip">ยังไม่มีหน้าที่ของแผนนี้ กด "แก้ไขหน้าที่" เพื่อเพิ่ม</p>';
+  if(tlEdit)$('#dutyList').innerHTML=ORDER.map(id=>`<li><label for="du-${id}">${esc(BM[id].th)} <span class="tip">${membersOf(id).length} คน</span></label><textarea id="du-${id}" rows="2" data-duty="${id}" placeholder="หน้าที่ของคนประจำอาคารนี้">${esc(du[D(id)]||'')}</textarea></li>`).join('');
+  $('#rtEdit').hidden=!tlEdit;
+  if(!tlEdit)return;
+  const opt=sel=>ORDER.map(id=>`<option value="${id}"${sel===id?' selected':''}>${esc(BM[id].th)}</option>`).join('');
+  $('#rtList').innerHTML=list.map(r=>`<li data-rt="${r.id}">ทีม<select data-rf="from" aria-label="ทีมของอาคาร">${opt(D(r.from))}</select>ไปยึด<select data-rf="to" aria-label="ไปยึดอาคาร">${opt(D(r.to))}</select>จนถึงนาที<input type="number" min="0" max="${dur()}" value="${r.until}" data-rf="until" aria-label="จนถึงนาที"><button class="x" data-rdel aria-label="ลบเส้นทาง">ลบ</button></li>`).join('')||'<li class="tip" style="border:0;background:none">ยังไม่มีเส้นทาง</li>';
+}
+$('#rtList').addEventListener('change',e=>{
+  const f=e.target.dataset.rf;if(!f)return;const li=e.target.closest('[data-rt]'),r=li&&routes().find(x=>x.id===li.dataset.rt);if(!r)return;
+  if(f==='until')r.until=Math.round(Math.max(0,Math.min(dur(),+e.target.value||0)));else r[f]=D(e.target.value);
+  renderRoutes();renderRouteUI();save();
+});
+$('#rtEdit').addEventListener('click',e=>{
+  if(e.target.closest('#rtAdd')){routes().push(mkRt(D(ORDER[2]),D(ORDER[ORDER.length-1]),5));renderRoutes();renderRouteUI();save();return}
+  const del=e.target.closest('[data-rdel]');if(!del)return;const id=del.closest('[data-rt]').dataset.rt;
+  S.routes[S.phase]=routes().filter(x=>x.id!==id);renderRoutes();renderRouteUI();save();
+});
+
+/* ---- mobile nav highlight ---- */
+if('IntersectionObserver' in window){
+  const links=[...document.querySelectorAll('#mnav a')],vis=new Map();
+  const io=new IntersectionObserver(es=>{es.forEach(en=>vis.set(en.target.id,en.intersectionRatio));
+    let best=null,bv=0;links.forEach(a=>{const v=vis.get(a.getAttribute('href').slice(1))||0;if(v>bv){bv=v;best=a}});
+    links.forEach(a=>a.classList.toggle('on',a===best))},{threshold:[0,.15,.35,.6,.9]});
+  ['secMap','tl','secRoster','secSum'].forEach(id=>io.observe(document.getElementById(id)));
+}
 async function saveFile(fname,blob){
   let dl=null;try{dl=window.claude&&window.claude.use?await Promise.race([window.claude.use('downloads'),new Promise(r=>setTimeout(()=>r(null),4000))]):null}catch(e){dl=null}
   if(dl){await dl.save({filename:fname,data:blob});return true}
@@ -598,14 +1200,17 @@ async function buildImage(){
   const area=$('#exportArea');
   $('#noteView').textContent=S.notes[S.phase];
   area.classList.add('exporting');
-  area.style.width='1000px';
+  const keepE=tlEdit,keepM=tlMin;tlEdit=false;tlMin=null;renderTimeline();
+  area.style.width='1000px';renderRoutes();
   const auto=S.autoLayout!==false&&!S.bg;if(auto)layoutCards();
   try{
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const bg=getComputedStyle(document.querySelector('.panel')).backgroundColor;
-    const canvas=await html2canvas(area,{windowWidth:Math.max(1200,window.innerWidth),backgroundColor:bg,scale:Math.max(2,window.devicePixelRatio||1),useCORS:true,logging:false});
+    const canvas=await html2canvas(area,{windowWidth:Math.max(1200,window.innerWidth),backgroundColor:bg,scale:3,useCORS:true,logging:false});
+    const wb=await new Promise(r=>canvas.toBlob(r,'image/webp',0.92));
+    if(wb&&wb.type==='image/webp')return wb;
     return await new Promise(r=>canvas.toBlob(r,'image/png'));
-  }finally{area.classList.remove('exporting');area.style.width='';if(auto){layoutCards();save()}}
+  }finally{area.classList.remove('exporting');area.style.width='';renderRoutes();tlEdit=keepE;tlMin=keepM;renderTimeline();if(auto){layoutCards();save()}}
 }
 function showOverlay(blob){
   const url=URL.createObjectURL(blob),o=document.createElement('div');o.className='overlay';
@@ -620,7 +1225,7 @@ $('#saveImg').onclick=async()=>{
   btn.disabled=true;const old=btn.textContent;btn.textContent='กำลังสร้างภาพ...';
   try{
     const blob=await buildImage();
-    const fname=`${FIELDS[S.field].slug}-team${S.team}-plan${'ABC'[S.phase%3]}.png`;
+    const fname=`${FIELDS[S.field].slug}-team${S.team}-plan${planCode()}.${blob.type==='image/webp'?'webp':'png'}`;
     let dl=null;try{dl=window.claude&&window.claude.use?await Promise.race([window.claude.use('downloads'),new Promise(r=>setTimeout(()=>r(null),4000))]):null}catch(e){dl=null}
     if(dl){
       try{await dl.save({filename:fname,data:blob});toast('บันทึกภาพแล้ว')}
@@ -632,7 +1237,7 @@ $('#saveImg').onclick=async()=>{
   }catch(e){toast('สร้างภาพไม่สำเร็จ')}
   finally{btn.disabled=false;btn.textContent=old}
 };
-let rzT;window.addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{if(S.autoLayout!==false&&!S.bg){layoutCards();save()}},150)});
+let rzT;window.addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{applyFit();renderRoutes();if(S.autoLayout!==false&&!S.bg){layoutCards();save()}},150)});
 renderAll();
 </script>
 </body>
