@@ -207,10 +207,13 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .achip{display:inline-flex;align-items:center;padding:.1rem .45rem;border-radius:999px;background:#f1e9f8;border:1px solid #c9b3df;color:#4b2a6b;font-weight:600;font-size:inherit;line-height:1.35;white-space:nowrap}
 .allybox{margin:.6rem 0 .2rem;padding:.6rem .75rem;border:1px dashed #c9b3df;border-radius:10px;background:var(--panel)}
 .allybox h3{margin:0 0 .4rem;font-size:.95rem}
-.allylist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.5rem .8rem}
-.alrow{display:flex;flex-direction:column;gap:.2rem;font-size:.86rem;font-weight:600}
+.allylist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.35rem .8rem;max-height:420px;overflow:auto}
+#allyBulk{min-height:0;margin:0}
+.alrow{display:grid;grid-template-columns:1fr 1fr auto;gap:.35rem;align-items:center;font-size:.86rem}
+.alrow select{font:inherit;padding:.4rem;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);min-width:0}
+.alrow .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:0 .3rem}
 .alrow input{font:inherit;font-weight:400;padding:.4rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);min-width:0}
-@media (max-width:760px){.alrow input{font-size:16px}}
+@media (max-width:760px){.alrow input,.alrow select,#allyBulk{font-size:16px}}
 .exporting .allybox{display:none!important}
 .card .allytag{display:block;font-size:.66rem;font-weight:600;color:var(--muted);margin-top:1px}
 .band.dark{background:var(--text)}
@@ -324,7 +327,9 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
         <div class="chips" id="poolChips"></div>
       </div>
       <div class="allybox" id="allyBox" data-html2canvas-ignore="true" hidden>
-        <h3>ชื่อผู้เล่นพันธมิตร <span class="tip">ใส่ตามที่พันธมิตรจัดมา คั่นชื่อด้วยจุลภาค ( , )</span></h3>
+        <h3>รายชื่อพันธมิตร <span class="tip" id="allyCount"></span></h3>
+        <textarea id="allyBulk" rows="4" placeholder="วางรายชื่อ บรรทัดละคน&#10;GoLD-1&#10;GoLD-2"></textarea>
+        <div class="row" style="margin:.4rem 0 .6rem"><button class="btn primary" id="allyBulkBtn">ใส่รายชื่อ</button><button class="btn" id="allyClear">ล้างรายชื่อ</button><span class="tip">แล้วเลือกอาคารให้แต่ละคน</span></div>
         <div id="allyList" class="allylist"></div>
       </div>
       <div class="tl" id="tl">
@@ -750,14 +755,27 @@ function chipHTML(p){return `<span class="chip${p.sub?' sub':''}" data-pid="${p.
 
 function allyStore(){if(!S.allyNames)S.allyNames={};return S.allyNames[S.team]||(S.allyNames[S.team]={})}
 function allyIds(){if(!isSplit())return[];return['vl','pt',...(side()==='L'?SIDE_R:SIDE_L)].filter(id=>BM[id])}
-function allyList(bid){if(!isSplit()||!allyIds().includes(bid))return[];return (allyStore()[D(bid)]||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean)}
+function allyRoster(){if(!S.allyRoster)S.allyRoster={};let r=S.allyRoster[S.team];
+  if(!r){r=[];const st=allyStore();Object.entries(st).forEach(([b,t])=>String(t||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean).forEach(n=>r.push({name:n,bid:b})));S.allyRoster[S.team]=r}
+  return r}
+function allyList(bid){if(!isSplit()||!allyIds().includes(bid))return[];return allyRoster().filter(p=>p.bid&&p.bid===D(bid)).map(p=>p.name)}
 function allyHTML(bid){const l=allyList(bid);return l.length?`<div class="grp al"><span class="cap">พันธมิตร</span>${l.map(n=>`<span class="achip">${esc(n)}</span>`).join('')}</div>`:''}
 function renderAllyUI(){
   const box=$('#allyBox');if(!box)return;const ids=allyIds();box.hidden=!ids.length;if(!ids.length)return;
-  const st=allyStore();
-  $('#allyList').innerHTML=ids.map(id=>`<label class="alrow"><span>${esc(BM[id].th)}</span><input type="text" data-ally="${id}" value="${esc(st[D(id)]||'')}" placeholder="ชื่อผู้เล่นพันธมิตร คั่นด้วย ,"></label>`).join('');
+  const r=allyRoster(),opts=sel=>`<option value="">ยังไม่จัด</option>`+ids.map(id=>`<option value="${id}"${sel===D(id)?' selected':''}>${esc(BM[id].th)}</option>`).join('');
+  $('#allyCount').textContent=r.length?r.length+' คน · จัดแล้ว '+r.filter(p=>p.bid&&ids.some(id=>D(id)===p.bid)).length:'';
+  $('#allyList').innerHTML=r.length?r.map((p,i)=>`<div class="alrow"><input type="text" value="${esc(p.name)}" data-an="${i}" aria-label="ชื่อ"><select data-ab="${i}" aria-label="อาคาร">${opts(p.bid)}</select><button class="x" data-ad="${i}" aria-label="ลบ">×</button></div>`).join(''):'<p class="tip">ยังไม่มีรายชื่อ วางรายชื่อด้านบนแล้วกด "ใส่รายชื่อ"</p>';
 }
-document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.ally;if(!id)return;allyStore()[D(id)]=e.target.value;renderMap();save()});
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.an!=null){const p=allyRoster()[+t.dataset.an];if(p){p.name=t.value.trim();renderMap();save()}}});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.ab!=null){const p=allyRoster()[+t.dataset.ab];if(p){p.bid=t.value?D(t.value):'';renderMap();renderAllyUI();save()}}});
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-ad]');if(t){allyRoster().splice(+t.dataset.ad,1);renderMap();renderAllyUI();save()}});
+$('#allyBulkBtn').onclick=()=>{
+  const names=$('#allyBulk').value.split('\n').map(x=>x.split(',')[0].trim()).filter(Boolean);if(!names.length){toast('วางรายชื่อก่อน บรรทัดละคน');return}
+  const old=allyRoster(),keep={};old.forEach(p=>{keep[p.name]=p.bid});
+  S.allyRoster[S.team]=names.map(n=>({name:n,bid:keep[n]||''}));$('#allyBulk').value='';
+  renderMap();renderAllyUI();save();toast('ใส่รายชื่อพันธมิตร '+names.length+' คน');
+};
+$('#allyClear').onclick=()=>{if(!allyRoster().length||!confirm('ล้างรายชื่อพันธมิตรทั้งหมดของทีมนี้?'))return;S.allyRoster[S.team]=[];renderMap();renderAllyUI();save()};
 function visitorsHTML(bid){
   return routes().filter(r=>D(r.to)===bid&&BM[D(r.from)]).sort((a,b)=>a.until-b.until).map(r=>{
     const f=D(r.from),list=membersOf(f).filter(p=>!p.sub);if(!list.length)return'';
