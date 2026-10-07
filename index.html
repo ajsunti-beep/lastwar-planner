@@ -200,6 +200,18 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .routes{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:visible}
 .rlabel{position:absolute;transform:translate(-50%,-50%);z-index:3;pointer-events:none;background:var(--panel);border:1.5px dashed currentColor;border-radius:6px;padding:.05rem .4rem;font:600 .72rem/1.3 "Chakra Petch","Sarabun",sans-serif;white-space:nowrap}
 .card.ally{opacity:.5;border-style:dashed}
+.card.ally.has-ally{opacity:1}
+.grp.al{border-top:1px dashed var(--line);padding-top:3px;margin-top:1px}
+.body>.grp.al:first-child{border-top:0;padding-top:0;margin-top:0}
+.grp.al .cap{color:#7a4fa3;font-weight:600}
+.achip{display:inline-flex;align-items:center;padding:.1rem .45rem;border-radius:999px;background:#f1e9f8;border:1px solid #c9b3df;color:#4b2a6b;font-weight:600;font-size:inherit;line-height:1.35;white-space:nowrap}
+.allybox{margin:.6rem 0 .2rem;padding:.6rem .75rem;border:1px dashed #c9b3df;border-radius:10px;background:var(--panel)}
+.allybox h3{margin:0 0 .4rem;font-size:.95rem}
+.allylist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.5rem .8rem}
+.alrow{display:flex;flex-direction:column;gap:.2rem;font-size:.86rem;font-weight:600}
+.alrow input{font:inherit;font-weight:400;padding:.4rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);min-width:0}
+@media (max-width:760px){.alrow input{font-size:16px}}
+.exporting .allybox{display:none!important}
 .card .allytag{display:block;font-size:.66rem;font-weight:600;color:var(--muted);margin-top:1px}
 .band.dark{background:var(--text)}
 .rtv{margin:.2rem 0 0;font-size:.86rem}
@@ -234,7 +246,7 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .card .icrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:6px;width:100%}
 .card .icrow .opent{justify-self:start;margin:0;white-space:nowrap}
 .duties .bn .opent{margin-top:0}
-.card.ally .opent{display:none}
+.card.ally:not(.has-ally) .opent{display:none}
 .grp.vis{border-top:1px dashed var(--line);padding-top:3px;margin-top:1px}
 .body>.grp.vis:first-child{border-top:0;padding-top:0;margin-top:0}
 .grp.vis .cap{color:var(--teal);font-weight:600}
@@ -310,6 +322,10 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
       <div class="pool" id="pool" data-pool="1" data-html2canvas-ignore="true">
         <h3>ยังไม่ได้จัด (แตะชื่อแล้วแตะอาคารเพื่อย้าย หรือลากวางก็ได้ ลากกลับมาที่นี่เพื่อเอาออก)</h3>
         <div class="chips" id="poolChips"></div>
+      </div>
+      <div class="allybox" id="allyBox" data-html2canvas-ignore="true" hidden>
+        <h3>ชื่อผู้เล่นพันธมิตร <span class="tip">ใส่ตามที่พันธมิตรจัดมา คั่นชื่อด้วยจุลภาค ( , )</span></h3>
+        <div id="allyList" class="allylist"></div>
       </div>
       <div class="tl" id="tl">
         <div class="tl-head">
@@ -503,7 +519,7 @@ function defaultDuties(i){
   const PT='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม ห้ามทิ้งจุด · หลัง 12:00 ต้องเฝ้าเอง';
   if(i===0||i===2)return{vl:LAB+(i===2?' · มีคนถือ Judicator 1 คน':''),pt:PT,dc1:DC,dc2:DC,sf1:SF('II'),sf2:SF('IV'),df1:DF('I'),df2:DF('III')};
   if(i===1)return{vl:'0–12 นาที เคลื่อนที่อิสระ ช่วยไล่ศัตรูฝั่งเรา → 12:00 ยึดศูนย์ร่วมกับพันธมิตร · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนออกไปช่วยได้',pt:'ยึดและเฝ้าร่วมกับพันธมิตรตลอดเกม',dc1:DC,
-    sf1:'เริ่ม → รอหน้าเซรุ่ม → 05:00 ยึดและเฝ้าตลอดเกม',df1:'เริ่ม → รอหน้าระบบป้องกัน → 08:00 ยึดและเฝ้าตลอดเกม',
+    sf1:'0–5 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 05:00 ยึดและเฝ้าเซรุ่มตลอดเกม',df1:'0–8 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 08:00 ยึดและเฝ้าระบบป้องกันตลอดเกม',
     wh1:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม',wh2:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม'};
   if(i===3||i===4){
     const HOLD='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม';
@@ -656,6 +672,12 @@ function migrateSplitV10(){
     Object.keys(o).forEach(k=>{if(d[k]===o[k])d[k]=n[k]})}
   S.splitV=10;
 }
+function migrateFreeV11(){
+  if(S.freeV===11)return;
+  const d=S.duties&&S.duties[1];
+  if(d){if(d.sf1==='เริ่ม → รอหน้าเซรุ่ม → 05:00 ยึดและเฝ้าตลอดเกม')d.sf1='0–5 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 05:00 ยึดและเฝ้าเซรุ่มตลอดเกม';if(d.df1==='เริ่ม → รอหน้าระบบป้องกัน → 08:00 ยึดและเฝ้าตลอดเกม')d.df1='0–8 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 08:00 ยึดและเฝ้าระบบป้องกันตลอดเกม'}
+  S.freeV=11;
+}
 function normPhase(){const p=S.phase%3;if(S.field==='desert')S.phase=3+(p===2?0:p);else S.phase=S.faction==='rule'?2:(p===2?0:p)}
 function planName(){const p=S.phase%3;
   if(S.field==='canyon'){if(p===2)return'แผนพิทักษ์กฎระเบียบ'}
@@ -712,7 +734,7 @@ if(S.plansV!==2){
   S.plansV=2;
 }
 if(LEGACY&&(S.notes[1]===NOTE_C_OLD||S.notes[1]===NOTE_C2_OLD))S.notes[1]=NOTE_C;
-migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();migrateSplitV10();normPhase();setField(S.field);
+migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();migrateSplitV10();migrateFreeV11();normPhase();setField(S.field);
 if(!S.icons)S.icons={...ICON_DEFAULT};
 Object.entries(ICON_DESERT).forEach(([k,v])=>{if(!S.icons[k])S.icons[k]=v});
 let saveT;
@@ -726,6 +748,16 @@ function cur(){return S.assign[S.phase]}
 function membersOf(bid){return S.players.filter(p=>cur()[p.id]===bid).sort((a,b)=>b.power-a.power)}
 function chipHTML(p){return `<span class="chip${p.sub?' sub':''}" data-pid="${p.id}" title="${esc(p.name)} ${fmt(p.power)}M"><b>${esc(p.name)}</b>${p.power?`<small>${fmt(p.power)}</small>`:''}</span>`}
 
+function allyStore(){if(!S.allyNames)S.allyNames={};return S.allyNames[S.team]||(S.allyNames[S.team]={})}
+function allyIds(){if(!isSplit())return[];return['vl','pt',...(side()==='L'?SIDE_R:SIDE_L)].filter(id=>BM[id])}
+function allyList(bid){if(!isSplit()||!allyIds().includes(bid))return[];return (allyStore()[D(bid)]||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean)}
+function allyHTML(bid){const l=allyList(bid);return l.length?`<div class="grp al"><span class="cap">พันธมิตร</span>${l.map(n=>`<span class="achip">${esc(n)}</span>`).join('')}</div>`:''}
+function renderAllyUI(){
+  const box=$('#allyBox');if(!box)return;const ids=allyIds();box.hidden=!ids.length;if(!ids.length)return;
+  const st=allyStore();
+  $('#allyList').innerHTML=ids.map(id=>`<label class="alrow"><span>${esc(BM[id].th)}</span><input type="text" data-ally="${id}" value="${esc(st[D(id)]||'')}" placeholder="ชื่อผู้เล่นพันธมิตร คั่นด้วย ,"></label>`).join('');
+}
+document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.ally;if(!id)return;allyStore()[D(id)]=e.target.value;renderMap();save()});
 function visitorsHTML(bid){
   return routes().filter(r=>D(r.to)===bid&&BM[D(r.from)]).sort((a,b)=>a.until-b.until).map(r=>{
     const f=D(r.from),list=membersOf(f).filter(p=>!p.sub);if(!list.length)return'';
@@ -746,9 +778,9 @@ function renderMap(){
     const mem=membersOf(b.id),pw=mem.reduce((s,p)=>s+(+p.power||0),0);
     const d=document.createElement('div');
     const ally=isSplit()&&(side()==='L'?SIDE_R:SIDE_L).includes(b.id);
-    d.className='card '+b.k+(ally?' ally':'');d.dataset.bid=b.id;
+    d.className='card '+b.k+(ally?' ally':'')+(allyList(b.id).length?' has-ally':'');d.dataset.bid=b.id;
     d.style.left=S.markers[b.id].x+'%';d.style.top=S.markers[b.id].y+'%';
-    d.innerHTML=`<div class="hd" data-move="${b.id}"><span class="icrow"><span></span>${S.icons[b.id]?`<img class="ic" src="${S.icons[b.id]}" alt="" draggable="false">`:'<span></span>'}<span class="opent${openMin(b.id)?' late':''}">${openTxt(b.id)}</span></span><span class="th">${esc(b.th)}</span><span class="enrow"><span class="en">${esc(b.name)}</span>${b.pts?`<span class="pts">+${b.pts}/s</span>`:''}</span>${ally?'<span class="allytag">พันธมิตรดูแล</span>':''}</div><div class="body">${grp(mem.filter(p=>!p.sub),FIELDS[S.field].ft.includes(b.id)?'ตัวจริง (เล่นเต็มเวลา)':'ตัวจริง','')}${grp(mem.filter(p=>p.sub),'ตัวสำรอง',' sb')}${visitorsHTML(b.id)}</div>`;
+    d.innerHTML=`<div class="hd" data-move="${b.id}"><span class="icrow"><span></span>${S.icons[b.id]?`<img class="ic" src="${S.icons[b.id]}" alt="" draggable="false">`:'<span></span>'}<span class="opent${openMin(b.id)?' late':''}">${openTxt(b.id)}</span></span><span class="th">${esc(b.th)}</span><span class="enrow"><span class="en">${esc(b.name)}</span>${b.pts?`<span class="pts">+${b.pts}/s</span>`:''}</span>${ally?'<span class="allytag">พันธมิตรดูแล</span>':''}</div><div class="body">${grp(mem.filter(p=>!p.sub),FIELDS[S.field].ft.includes(b.id)?'ตัวจริง (เล่นเต็มเวลา)':'ตัวจริง','')}${grp(mem.filter(p=>p.sub),'ตัวสำรอง',' sb')}${visitorsHTML(b.id)}${allyHTML(b.id)}</div>`;
     m.appendChild(d);
   });
   if(S.autoLayout!==false&&!S.bg)layoutCards();
@@ -876,8 +908,9 @@ function renderIcons(){
   $('#icons').innerHTML=ORDER.map(id=>{const b=BM[id],src=S.icons[id];
     return `<div class="r">${src?`<img src="${src}" alt="">`:'<span class="ph"></span>'}<span>${esc(b.th)}<br><span class="tip">${esc(b.name)}</span></span><span><label>เลือกรูป<input type="file" accept="image/*" hidden data-icon="${id}"></label>${src?`<button data-rmicon="${id}" aria-label="ลบรูป ${esc(b.th)}">ลบ</button>`:''}</span></div>`}).join('');
 }
-function renderAll(){renderTop();renderMap();renderPool();renderRoster();renderSummary();renderIcons();renderTimeline();applyFit()}
+function renderAll(){renderAllyUI();renderTop();renderMap();renderPool();renderRoster();renderSummary();renderIcons();renderTimeline();applyFit()}
 function refreshLive(){renderMap();renderPool();renderSummary();if(!tlEdit)renderRouteUI()}
+
 function syncRosterSelects(){document.querySelectorAll('select[data-f="as"]').forEach(s=>{s.value=cur()[s.dataset.pid]||''})}
 
 document.querySelectorAll('[data-field]').forEach(b=>b.onclick=()=>{if(S.field===b.dataset.field)return;S.field=b.dataset.field;normPhase();setField(S.field);renderAll();save()});
@@ -969,6 +1002,8 @@ $('#copyText').onclick=async()=>{
   const PL=planCode();
   let out=`แผน${FIELDS[S.field].name} ทีม ${S.team} · ${planName()} (${fac})\n`;
   const nt=S.notes[S.phase].trim();if(nt)out+=`\n${nt}\n`;
+  const al=allyIds().map(id=>({id,l:allyList(id)})).filter(x=>x.l.length);
+  if(al.length){out+='\nพันธมิตร\n';al.forEach(x=>{out+=`${BM[x.id].th}: ${x.l.join(', ')}\n`})}
   const dr=dutyRows().filter(r=>r.txt);
   if(dr.length){out+='\nหน้าที่ผู้ประจำแต่ละอาคาร\n';dr.forEach(r=>{out+=`${BM[r.id].th} (${openTxt(r.id)}): ${r.txt}\n`})}
   out+='\n';
