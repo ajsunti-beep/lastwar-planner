@@ -257,6 +257,13 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 #exportArea>.pool{margin:.6rem 0 .2rem}
 .exporting .pool{display:none!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .opent:not(.late){background:#1f3a29;color:#9fdcb2;border-color:#2f5c40}}
+.sidetag{position:absolute;top:8px;transform:translateX(-50%);z-index:5;color:#fff;font:700 1.25rem/1 "Chakra Petch","Sarabun",sans-serif;letter-spacing:.04em;padding:.45rem 1.1rem;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.2);pointer-events:none;white-space:nowrap}
+.sidetag.us{background:#2457c5}
+.sidetag.al{background:#7a4fa3}
+.tagrow{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.7rem}
+.tagrow label{display:flex;flex-direction:column;gap:.2rem;font-size:.86rem;font-weight:600}
+.tagrow input{font:inherit;font-weight:400;padding:.4rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text)}
+@media (max-width:760px){.tagrow input{font-size:16px}}
 [hidden]{display:none!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -327,6 +334,7 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
         <div class="chips" id="poolChips"></div>
       </div>
       <div class="allybox" id="allyBox" data-html2canvas-ignore="true" hidden>
+        <div class="tagrow"><label>ชื่อพันธมิตรเรา<input type="text" id="ourTagIn" maxlength="16" placeholder="เช่น MATN"></label><label>ชื่อพันธมิตรอีกฝั่ง<input type="text" id="allyTagIn" maxlength="16" placeholder="เช่น ATLN"></label></div>
         <h3>รายชื่อพันธมิตร <span class="tip" id="allyCount"></span></h3>
         <textarea id="allyBulk" rows="4" placeholder="วางรายชื่อ บรรทัดละคน&#10;GoLD-1&#10;GoLD-2"></textarea>
         <div class="row" style="margin:.4rem 0 .6rem"><button class="btn primary" id="allyBulkBtn">ใส่รายชื่อ</button><button class="btn" id="allyClear">ล้างรายชื่อ</button><span class="tip">แล้วเลือกอาคารให้แต่ละคน</span></div>
@@ -753,6 +761,13 @@ function cur(){return S.assign[S.phase]}
 function membersOf(bid){return S.players.filter(p=>cur()[p.id]===bid).sort((a,b)=>b.power-a.power)}
 function chipHTML(p){return `<span class="chip${p.sub?' sub':''}" data-pid="${p.id}" title="${esc(p.name)} ${fmt(p.power)}M"><b>${esc(p.name)}</b>${p.power?`<small>${fmt(p.power)}</small>`:''}</span>`}
 
+function renderSideTags(){
+  const m=$('#map');if(!m)return;m.querySelectorAll('.sidetag').forEach(n=>n.remove());
+  if(!isSplit())return;const K=FIELDS[S.field].cols,lx=S.markers[K.L[0]],rx=S.markers[K.R[0]];if(!lx||!rx)return;
+  const our=(S.ourTag||'').trim(),al=((S.allyTag||{})[S.team]||'').trim(),L=side()==='L';
+  [[L?our:al,lx.x,L?'us':'al'],[L?al:our,rx.x,L?'al':'us']].forEach(([t,x,c])=>{if(!t)return;const d=document.createElement('div');d.className='sidetag '+c;d.style.left=x+'%';d.textContent=t;m.appendChild(d)});
+}
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='ourTagIn'){S.ourTag=t.value;renderSideTags();save()}else if(t.id==='allyTagIn'){if(!S.allyTag)S.allyTag={};S.allyTag[S.team]=t.value;renderSideTags();save()}});
 function allyStore(){if(!S.allyNames)S.allyNames={};return S.allyNames[S.team]||(S.allyNames[S.team]={})}
 function allyIds(){if(!isSplit())return[];return['vl','pt',...(side()==='L'?SIDE_R:SIDE_L)].filter(id=>BM[id])}
 function allyRoster(){if(!S.allyRoster)S.allyRoster={};let r=S.allyRoster[S.team];
@@ -762,6 +777,7 @@ function allyList(bid){if(!isSplit()||!allyIds().includes(bid))return[];return a
 function allyHTML(bid){const l=allyList(bid);return l.length?`<div class="grp al"><span class="cap">พันธมิตร</span>${l.map(n=>`<span class="achip">${esc(n)}</span>`).join('')}</div>`:''}
 function renderAllyUI(){
   const box=$('#allyBox');if(!box)return;const ids=allyIds();box.hidden=!ids.length;if(!ids.length)return;
+  const oi=$('#ourTagIn'),ai=$('#allyTagIn');if(document.activeElement!==oi)oi.value=S.ourTag||'';if(document.activeElement!==ai)ai.value=(S.allyTag||{})[S.team]||'';
   const r=allyRoster(),opts=sel=>`<option value="">ยังไม่จัด</option>`+ids.map(id=>`<option value="${id}"${sel===D(id)?' selected':''}>${esc(BM[id].th)}</option>`).join('');
   $('#allyCount').textContent=r.length?r.length+' คน · จัดแล้ว '+r.filter(p=>p.bid&&ids.some(id=>D(id)===p.bid)).length:'';
   $('#allyList').innerHTML=r.length?r.map((p,i)=>`<div class="alrow"><input type="text" value="${esc(p.name)}" data-an="${i}" aria-label="ชื่อ"><select data-ab="${i}" aria-label="อาคาร">${opts(p.bid)}</select><button class="x" data-ad="${i}" aria-label="ลบ">×</button></div>`).join(''):'<p class="tip">ยังไม่มีรายชื่อ วางรายชื่อด้านบนแล้วกด "ใส่รายชื่อ"</p>';
@@ -802,9 +818,10 @@ function renderMap(){
     m.appendChild(d);
   });
   if(S.autoLayout!==false&&!S.bg)layoutCards();
-  renderRoutes();applyFocus();
+  renderRoutes();renderSideTags();applyFocus();
 }
-function layoutCards(){const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';try{layoutCards0()}finally{bx.style.zoom=oz}renderRoutes()}
+let icT;document.addEventListener('load',e=>{if(e.target&&e.target.classList&&e.target.classList.contains('ic')&&S.autoLayout!==false&&!S.bg){clearTimeout(icT);icT=setTimeout(()=>{layoutCards();save()},60)}},true);
+function layoutCards(){const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';try{layoutCards0()}finally{bx.style.zoom=oz}renderRoutes();renderSideTags()}
 function routes(){return (S.routes&&S.routes[S.phase])||[]}
 function renderRoutes(){
   const m=$('#map');if(!m)return;m.querySelectorAll('.routes,.rlabel').forEach(n=>n.remove());
@@ -857,7 +874,8 @@ function layoutCards0(){
   const G=18,TOP=58;
   const K=FIELDS[S.field].cols,L=K.L,Rt=K.R,C=K.C,Wh=K.Bot;
   const sum=a=>a.reduce((t,id)=>t+h(id),0);
-  const colH=Math.max(sum(L)+G*2,sum(Rt)+G*2,sum(C)+G*3);
+  const rowSum=L.length===Rt.length?L.reduce((t,id,i)=>t+Math.max(h(id),h(Rt[i])),0):0;
+  const colH=Math.max(sum(L)+G*2,sum(Rt)+G*2,rowSum+G*(L.length-1),sum(C)+G*3);
   const pos={};
   function stack(ids,x,even){
     const free=colH-sum(ids),gap=even?free/(ids.length+1):free/(ids.length-1);
@@ -865,7 +883,11 @@ function layoutCards0(){
     ids.forEach(id=>{pos[id]={x,y:y+h(id)/2};y+=h(id)+gap});
   }
   const xl=Math.max(cw/2+12,W*0.2),xr=W-xl;
-  stack(L,xl,false);stack(Rt,xr,false);stack(C,W/2,true);
+  if(L.length===Rt.length){
+    const rh=L.map((id,i)=>Math.max(h(id),h(Rt[i]))),tot=rh.reduce((a,b)=>a+b,0),gap=L.length>1?(colH-tot)/(L.length-1):0;
+    let y=TOP;L.forEach((id,i)=>{pos[id]={x:xl,y:y+h(id)/2};pos[Rt[i]]={x:xr,y:y+h(Rt[i])/2};y+=rh[i]+gap});
+  }else{stack(L,xl,false);stack(Rt,xr,false)}
+  stack(C,W/2,true);
   const rowTop=TOP+colH+56,rowH=Math.max(...Wh.map(h));
   const n=Wh.length,span=Math.min(Math.max(W-24,cw*n+30),n<4?W*0.6:1e9),x0=(W-span)/2;
   Wh.forEach((id,i)=>{pos[id]={x:x0+span*(i+.5)/n,y:rowTop+h(id)/2}});
