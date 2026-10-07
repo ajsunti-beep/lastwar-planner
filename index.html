@@ -503,8 +503,8 @@ function defaultDuties(i){
   const PT='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม ห้ามทิ้งจุด · หลัง 12:00 ต้องเฝ้าเอง';
   if(i===0||i===2)return{vl:LAB+(i===2?' · มีคนถือ Judicator 1 คน':''),pt:PT,dc1:DC,dc2:DC,sf1:SF('II'),sf2:SF('IV'),df1:DF('I'),df2:DF('III')};
   if(i===1)return{vl:'0–12 นาที เคลื่อนที่อิสระ ช่วยไล่ศัตรูฝั่งเรา → 12:00 ยึดศูนย์ร่วมกับพันธมิตร · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนออกไปช่วยได้',pt:'ยึดและเฝ้าร่วมกับพันธมิตรตลอดเกม',dc1:DC,
-    sf1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างเซรุ่ม → 05:00 ย้ายมายึดเซรุ่ม',df1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างระบบป้องกัน → 08:00 ย้ายมายึดระบบป้องกัน',
-    wh1:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมระบบป้องกันช่วยถึง 08:00)',wh2:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมเซรุ่มช่วยถึง 05:00)'};
+    sf1:'เริ่ม → รอหน้าเซรุ่ม → 05:00 ยึดและเฝ้าตลอดเกม',df1:'เริ่ม → รอหน้าระบบป้องกัน → 08:00 ยึดและเฝ้าตลอดเกม',
+    wh1:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม',wh2:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม'};
   if(i===3||i===4){
     const HOLD='ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม';
     const o={or1:HOLD+' ห้ามทิ้งจุด',or2:HOLD+' ห้ามทิ้งจุด',fh1:HOLD,fh2:HOLD,fh3:HOLD,fh4:HOLD,
@@ -542,7 +542,7 @@ function defaultDutiesV1(i){
 }
 function defaultRoutes(i){
   if(i===0||i===2)return[mkRt('sf1','wh2',5),mkRt('sf2','wh4',5),mkRt('df1','wh1',8),mkRt('df2','wh3',8)];
-  if(i===1)return[mkRt('sf1','wh2',5),mkRt('df1','wh1',8)];
+  if(i===1)return[];
   return[];
 }
 /* plan B side mirroring (canonical data = เราฝั่งซ้าย) */
@@ -648,6 +648,14 @@ function migrateDesertV9(){
   fix(S.players,S.assign);Object.values(S.teamData||{}).forEach(d=>{if(d)fix(d.players,d.assign)});
   S.desertV=9;
 }
+function migrateSplitV10(){
+  if(S.splitV===10)return;
+  if(S.routes&&S.routes[1])S.routes[1]=S.routes[1].filter(r=>!((r.from==='sf1'&&r.to==='wh2'&&r.until===5)||(r.from==='df1'&&r.to==='wh1'&&r.until===8)));
+  const d=S.duties&&S.duties[1];
+  if(d){const o={sf1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างเซรุ่ม → 05:00 ย้ายมายึดเซรุ่ม',df1:'เริ่ม → ช่วยทีมคลังยึดคลังข้างระบบป้องกัน → 08:00 ย้ายมายึดระบบป้องกัน',wh1:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมระบบป้องกันช่วยถึง 08:00)',wh2:'ยึดตั้งแต่เริ่ม เฝ้าตลอดเกม (ทีมเซรุ่มช่วยถึง 05:00)'},n=defaultDuties(1);
+    Object.keys(o).forEach(k=>{if(d[k]===o[k])d[k]=n[k]})}
+  S.splitV=10;
+}
 function normPhase(){const p=S.phase%3;if(S.field==='desert')S.phase=3+(p===2?0:p);else S.phase=S.faction==='rule'?2:(p===2?0:p)}
 function planName(){const p=S.phase%3;
   if(S.field==='canyon'){if(p===2)return'แผนพิทักษ์กฎระเบียบ'}
@@ -704,7 +712,7 @@ if(S.plansV!==2){
   S.plansV=2;
 }
 if(LEGACY&&(S.notes[1]===NOTE_C_OLD||S.notes[1]===NOTE_C2_OLD))S.notes[1]=NOTE_C;
-migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();normPhase();setField(S.field);
+migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();migrateSplitV10();normPhase();setField(S.field);
 if(!S.icons)S.icons={...ICON_DEFAULT};
 Object.entries(ICON_DESERT).forEach(([k,v])=>{if(!S.icons[k])S.icons[k]=v});
 let saveT;
