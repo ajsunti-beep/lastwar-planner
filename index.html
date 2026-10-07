@@ -239,6 +239,8 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
 .body>.grp.vis:first-child{border-top:0;padding-top:0;margin-top:0}
 .grp.vis .cap{color:var(--teal);font-weight:600}
 .vchip{display:inline-flex;align-items:center;padding:.1rem .45rem;border-radius:999px;border:1.5px dashed var(--teal);color:var(--teal);background:transparent;font-weight:600;font-size:inherit;line-height:1.35;white-space:nowrap}
+#exportArea>.pool{margin:.6rem 0 .2rem}
+.exporting .pool{display:none!important}
 [hidden]{display:none!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -304,6 +306,10 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
       </div>
       <div class="mapresize" id="mapResize" data-html2canvas-ignore="true" role="separator" aria-label="ลากเพื่อปรับความสูงแผนที่" title="ลากขึ้นลงเพื่อปรับความสูงแผนที่"><span></span>ลากเพื่อปรับความสูงแผนที่<span></span></div>
       </div></div>
+      <div class="pool" id="pool" data-pool="1" data-html2canvas-ignore="true">
+        <h3>ยังไม่ได้จัด (แตะชื่อแล้วแตะอาคารเพื่อย้าย หรือลากวางก็ได้ ลากกลับมาที่นี่เพื่อเอาออก)</h3>
+        <div class="chips" id="poolChips"></div>
+      </div>
       <div class="tl" id="tl">
         <div class="tl-head">
           <h3 class="disp">หน้าที่ผู้ประจำแต่ละอาคาร <span class="tip" id="tlDurLbl"></span></h3>
@@ -338,10 +344,6 @@ input.mini{width:4.2rem;font:inherit;padding:.3rem .4rem;border:1px solid var(--
         <textarea id="planNote" rows="8" spellcheck="false"></textarea>
         <div id="noteView"></div>
       </div>
-      </div>
-      <div class="pool" id="pool" data-pool="1">
-        <h3>ยังไม่ได้จัด (แตะชื่อแล้วแตะอาคารเพื่อย้าย หรือลากวางก็ได้ ลากกลับมาที่นี่เพื่อเอาออก)</h3>
-        <div class="chips" id="poolChips"></div>
       </div>
     </section>
 
@@ -1209,7 +1211,9 @@ async function buildImage(){
   try{
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const bg=getComputedStyle(document.querySelector('.panel')).backgroundColor;
-    const canvas=await html2canvas(area,{windowWidth:Math.max(1200,window.innerWidth),backgroundColor:bg,scale:3,useCORS:true,logging:false});
+    const ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    const px=1000*area.offsetHeight,sc=Math.max(2,Math.min(3.8,Math.sqrt((ios?16e6:2.5e7)/px)));
+    const canvas=await html2canvas(area,{windowWidth:Math.max(1200,window.innerWidth),backgroundColor:bg,scale:sc,useCORS:true,logging:false});
     try{
       if(window.UPNG&&window.pako){
         await new Promise(r=>setTimeout(r,30));
