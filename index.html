@@ -2037,17 +2037,26 @@ function unzState(z){
     Object.entries(x.n||{}).forEach(([i,v])=>o.notes[i]=v);Object.entries(x.d||{}).forEach(([i,v])=>o.duties[i]=v)});
   if(z.M)Object.entries(z.M).forEach(([k,v])=>st.markers[k]={x:v[0],y:v[1]});
   return st}
-function packLink(o){return shareBase()+'#p='+b64u(pako.deflateRaw(JSON.stringify({app:'lwp',v:1,...o}),{level:9}))}
+function packLink(o){return shareBase()+'?p='+b64u(pako.deflateRaw(JSON.stringify({app:'lwp',v:1,...o}),{level:9}))}
 function makeShareLink(extra){const st={...S};SHARE_DROP.forEach(k=>delete st[k]);return packLink({v:2,n:curSetName(),z:zState(st),...(extra||{})})}
 /* short links via is.gd (JSONP, no server of our own); falls back to the long link */
 const SHORT_CACHE={};
-function shorten(url){
-  if(SHORT_CACHE[url])return Promise.resolve(SHORT_CACHE[url]);
-  if(!/^https:/.test(url))return Promise.reject(new Error('local'));
+function withTimeout(p,ms){return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))])}
+async function shortVia(api,url){
+  const r=await withTimeout(fetch(api+encodeURIComponent(url),{mode:'cors',credentials:'omit'}),6000);
+  const tx=(await r.text()).trim();if(!r.ok||!/^https:\/\/\S+$/.test(tx)||tx.length>60)throw new Error('bad');return tx}
+async function shorten(url){
+  if(SHORT_CACHE[url])return SHORT_CACHE[url];
+  if(!/^https:/.test(url))throw new Error('local');
+  const tries=[()=>shortIsgd(url),()=>shortVia('https://tinyurl.com/api-create.php?url=',url),()=>shortVia('https://da.gd/s?url=',url)];
+  for(const f of tries){try{const v=await f();SHORT_CACHE[url]=v;return v}catch(e){}}
+  throw new Error('all failed');
+}
+function shortIsgd(url){
   return new Promise((res,rej)=>{
     const cb='__isgd'+Date.now()+Math.floor(Math.random()*1e4),sc=document.createElement('script');
     const done=(v,e)=>{clearTimeout(tm);try{delete window[cb]}catch(_){window[cb]=undefined}sc.remove();e?rej(e):res(v)};
-    const tm=setTimeout(()=>done(null,new Error('timeout')),6000);
+    const tm=setTimeout(()=>done(null,new Error('timeout')),4000);
     window[cb]=d=>{if(d&&d.shorturl){SHORT_CACHE[url]=d.shorturl;done(d.shorturl)}else done(null,new Error((d&&d.errormessage)||'fail'))};
     sc.onerror=()=>done(null,new Error('net'));
     sc.src='https://is.gd/create.php?format=json&callback='+cb+'&url='+encodeURIComponent(url);
@@ -2104,7 +2113,7 @@ function enterView(o){
   renderAll();window.scrollTo(0,0);
   if(!FILL){try{const q=localStorage.getItem('lwp-find');if(q){$('#findIn').value=q;runFind(false)}}catch(e){}}
 }
-function clearHash(){history.replaceState(null,'',location.pathname+location.search)}
+function clearHash(){history.replaceState(null,'',location.pathname)}
 $('#viewBack').onclick=()=>{clearHash();S=LOCAL;VIEW=false;location.reload()};
 $('#viewEdit').onclick=()=>{
   let def=SHARED.n?t('แชร์: {0}',SHARED.n):t('แผนที่แชร์มา'),k=2;const base=def;while(SM.sets.some(x=>x.name===def))def=base+' '+k++;
@@ -2150,7 +2159,7 @@ function importAllyReturn(o){
   setTimeout(()=>$('#allyBox').scrollIntoView({block:'start'}),50);
 }
 async function checkShare(){
-  const m=location.hash.match(/^#p=([A-Za-z0-9_-]+)/);if(!m)return;
+  const m=location.search.match(/[?&]p=([A-Za-z0-9_-]+)/)||location.hash.match(/^#p=([A-Za-z0-9_-]+)/);if(!m)return;
   try{const o=await readShare(m[1]);if(o.k==='ret')importAllyReturn(o);else if(o.k==='fill')enterFill(o,m[1]);else enterView(o)}
   catch(e){clearHash();toast(t(e&&e.message==='old'?'เบราว์เซอร์นี้เก่าเกินไป เปิดลิงก์แชร์ไม่ได้ ลองอัปเดตเบราว์เซอร์':'ลิงก์แชร์ไม่ถูกต้องหรือไม่ครบ ลองคัดลอกลิงก์ใหม่ทั้งหมด'))}
 }
