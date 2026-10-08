@@ -783,6 +783,8 @@ const I18N={en:{
 'คัดลอกลิงก์แล้ว ส่งในแชทได้เลย':'Link copied. Send it in chat',
 'กดค้างที่ลิงก์แล้วเลือกคัดลอก':'Long-press the link and choose Copy',
 'แชร์แผนให้สมาชิก':'Share plan with members',
+'กำลังโหลดแผน...':'Loading plan...',
+'โหลดแผนจากลิงก์ไม่สำเร็จ ลิงก์อาจผิดหรือหมดอายุ':"Couldn't load the plan from this link. It may be wrong or expired.",
 'อยู่ทีม {0}':'is in Team {0}',
 'ไปดูทีม {0}':'Show Team {0}',
 'วิธีใช้':'Help',
@@ -2045,9 +2047,26 @@ function withTimeout(p,ms){return Promise.race([p,new Promise((_,rej)=>setTimeou
 async function shortVia(api,url){
   const r=await withTimeout(fetch(api+encodeURIComponent(url),{mode:'cors',credentials:'omit'}),6000);
   const tx=(await r.text()).trim();if(!r.ok||!/^https:\/\/\S+$/.test(tx)||tx.length>60)throw new Error('bad');return tx}
+/* own short links: plan token stored in Firebase Realtime Database at /plans/<id> (write-once, see rules) */
+const FB_DB='https://lastwar-planner-default-rtdb.asia-southeast1.firebasedatabase.app';/* e.g. https://your-project-default-rtdb.asia-southeast1.firebasedatabase.app */
+function rid(n){const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789',r=crypto.getRandomValues(new Uint8Array(n));return[...r].map(x=>a[x%a.length]).join('')}
+async function shortFirebase(url){
+  if(!FB_DB)throw new Error('nofb');
+  const tok=(url.match(/[?&#]p=([A-Za-z0-9_-]+)/)||[])[1];if(!tok)throw new Error('notok');
+  for(let i=0;i<3;i++){
+    const id=rid(7),r=await withTimeout(fetch(FB_DB+'/plans/'+id+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(tok)}),8000);
+    if(r.ok)return shareBase()+'?s='+id;
+    if(r.status!==401&&r.status!==403)break; /* 401/403 = id taken (write-once rule): retry with another id */
+  }
+  throw new Error('fbfail');
+}
+async function loadShort(id){
+  const r=await withTimeout(fetch(FB_DB+'/plans/'+encodeURIComponent(id)+'.json'),10000);
+  if(!r.ok)throw new Error('bad');const tok=await r.json();if(typeof tok!=='string')throw new Error('bad');return tok}
 async function shorten(url){
   if(SHORT_CACHE[url])return SHORT_CACHE[url];
   if(!/^https:/.test(url))throw new Error('local');
+  try{const v=await shortFirebase(url);SHORT_CACHE[url]=v;return v}catch(e){}
   /* only services that redirect straight to the page (da.gd shows a click-through page; TinyURL blocks browser calls) */
   const tries=[()=>shortIsgd(url)];
   for(const f of tries){try{const v=await f();SHORT_CACHE[url]=v;return v}catch(e){}}
@@ -2160,6 +2179,13 @@ function importAllyReturn(o){
   setTimeout(()=>$('#allyBox').scrollIntoView({block:'start'}),50);
 }
 async function checkShare(){
+  const sm=location.search.match(/[?&]s=([A-Za-z0-9]{4,20})/);
+  if(sm){
+    if(!FB_DB){clearHash();toast(t('ลิงก์แชร์ไม่ถูกต้องหรือไม่ครบ ลองคัดลอกลิงก์ใหม่ทั้งหมด'));return}
+    toast(t('กำลังโหลดแผน...'));
+    try{const tok=await loadShort(sm[1]);const o=await readShare(tok);if(o.k==='ret')importAllyReturn(o);else if(o.k==='fill')enterFill(o,tok);else enterView(o);$('#toast').classList.remove('on')}
+    catch(e){clearHash();toast(t(e&&e.message==='old'?'เบราว์เซอร์นี้เก่าเกินไป เปิดลิงก์แชร์ไม่ได้ ลองอัปเดตเบราว์เซอร์':'โหลดแผนจากลิงก์ไม่สำเร็จ ลิงก์อาจผิดหรือหมดอายุ'))}
+    return}
   const m=location.search.match(/[?&]p=([A-Za-z0-9_-]+)/)||location.hash.match(/^#p=([A-Za-z0-9_-]+)/);if(!m)return;
   try{const o=await readShare(m[1]);if(o.k==='ret')importAllyReturn(o);else if(o.k==='fill')enterFill(o,m[1]);else enterView(o)}
   catch(e){clearHash();toast(t(e&&e.message==='old'?'เบราว์เซอร์นี้เก่าเกินไป เปิดลิงก์แชร์ไม่ได้ ลองอัปเดตเบราว์เซอร์':'ลิงก์แชร์ไม่ถูกต้องหรือไม่ครบ ลองคัดลอกลิงก์ใหม่ทั้งหมด'))}
