@@ -778,7 +778,7 @@ const I18N={en:{
 'ลิงก์':'Link',
 'กำลังย่อลิงก์...':'Shortening link...',
 'ลิงก์สั้นพร้อมแล้ว กดในแชทแล้วเปิดเว็บได้ทันที':'Short link ready. Tapping it in chat opens the planner directly.',
-'ย่อลิงก์ไม่สำเร็จ ใช้ลิงก์เต็มแทน ({0} ตัวอักษร)':"Couldn't shorten the link, using the full link ({0} characters)",
+'ใช้ลิงก์เต็ม ({0} ตัวอักษร) กดในแชทแล้วเปิดเว็บได้เลย':'Full link ({0} characters). Tap it in chat to open the planner.',
 'คัดลอกลิงก์แล้ว':'Link copied',
 'คัดลอกลิงก์แล้ว ส่งในแชทได้เลย':'Link copied. Send it in chat',
 'กดค้างที่ลิงก์แล้วเลือกคัดลอก':'Long-press the link and choose Copy',
@@ -2048,7 +2048,8 @@ async function shortVia(api,url){
 async function shorten(url){
   if(SHORT_CACHE[url])return SHORT_CACHE[url];
   if(!/^https:/.test(url))throw new Error('local');
-  const tries=[()=>shortIsgd(url),()=>shortVia('https://tinyurl.com/api-create.php?url=',url),()=>shortVia('https://da.gd/s?url=',url)];
+  /* only services that redirect straight to the page (da.gd shows a click-through page; TinyURL blocks browser calls) */
+  const tries=[()=>shortIsgd(url)];
   for(const f of tries){try{const v=await f();SHORT_CACHE[url]=v;return v}catch(e){}}
   throw new Error('all failed');
 }
@@ -2077,7 +2078,7 @@ function sendLink(url,title,okMsg,heading){
   $('#shareStatus').textContent=t('กำลังย่อลิงก์...');
   const dlg=$('#shareDlg');try{dlg.showModal()}catch(e){dlg.setAttribute('open','')}
   shorten(url).then(sh=>{setShareUrl(sh);$('#shareStatus').textContent=t('ลิงก์สั้นพร้อมแล้ว กดในแชทแล้วเปิดเว็บได้ทันที')})
-    .catch(()=>{setShareUrl(url);$('#shareStatus').textContent=t('ย่อลิงก์ไม่สำเร็จ ใช้ลิงก์เต็มแทน ({0} ตัวอักษร)',url.length)});
+    .catch(()=>{setShareUrl(url);$('#shareStatus').textContent=t('ใช้ลิงก์เต็ม ({0} ตัวอักษร) กดในแชทแล้วเปิดเว็บได้เลย',url.length)});
   SHARE_CUR.ok=okMsg;
 }
 $('#shareCopy').onclick=async()=>{const u=SHARE_CUR.url;if(!u)return;
