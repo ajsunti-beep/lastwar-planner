@@ -176,6 +176,11 @@ dialog.help details{margin:.2rem 0 .6rem;border-top:1px solid var(--line);paddin
 dialog.help details summary{cursor:pointer;font-weight:600}
 dialog.help ul.tips{margin:.5rem 0 0;padding-left:1.15rem;display:grid;gap:.4rem}
 dialog.help .hf{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.75rem 1.2rem;border-top:1px solid var(--line);background:var(--panel2)}
+#shareUrl{width:100%;font:inherit;font-size:.95rem;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text)}
+.shbtns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.shbtns .btn{flex:1 1 9rem;justify-content:center;text-align:center;text-decoration:none}
+.btn.line{background:#06C755;border-color:#06C755;color:#fff;font-weight:600}
+.btn[aria-disabled="true"]{opacity:.5;pointer-events:none}
 .credit{text-align:center;color:var(--muted);font-size:.85rem;margin:1.4rem 0 .4rem;letter-spacing:.02em}
 .credit b{font-family:"Chakra Petch","Sarabun",sans-serif;color:var(--text);font-weight:600}
 .notice{display:flex;flex-wrap:wrap;gap:.5rem .75rem;align-items:center;margin:-.25rem 0 1rem;padding:.65rem .85rem;background:var(--ochre-s);border:1.5px solid var(--ochre);border-radius:12px}
@@ -320,6 +325,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
 .fillmode #allyBox{display:block!important}
 .fillmode #fillLinkRow,.fillmode #viewEdit,.fillmode #viewBack,.fillmode .phasebar .pick,.fillmode header .controls>.seg:not(#langSeg){display:none!important}
 .filltip{margin:0 0 .6rem;padding:.5rem .65rem;background:var(--panel2);border-radius:8px;color:var(--text);white-space:pre-line}
+.scoped #fieldSeg,.scoped #teamSeg,.scoped #facSeg,.viewonly #sideSeg{display:none!important}
 .viewonly #emptyNote,.viewonly header p{display:none!important}
 .viewonly #planNote{display:none}.viewonly #noteView{display:block}
 .viewonly .chip,.viewonly .card .hd{cursor:default}
@@ -342,7 +348,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
       <p>ตัวจริง 20 คน สำรอง 10 คน แตะหรือลากชื่อไปวางบนอาคาร</p>
     </div>
     <div class="controls">
-      <div class="seg" role="group" aria-label="สนามรบ">
+      <div class="seg" role="group" aria-label="สนามรบ" id="fieldSeg">
         <button data-field="canyon">พายุหุบเขา</button>
         <button data-field="desert">พายุทะเลทราย</button>
       </div>
@@ -380,7 +386,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
   <div class="grid">
     <section class="panel" id="secMap">
       <div class="phasebar">
-        <div class="pick"><div class="seg" role="group" aria-label="ทีม">
+        <div class="pick"><div class="seg" role="group" aria-label="ทีม" id="teamSeg">
           <button data-team="A">ทีม A</button>
           <button data-team="B">ทีม B</button>
         </div>
@@ -525,6 +531,20 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
     </details>
   </div>
   <div class="hf"><span class="tip">Made by ajsunti</span><button class="btn primary" id="helpClose">เริ่มใช้งาน</button></div>
+</dialog>
+<dialog class="help sharedlg" id="shareDlg" aria-labelledby="shareTitle">
+  <div class="hb">
+    <h2 id="shareTitle">แชร์ลิงก์</h2>
+    <p class="tip" id="shareSub" style="margin:0 0 .7rem"></p>
+    <input type="text" id="shareUrl" readonly aria-label="ลิงก์">
+    <p class="tip" id="shareStatus" style="margin:.4rem 0 0"></p>
+    <div class="shbtns">
+      <a class="btn line" id="shareLine" target="_blank" rel="noopener">ส่งทาง LINE</a>
+      <button class="btn" id="shareNative">แชร์ไปแอปอื่น</button>
+      <button class="btn primary" id="shareCopy">คัดลอกลิงก์</button>
+    </div>
+  </div>
+  <div class="hf"><span class="tip">Made by ajsunti</span><button class="btn" id="shareClose">ปิด</button></div>
 </dialog>
 <div class="selbar" id="selBar" role="region" aria-label="ย้ายผู้เล่น" hidden>
   <div class="sb-t"><b id="selName"></b><span class="tip">แตะอาคารบนแผนที่ หรือเลือกจากรายการ</span></div>
@@ -752,6 +772,17 @@ const I18N={en:{
 'ไม่พบชื่อ "{0}" ในแผนนี้':'No player named "{0}" in this plan',
 'เป็นตัวสำรอง ยังไม่ได้ลงอาคารในแผนนี้ รอเรียกเมื่อตัวจริงไม่มา':"You're a sub and not placed in this plan. Stand by in case a starter doesn't show",
 'ยังไม่ได้จัดลงอาคารในแผนนี้':'Not assigned to a building in this plan',
+'ส่งทาง LINE':'Send via LINE',
+'แชร์ไปแอปอื่น':'Share to other apps',
+'คัดลอกลิงก์':'Copy link',
+'ลิงก์':'Link',
+'กำลังย่อลิงก์...':'Shortening link...',
+'ลิงก์สั้นพร้อมแล้ว กดในแชทแล้วเปิดเว็บได้ทันที':'Short link ready. Tapping it in chat opens the planner directly.',
+'ย่อลิงก์ไม่สำเร็จ ใช้ลิงก์เต็มแทน ({0} ตัวอักษร)':"Couldn't shorten the link, using the full link ({0} characters)",
+'คัดลอกลิงก์แล้ว':'Link copied',
+'คัดลอกลิงก์แล้ว ส่งในแชทได้เลย':'Link copied. Send it in chat',
+'กดค้างที่ลิงก์แล้วเลือกคัดลอก':'Long-press the link and choose Copy',
+'แชร์แผนให้สมาชิก':'Share plan with members',
 'อยู่ทีม {0}':'is in Team {0}',
 'ไปดูทีม {0}':'Show Team {0}',
 'วิธีใช้':'Help',
@@ -1235,7 +1266,7 @@ function renderMap(){
   if(S.autoLayout!==false&&!S.bg)layoutCards();
   renderRoutes();renderSideTags();applyFocus();applyFound();
 }
-let icT;document.addEventListener('load',e=>{if(e.target&&e.target.classList&&e.target.classList.contains('ic')&&S.autoLayout!==false&&!S.bg){clearTimeout(icT);icT=setTimeout(()=>{layoutCards();save()},60)}},true);
+let icT;document.addEventListener('load',e=>{if(e.target&&e.target.classList&&e.target.classList.contains('ic')&&S.autoLayout!==false&&!S.bg){clearTimeout(icT);icT=setTimeout(()=>{if(S.autoLayout!==false&&!S.bg){layoutCards();save()}},60)}},true);
 function layoutCards(){const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';try{layoutCards0()}finally{bx.style.zoom=oz}renderRoutes();renderSideTags()}
 function routes(){return (S.routes&&S.routes[S.phase])||[]}
 function renderRoutes(){
@@ -1886,10 +1917,10 @@ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted(
 let FOUND=null;/* {k:'p',pid} | {k:'a',name} */
 const norm=x=>String(x||'').toLowerCase().replace(/\s+/g,' ').trim();
 function findCands(q){
-  const out=[],other=S.team==='A'?'B':'A',od=(S.teamData||{})[other];
+  const out=[],other=S.team==='A'?'B':'A',sc=document.body.classList.contains('scoped'),od=sc?null:(S.teamData||{})[other];
   S.players.forEach(p=>out.push({k:'p',team:S.team,pid:p.id,name:pn(p)}));
   if(od&&od.players)od.players.forEach(p=>out.push({k:'p',team:other,pid:p.id,name:pn(p)}));
-  [S.team,other].forEach(tm=>((S.allyRoster||{})[tm]||[]).forEach(a=>a.name&&out.push({k:'a',team:tm,name:a.name})));
+  (sc?[S.team]:[S.team,other]).forEach(tm=>((S.allyRoster||{})[tm]||[]).forEach(a=>a.name&&out.push({k:'a',team:tm,name:a.name})));
   const ex=out.filter(c=>norm(c.name)===q);if(ex.length)return ex;
   return out.filter(c=>norm(c.name).includes(q));
 }
@@ -1946,25 +1977,119 @@ const SHARE_DROP=['icons','bg','aspect','fit','note'];
 function shareBase(){return /github\.io$/.test(location.hostname)?location.origin+location.pathname:SHARE_BASE}
 function b64u(u8){let s='';for(let i=0;i<u8.length;i+=8192)s+=String.fromCharCode.apply(null,u8.subarray(i,i+8192));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function unb64u(t){t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const s=atob(t),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+
+/* ---- compact share payload (v2): only what differs from a fresh default plan ---- */
+const ZSKIP=new Set([...SHARE_DROP,'allyRoster','allyTag','players','assign','teamData','notes','duties','timeline','routes','i18n','markers','mapH','tlMin']);
+function baseState(){const keep=S;S=blankState();if(!S.field)S.field='canyon';migrateAll();const b=S;S=keep;setField(S.field);return b}
+const noId=a=>JSON.stringify((a||[]).map(x=>{const o={...x};delete o.id;return o}));
+const BCODE=B_CANYON.concat(B_DESERT).map(b=>b.id),b2c=id=>{const i=BCODE.indexOf(id);return i<0?'.':String.fromCharCode(97+i)},c2b=c=>BCODE[c.charCodeAt(0)-97]||'';
+function zTeam(pl,as,phs){
+  if(!pl)return null;
+  const o={p:pl.map(x=>x.power?[x.name,+x.power]:[x.name]),b:(as||[]).map((m,i)=>phs.includes(i)?pl.map(x=>b2c((m||{})[x.id])).join('').replace(/\.+$/,''):'')};
+  while(o.b.length&&!o.b[o.b.length-1])o.b.pop();
+  /* names only (drop [ ]) when no powers at all */
+  if(o.p.every(x=>x.length===1))o.p=o.p.map(x=>x[0]);
+  if(pl.some((x,i)=>x.id!=='p'+i))o.i=pl.map(x=>x.id);
+  const sb=pl.map((x,i)=>!!x.sub!==(i>=20)?i:-1).filter(i=>i>=0);if(sb.length)o.s=sb;
+  return o}
+function unzTeam(o){
+  const pl=o.p.map((x,i)=>{x=Array.isArray(x)?x:[x];return{id:o.i?o.i[i]:'p'+i,name:String(x[0]||''),power:+x[1]||0,sub:(o.s||[]).includes(i)?!(i>=20):i>=20}});
+  const as=[0,1,2,3,4,5].map(ph=>{const m={};if(o.b){[...(o.b[ph]||'')].forEach((c,i)=>{const b=c2b(c);if(b&&pl[i])m[pl[i].id]=b})}else(o.a&&o.a[ph]||'').split(',').forEach((b,i)=>{if(b&&pl[i])m[pl[i].id]=b});return m});
+  return{players:pl,assign:as}}
+function zState(st){
+  const base=baseState(),z={};
+  Object.keys(st).forEach(k=>{if(!ZSKIP.has(k)&&JSON.stringify(st[k])!==JSON.stringify(base[k]))z[k]=st[k]});
+  /* only the open team and the open battlefield */
+  const phs=st.field==='desert'?[3,4]:[0,1,2],tm=st.team;
+  z.sc=1;z.T={[tm]:zTeam(st.players,st.assign,phs)};
+  const ar=(st.allyRoster||{})[tm];if(ar&&ar.length)z.AR=ar.map(a=>a.bid?a.name+'\t'+b2c(a.bid):a.name);
+  const at=(st.allyTag||{})[tm];if(at)z.AT=at;
+  const dd={};
+  for(const i of phs){
+    if((st.notes||[])[i]!==base.notes[i])(dd.n||(dd.n={}))[i]=st.notes[i];
+    if(JSON.stringify((st.duties||[])[i]||{})!==JSON.stringify(defaultDuties(i)))(dd.d||(dd.d={}))[i]=st.duties[i];
+    if(noId((st.timeline||[])[i])!==noId(base.timeline[i]))(dd.t||(dd.t={}))[i]=(st.timeline[i]||[]).map(x=>[x.t,x.text,x.b]);
+    if(noId((st.routes||[])[i])!==noId((base.routes||[])[i]))(dd.r||(dd.r={}))[i]=(st.routes[i]||[]).map(x=>[x.from,x.to,x.until]);
+  }
+  Object.entries(st.i18n||{}).forEach(([l,o])=>{const x={};
+    (o.notes||[]).forEach((v,i)=>{if(phs.includes(i)&&v!==defNotes(l)[i])(x.n||(x.n={}))[i]=v});
+    (o.duties||[]).forEach((v,i)=>{if(phs.includes(i)&&JSON.stringify(v||{})!==JSON.stringify(defDuties(l,i)))(x.d||(x.d={}))[i]=v});
+    if(x.n||x.d)(dd.L||(dd.L={}))[l]=x});
+  if(Object.keys(dd).length)z.X=dd;
+  if(st.autoLayout===false&&JSON.stringify(st.markers)!==JSON.stringify(base.markers)){
+    const ids=new Set(FIELDS[st.field].ORDER),m={};Object.entries(st.markers||{}).forEach(([k,v])=>{if(!ids.has(k))return;const b=base.markers[k];if(!b||b.x!==v.x||b.y!==v.y)m[k]=[Math.round(v.x*10)/10,Math.round(v.y*10)/10]});z.M=m}
+  return z}
+function unzState(z){
+  const st=baseState(),X=z.X||{};
+  Object.keys(z).forEach(k=>{if(!['T','X','M','AR','AT','sc'].includes(k))st[k]=z[k]});
+  if(z.AR)st.allyRoster={[st.team||'A']:z.AR.map(a=>Array.isArray(a)?{name:String(a[0]),bid:a[1]||''}:{name:String(a).split('\t')[0],bid:String(a).includes('\t')?c2b(String(a).split('\t')[1]):''})};
+  if(z.AT)st.allyTag={[st.team||'A']:z.AT};
+  const tm=st.team||'A',other=tm==='A'?'B':'A';
+  if(z.T&&z.T[tm]){const d=unzTeam(z.T[tm]);st.players=d.players;st.assign=d.assign}
+  st.teamData={[tm]:null,[other]:z.T&&z.T[other]?unzTeam(z.T[other]):{players:freshPlayers(),assign:[{},{},{},{},{},{}]}};
+  if(!st.duties)st.duties=[0,1,2,3,4,5].map(defaultDuties);
+  Object.entries(X.n||{}).forEach(([i,v])=>st.notes[i]=v);
+  Object.entries(X.d||{}).forEach(([i,v])=>st.duties[i]=v);
+  Object.entries(X.t||{}).forEach(([i,v])=>st.timeline[i]=v.map(a=>({id:sid(),t:a[0],text:a[1],b:a[2]||[]})));
+  if(X.r&&!st.routes)st.routes=[[],[],[],[],[],[]];
+  Object.entries(X.r||{}).forEach(([i,v])=>st.routes[i]=v.map(a=>({id:sid(),from:a[0],to:a[1],until:a[2]})));
+  Object.entries(X.L||{}).forEach(([l,x])=>{if(!st.i18n)st.i18n={};const o=st.i18n[l]={notes:defNotes(l),duties:[0,1,2,3,4,5].map(i=>defDuties(l,i))};
+    Object.entries(x.n||{}).forEach(([i,v])=>o.notes[i]=v);Object.entries(x.d||{}).forEach(([i,v])=>o.duties[i]=v)});
+  if(z.M)Object.entries(z.M).forEach(([k,v])=>st.markers[k]={x:v[0],y:v[1]});
+  return st}
 function packLink(o){return shareBase()+'#p='+b64u(pako.deflateRaw(JSON.stringify({app:'lwp',v:1,...o}),{level:9}))}
-function makeShareLink(extra){const st={...S};SHARE_DROP.forEach(k=>delete st[k]);return packLink({n:curSetName(),s:st,...(extra||{})})}
-async function sendLink(url,title,okMsg){
-  if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title,url});return}catch(e){if(e&&e.name==='AbortError')return}}
-  try{await navigator.clipboard.writeText(url);toast(okMsg)}catch(e){prompt(t('คัดลอกลิงก์นี้'),url)}
+function makeShareLink(extra){const st={...S};SHARE_DROP.forEach(k=>delete st[k]);return packLink({v:2,n:curSetName(),z:zState(st),...(extra||{})})}
+/* short links via is.gd (JSONP, no server of our own); falls back to the long link */
+const SHORT_CACHE={};
+function shorten(url){
+  if(SHORT_CACHE[url])return Promise.resolve(SHORT_CACHE[url]);
+  if(!/^https:/.test(url))return Promise.reject(new Error('local'));
+  return new Promise((res,rej)=>{
+    const cb='__isgd'+Date.now()+Math.floor(Math.random()*1e4),sc=document.createElement('script');
+    const done=(v,e)=>{clearTimeout(tm);try{delete window[cb]}catch(_){window[cb]=undefined}sc.remove();e?rej(e):res(v)};
+    const tm=setTimeout(()=>done(null,new Error('timeout')),6000);
+    window[cb]=d=>{if(d&&d.shorturl){SHORT_CACHE[url]=d.shorturl;done(d.shorturl)}else done(null,new Error((d&&d.errormessage)||'fail'))};
+    sc.onerror=()=>done(null,new Error('net'));
+    sc.src='https://is.gd/create.php?format=json&callback='+cb+'&url='+encodeURIComponent(url);
+    document.head.appendChild(sc);
+  });
 }
+let SHARE_CUR={url:'',title:''};
+function setShareUrl(u){
+  SHARE_CUR.url=u;$('#shareUrl').value=u;
+  $('#shareLine').href='https://line.me/R/share?text='+encodeURIComponent(SHARE_CUR.title+'\n'+u);
+  ['shareLine','shareNative','shareCopy'].forEach(id=>$('#'+id).removeAttribute('aria-disabled'));
+}
+function sendLink(url,title,okMsg,heading){
+  SHARE_CUR={url:'',title};
+  $('#shareTitle').textContent=heading||t('แชร์ลิงก์');$('#shareSub').textContent=title;
+  $('#shareUrl').value='';['shareLine','shareNative','shareCopy'].forEach(id=>$('#'+id).setAttribute('aria-disabled','true'));
+  $('#shareNative').hidden=!navigator.share;
+  $('#shareStatus').textContent=t('กำลังย่อลิงก์...');
+  const dlg=$('#shareDlg');try{dlg.showModal()}catch(e){dlg.setAttribute('open','')}
+  shorten(url).then(sh=>{setShareUrl(sh);$('#shareStatus').textContent=t('ลิงก์สั้นพร้อมแล้ว กดในแชทแล้วเปิดเว็บได้ทันที')})
+    .catch(()=>{setShareUrl(url);$('#shareStatus').textContent=t('ย่อลิงก์ไม่สำเร็จ ใช้ลิงก์เต็มแทน ({0} ตัวอักษร)',url.length)});
+  SHARE_CUR.ok=okMsg;
+}
+$('#shareCopy').onclick=async()=>{const u=SHARE_CUR.url;if(!u)return;
+  try{await navigator.clipboard.writeText(u);toast(SHARE_CUR.ok||t('คัดลอกลิงก์แล้ว'))}
+  catch(e){const i=$('#shareUrl');i.focus();i.select();try{document.execCommand('copy');toast(SHARE_CUR.ok||t('คัดลอกลิงก์แล้ว'))}catch(_){toast(t('กดค้างที่ลิงก์แล้วเลือกคัดลอก'))}}};
+$('#shareNative').onclick=async()=>{if(!SHARE_CUR.url)return;try{await navigator.share({title:SHARE_CUR.title,text:SHARE_CUR.title,url:SHARE_CUR.url})}catch(e){}};
+$('#shareUrl').onclick=e=>e.target.select();
+$('#shareClose').onclick=()=>{const d=$('#shareDlg');d.close?d.close():d.removeAttribute('open')};
+$('#shareDlg').addEventListener('click',e=>{if(e.target.id==='shareDlg')$('#shareClose').click()});
 async function readShare(t){
   if(typeof DecompressionStream!=='function')throw new Error('old');
   const ds=new Blob([unb64u(t)]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
   const o=JSON.parse(await new Response(ds).text());
   if(!o||o.app!=='lwp')throw new Error('bad');
+  if(o.z&&!o.s){o.s=unzState(o.z);o.sc=!!o.z.sc}
   if(o.k==='ret'?!Array.isArray(o.roster):(!o.s||!Array.isArray(o.s.players)))throw new Error('bad');
   return o;
 }
-$('#shareBtn').onclick=async()=>{
-  const url=makeShareLink(),title=t('แผน{0} · {1}',fName(),curSetName());
-  if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title,url});return}catch(e){if(e&&e.name==='AbortError')return}}
-  try{await navigator.clipboard.writeText(url);toast(t('คัดลอกลิงก์แล้ว ({0}k ตัวอักษร) ส่งในแชทได้เลย',Math.round(url.length/100)/10))}
-  catch(e){prompt(t('คัดลอกลิงก์นี้'),url)}
+$('#shareBtn').onclick=()=>{
+  const title=t('แผน{0} · {1}',fName(),t('ทีม {0}',S.team)+' · '+planName());
+  sendLink(makeShareLink(),title,t('คัดลอกลิงก์แล้ว ส่งในแชทได้เลย'),t('แชร์แผนให้สมาชิก'));
 };
 let SHARED=null;
 function enterView(o){
@@ -1974,7 +2099,8 @@ function enterView(o){
   S=st;migrateAll();
   if(!S.teamData)S.teamData={A:null,B:{players:freshPlayers(),assign:[{},{},{},{},{},{}]}};
   document.body.classList.add('viewonly');selectChip(null);tlEdit=false;
-  $('#viewName').textContent=o.n?'"'+o.n+'"':'';$('#viewBar').hidden=false;
+  if(o.sc)document.body.classList.add('scoped');
+  $('#viewName').textContent=(o.n?'"'+o.n+'"':'')+(o.sc?' · '+fName()+' · '+t('ทีม {0}',S.team):'');$('#viewBar').hidden=false;
   renderAll();window.scrollTo(0,0);
   if(!FILL){try{const q=localStorage.getItem('lwp-find');if(q){$('#findIn').value=q;runFind(false)}}catch(e){}}
 }
@@ -1992,7 +2118,7 @@ $('#viewEdit').onclick=()=>{
 const ALLY_CANON=['vl','pt',...SIDE_R];
 $('#fillLinkBtn').onclick=()=>{
   if(!isSplit())return;
-  sendLink(makeShareLink({k:'fill',team:S.team}),t('กรอกรายชื่อพันธมิตร'),t('คัดลอกลิงก์แล้ว ส่งให้พันธมิตรกรอกชื่อได้เลย'));
+  sendLink(makeShareLink({k:'fill',team:S.team}),t('กรอกรายชื่อพันธมิตร')+' · '+fName()+' · '+t('ทีม {0}',S.team),t('คัดลอกลิงก์แล้ว ส่งให้พันธมิตรกรอกชื่อได้เลย'));
 };
 const fillDraftKey=()=>'lwp-fill-draft';
 function saveFillDraft(){try{localStorage.setItem(fillDraftKey(),JSON.stringify({id:FILL.id,team:FILL.team,tag:(S.allyTag||{})[FILL.team]||'',roster:allyRoster()}))}catch(e){}}
@@ -2011,7 +2137,7 @@ $('#fillSend2').onclick=()=>$('#fillSend').click();
 $('#fillSend').onclick=()=>{
   const r=allyRoster().filter(p=>p.name);if(!r.length){toast(t('ยังไม่ได้ใส่รายชื่อ'));return}
   const url=packLink({k:'ret',team:FILL.team,tag:((S.allyTag||{})[FILL.team]||'').trim(),roster:r.map(p=>({name:p.name,bid:ALLY_CANON.includes(p.bid)?p.bid:''}))});
-  sendLink(url,t('รายชื่อพันธมิตร'),t('คัดลอกลิงก์ส่งกลับแล้ว ส่งให้เจ้าของแผนได้เลย'));
+  sendLink(url,t('รายชื่อพันธมิตร')+(((S.allyTag||{})[FILL.team])?' · '+S.allyTag[FILL.team]:''),t('คัดลอกลิงก์ส่งกลับแล้ว ส่งให้เจ้าของแผนได้เลย'));
 };
 function importAllyReturn(o){
   const team=o.team==='B'?'B':'A',roster=(o.roster||[]).filter(p=>p&&typeof p.name==='string'&&p.name.trim()).slice(0,60).map(p=>({name:p.name.trim().slice(0,30),bid:ALLY_CANON.includes(p.bid)?p.bid:''})),tag=String(o.tag||'').slice(0,16);
