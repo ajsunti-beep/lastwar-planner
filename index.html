@@ -1266,10 +1266,24 @@ function renderMap(){
     m.appendChild(d);
   });
   if(S.autoLayout!==false&&!S.bg)layoutCards();
+  watchCards();
   renderRoutes();renderSideTags();applyFocus();applyFound();
 }
 let icT;document.addEventListener('load',e=>{if(e.target&&e.target.classList&&e.target.classList.contains('ic')&&S.autoLayout!==false&&!S.bg){clearTimeout(icT);icT=setTimeout(()=>{if(S.autoLayout!==false&&!S.bg){layoutCards();save()}},60)}},true);
 function layoutCards(){const bx=$('#mapBox'),oz=bx.style.zoom;bx.style.zoom='';try{layoutCards0()}finally{bx.style.zoom=oz}renderRoutes();renderSideTags()}
+/* re-run auto layout whenever a card's size changes after layout (late web fonts, icons, chips wrapping) */
+let lcRO=null,lcT,lcSizes=new WeakMap();
+function watchCards(){
+  if(typeof ResizeObserver!=='function')return;
+  if(!lcRO)lcRO=new ResizeObserver(ents=>{
+    let changed=false;
+    ents.forEach(e=>{const h=Math.round(e.contentRect.height),w=Math.round(e.contentRect.width),o=lcSizes.get(e.target);
+      if(!o||Math.abs(o.h-h)>1||Math.abs(o.w-w)>1){if(o)changed=true;lcSizes.set(e.target,{h,w})}});
+    if(changed&&S.autoLayout!==false&&!S.bg){clearTimeout(lcT);lcT=setTimeout(()=>{layoutCards();if(!VIEW)save()},80)}
+  });
+  lcRO.disconnect();document.querySelectorAll('#map .card').forEach(c=>lcRO.observe(c));
+}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(S.autoLayout!==false&&!S.bg)layoutCards()});
 function routes(){return (S.routes&&S.routes[S.phase])||[]}
 function renderRoutes(){
   const m=$('#map');if(!m)return;m.querySelectorAll('.routes,.rlabel').forEach(n=>n.remove());
@@ -2125,6 +2139,7 @@ function enterView(o){
   LOCAL=S;SHARED=o;VIEW=true;clearTimeout(saveT);
   const st=JSON.parse(JSON.stringify(o.s));SHARE_DROP.forEach(k=>{if(k in LOCAL)st[k]=LOCAL[k]});
   if(!st.icons)st.icons={...ICON_DEFAULT,...ICON_DESERT};
+  st.bg=null;st.autoLayout=true;
   S=st;migrateAll();
   if(!S.teamData)S.teamData={A:null,B:{players:freshPlayers(),assign:[{},{},{},{},{},{}]}};
   document.body.classList.add('viewonly');selectChip(null);tlEdit=false;
