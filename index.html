@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>วางแผนสนามรบ Last War</title>
+<title>วางแผนสนามรบทะเลทราย & สนามรบหุบเขา</title>
 <meta name="theme-color" content="#1E2A30">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -18,15 +18,15 @@
 :root{
   --bg:#EEF1F0;--panel:#FFFFFF;--panel2:#F5F7F6;--line:#D3DAD8;--text:#1E2A30;--muted:#5B6B70;
   --rust:#B4512F;--ochre:#B9861F;--teal:#2F7F78;--slate:#5E6E76;--sand:#E8D3AE;--sub:#7A6A9C;
-  --map:#D9CDB6;--rust-s:rgba(180,81,47,.18);--ochre-s:rgba(185,134,31,.18);--teal-s:rgba(47,127,120,.15);
+  --map:#D9CDB6;--swap:#6b767c;--swap-s:#c9d0d4;--rust-s:rgba(180,81,47,.18);--ochre-s:rgba(185,134,31,.18);--teal-s:rgba(47,127,120,.15);
   box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#182227;--panel:#212E34;--panel2:#1B262B;--line:#33444B;--text:#E9E4DA;--muted:#9AA9AD;
-  --rust:#DB7452;--ochre:#E0AE4A;--teal:#5DB6AC;--slate:#8C9DA5;--sand:#4A3F2E;--sub:#A897CC;--map:#2A3439;--rust-s:rgba(219,116,82,.18);--ochre-s:rgba(224,174,74,.18);--teal-s:rgba(93,182,172,.15);}}
+  --rust:#DB7452;--ochre:#E0AE4A;--teal:#5DB6AC;--slate:#8C9DA5;--sand:#4A3F2E;--sub:#A897CC;--map:#2A3439;--swap:#a3afb5;--swap-s:#4a575e;--rust-s:rgba(219,116,82,.18);--ochre-s:rgba(224,174,74,.18);--teal-s:rgba(93,182,172,.15);}}
 :root[data-theme="dark"]{
   --bg:#182227;--panel:#212E34;--panel2:#1B262B;--line:#33444B;--text:#E9E4DA;--muted:#9AA9AD;
-  --rust:#DB7452;--ochre:#E0AE4A;--teal:#5DB6AC;--slate:#8C9DA5;--sand:#4A3F2E;--sub:#A897CC;--map:#2A3439;--rust-s:rgba(219,116,82,.18);--ochre-s:rgba(224,174,74,.18);--teal-s:rgba(93,182,172,.15);}
+  --rust:#DB7452;--ochre:#E0AE4A;--teal:#5DB6AC;--slate:#8C9DA5;--sand:#4A3F2E;--sub:#A897CC;--map:#2A3439;--swap:#a3afb5;--swap-s:#4a575e;--rust-s:rgba(219,116,82,.18);--ochre-s:rgba(224,174,74,.18);--teal-s:rgba(93,182,172,.15);}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:"Sarabun",Tahoma,"Noto Sans Thai",sans-serif;font-size:15px;line-height:1.55}
@@ -44,7 +44,7 @@ header p{margin:.25rem 0 0;color:var(--muted)}
 .btn:hover{border-color:var(--muted)}
 .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:1rem;align-items:start}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:1rem;align-items:start}
 @media (max-width:1000px){.grid{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}
 .pick{display:flex;flex-wrap:wrap;gap:.5rem}
@@ -99,7 +99,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .roster td{padding:.15rem .2rem;border-top:1px solid var(--line)}
 .roster input,.roster select{width:100%;font:inherit;font-size:.88rem;padding:.25rem .35rem;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--text)}
 .roster input.pw{width:64px}
-.roster select.tr{width:5.4rem;padding-left:.2rem;padding-right:.1rem}
+.roster select.tr{width:5.3rem;padding-left:.2rem;padding-right:0}
+.roster select[data-f="as"]{width:7rem}
+.roster td.mv{width:1.5rem;padding:0}
+.roster td.mv button{display:block;width:1.4rem;height:1.05rem;padding:0;border:0;background:none;color:var(--muted);font-size:.7rem;line-height:1;cursor:pointer;border-radius:4px}
+.roster td.mv button:hover:not(:disabled){background:var(--panel2);color:var(--text)}
+.roster td.mv button:disabled{opacity:.25;cursor:default}
+.roster td.nm.swap input{border-color:var(--swap);border-width:2px;background:var(--swap-s)}
+.chip.swap{border-color:var(--swap);border-width:2px;background:var(--swap-s)}
+.pairtip{display:flex;align-items:center;gap:.45rem}
+.pairtip i{flex:none;width:1.6rem;height:.95rem;border-radius:999px;border:2px solid var(--swap);background:var(--swap-s)}
 .roster .sep td{background:var(--panel2);color:var(--sub);font-weight:600;padding:.35rem .4rem}
 .rosterwrap{max-height:62vh;overflow:auto}
 details{margin:.5rem 0 .75rem}
@@ -345,13 +354,13 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
 <div class="wrap">
   <header>
     <div>
-      <h1 id="pageTitle">วางแผนสนามรบพายุหุบเขา</h1>
+      <h1 id="pageTitle">วางแผนสนามรบทะเลทราย & สนามรบหุบเขา</h1>
       <p>ตัวจริง 20 คน สำรอง 10 คน แตะหรือลากชื่อไปวางบนอาคาร</p>
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="สนามรบ" id="fieldSeg">
-        <button data-field="canyon">พายุหุบเขา</button>
-        <button data-field="desert">พายุทะเลทราย</button>
+        <button data-field="canyon">สนามรบหุบเขา</button>
+        <button data-field="desert">สนามรบทะเลทราย</button>
       </div>
       <div class="seg" role="group" aria-label="ฝ่ายของเรา" id="facSeg">
         <button data-fac="rule">Rulebringers</button>
@@ -480,6 +489,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
     <aside class="panel" id="secRoster">
       <h2>รายชื่อผู้เล่น <span id="teamLbl" class="tip"></span></h2>
       <p class="tip">พลังรบใส่เป็นหน่วยล้าน (M) เช่น 85.4</p>
+      <p class="tip pairtip"><i></i><span>แถบชื่อสีเทา (คนที่ 11–30) คือผู้เล่นที่สลับเข้าเล่นกับตัวสำรอง กด ▲▼ เพื่อเลื่อนลำดับ</span></p>
       <details>
         <summary>วางรายชื่อทีเดียวทั้งหมด</summary>
         <p class="tip">บรรทัดละคน รูปแบบ ชื่อ,พลัง,ทัพหลัก · 20 บรรทัดแรกเป็นตัวจริง ที่เหลือเป็นสำรอง</p>
@@ -513,7 +523,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
 <dialog class="help" id="helpDlg" aria-labelledby="helpTitle">
   <div class="hb">
     <h2 id="helpTitle">เริ่มต้นใช้งาน 3 ขั้น</h2>
-    <p class="tip" style="margin:0">จัดทีมพายุหุบเขาและพายุทะเลทราย ข้อมูลเก็บในเครื่องนี้ ไม่ต้องสมัคร</p>
+    <p class="tip" style="margin:0">จัดทีมสนามรบหุบเขาและสนามรบทะเลทราย ข้อมูลเก็บในเครื่องนี้ ไม่ต้องสมัคร</p>
     <ol class="steps">
       <li><b>วางรายชื่อ</b><span>เปิด "วางรายชื่อทีเดียวทั้งหมด" ในกล่องรายชื่อผู้เล่น แล้ววางบรรทัดละคน ชื่อ,พลัง (20 คนแรกเป็นตัวจริง)</span><button class="lnk" data-go="bulk">ไปที่ช่องวางรายชื่อ</button></li>
       <li><b>จัดอัตโนมัติ</b><span>กด "จัดอัตโนมัติตามพลัง" แล้วลากหรือแตะชื่อเพื่อปรับ เลือกสนามรบ ฝ่าย ทีม และแผนได้ด้านบน</span><button class="lnk" data-go="auto">ไปที่ปุ่มจัดอัตโนมัติ</button></li>
@@ -523,7 +533,7 @@ dialog.help .hf{display:flex;align-items:center;justify-content:space-between;ga
       <summary>เคล็ดลับเพิ่มเติม</summary>
       <ul class="tips">
         <li>ชุดแผน: เก็บได้หลายชุด เช่น "หลัก" กับ "เจอทีมแข็ง" กด "คัดลอกชุดนี้" เพื่อเริ่มจากแผนเดิม</li>
-        <li>พายุหุบเขา แผน B: กด "ลิงก์ให้พันธมิตรกรอกชื่อ" ให้พันธมิตรอีกฝั่งใส่รายชื่อเองแล้วส่งกลับมา</li>
+        <li>สนามรบหุบเขา แผน B: กด "ลิงก์ให้พันธมิตรกรอกชื่อ" ให้พันธมิตรอีกฝั่งใส่รายชื่อเองแล้วส่งกลับมา</li>
         <li>ข้อมูลอยู่ในเครื่องนี้เท่านั้น กด "สำรองข้อมูล" เก็บไฟล์ไว้เป็นระยะ ย้ายเครื่องก็ใช้ "นำเข้าข้อมูล"</li>
         <li>iPhone: Safari อาจลบข้อมูลเว็บที่ไม่ได้เปิดนานเกิน 7 วัน ให้เพิ่มไปที่หน้าจอโฮม (ปุ่มแชร์ → เพิ่มไปยังหน้าจอโฮม) แล้วเปิดจากไอคอนเสมอ</li>
         <li>แอปบนหน้าจอโฮมของ iPhone เก็บข้อมูลแยกจาก Safari ให้สำรองข้อมูลจาก Safari ก่อน แล้วนำเข้าในแอป</li>
@@ -586,8 +596,8 @@ const I18N={en:{
 'ฝั่งของเรา':'Our side',
 'ฝ่ายของเรา':'Our faction',
 'พลังรบใส่เป็นหน่วยล้าน (M) เช่น 85.4':'Enter power in millions (M), e.g. 85.4',
-'พายุทะเลทราย':'Desert Storm',
-'พายุหุบเขา':'Canyon Storm',
+'สนามรบทะเลทราย':'Desert Storm',
+'สนามรบหุบเขา':'Canyon Storm',
 'พิมพ์แก้ได้เลย บันทึกอัตโนมัติ':'Edit freely, saves automatically',
 'ยกเลิก':'Cancel',
 'ยังไม่ได้จัด (แตะชื่อแล้วแตะอาคารเพื่อย้าย หรือลากวางก็ได้ ลากกลับมาที่นี่เพื่อเอาออก)':'Unassigned (tap a name, then a building to move it, or drag. Drag back here to remove)',
@@ -640,7 +650,7 @@ const I18N={en:{
 /* dynamic */
 'เปิด {0}':'Opens {0}',
 'เปิดทันที':'Open now',
-'พายุทะเลทราย: แข่ง 1 ต่อ 1 นาน 30 นาที ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ และโรงงานทหารรับจ้างเปิดนาทีที่ 10 โรงพยาบาลสนามช่วยเติมทหาร':'Desert Storm: 1 vs 1 for 30 minutes. Nuclear Silo, Arsenal and Mercenary Factory open at minute 10. Field Hospitals replenish troops.',
+'สนามรบทะเลทราย: แข่ง 1 ต่อ 1 นาน 30 นาที ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ และโรงงานทหารรับจ้างเปิดนาทีที่ 10 โรงพยาบาลสนามช่วยเติมทหาร':'Desert Storm: 1 vs 1 for 30 minutes. Nuclear Silo, Arsenal and Mercenary Factory open at minute 10. Field Hospitals replenish troops.',
 'Rulebringers: คนน้อยกว่าแต่มีสกิล Judicator (คูลดาวน์ 300 วิ ใช้ได้ 120 วิ) ให้คนพลังสูงและตัดสินใจดีที่สุดถือ Judicator อย่าทิ้งไว้ตีจุดข้าง ควรเก็บไว้ช่วงชิง Power Tower หรือ Virus Lab':'Rulebringers: fewer players, but you have the Judicator skill (300 s cooldown, lasts 120 s). Give Judicator to your strongest, most decisive player. Don\'t waste it on side buildings; save it for contesting Power Tower or Virus Lab.',
 'Dawnbreakers: ได้เปรียบเรื่องจำนวน ตกลงกับอีกพันธมิตรก่อนเริ่มว่าใครบุก Virus Lab ใครเฝ้าอาคารอื่น เมื่ออีกฝ่ายเปิด Judicator ให้กระจายตัว อย่าจับกลุ่ม':'Dawnbreakers: you have the numbers. Agree with the other alliance before the start on who attacks Virus Lab and who holds the other buildings. When the enemy activates Judicator, spread out, don\'t clump.',
 'แผนพิทักษ์กฎระเบียบ':'Rulebringers plan',
@@ -667,6 +677,9 @@ const I18N={en:{
 'รถถัง':'Tank',
 'เครื่องบิน':'Aircraft',
 'ขีปนาวุธ':'Missile',
+'เลื่อนขึ้น':'Move up',
+'เลื่อนลง':'Move down',
+'แถบชื่อสีเทา (คนที่ 11–30) คือผู้เล่นที่สลับเข้าเล่นกับตัวสำรอง กด ▲▼ เพื่อเลื่อนลำดับ':'A grey name bar (players 11–30) marks players who swap in and out with the subs. Use ▲▼ to change the order.',
 'ตัวจริง 20 คน':'20 starters',
 'สำรอง 10 คน':'10 subs',
 'ชื่อผู้เล่น':'Player name',
@@ -675,7 +688,7 @@ const I18N={en:{
 '{0} คน':'{0} players',
 ' (สำรอง)':' (sub)',
 'ยังไม่ได้จัดใครลงอาคาร':'Nobody assigned yet',
-'วางแผนสนามรบ{0}':'Last War {0} Planner',
+'วางแผนสนามรบทะเลทราย & สนามรบหุบเขา':'Last War Desert Storm & Canyon Storm Planner',
 'แผน A · ไม่คุยกัน':'Plan A · No coordination',
 'แผน B · แบ่งฝั่ง':'Plan B · Split sides',
 'แผน A · เจอทีมแข็ง':'Plan A · Strong enemy',
@@ -796,7 +809,7 @@ const I18N={en:{
 'สำรองข้อมูลตอนนี้':'Back up now',
 'ไว้ทีหลัง':'Later',
 'เริ่มต้นใช้งาน 3 ขั้น':'Get started in 3 steps',
-'จัดทีมพายุหุบเขาและพายุทะเลทราย ข้อมูลเก็บในเครื่องนี้ ไม่ต้องสมัคร':'Plan Canyon Storm and Desert Storm teams. Data stays on this device, no sign-up needed.',
+'จัดทีมสนามรบหุบเขาและสนามรบทะเลทราย ข้อมูลเก็บในเครื่องนี้ ไม่ต้องสมัคร':'Plan Canyon Storm and Desert Storm teams. Data stays on this device, no sign-up needed.',
 'วางรายชื่อ':'Paste your roster',
 'เปิด "วางรายชื่อทีเดียวทั้งหมด" ในกล่องรายชื่อผู้เล่น แล้ววางบรรทัดละคน ชื่อ,พลัง (20 คนแรกเป็นตัวจริง)':'Open "Paste whole roster" in the player roster and paste one per line as name,power (the first 20 are starters)',
 'ไปที่ช่องวางรายชื่อ':'Go to roster box',
@@ -808,7 +821,7 @@ const I18N={en:{
 'ไปที่ปุ่มบันทึกภาพ':'Go to save image',
 'เคล็ดลับเพิ่มเติม':'More tips',
 'ชุดแผน: เก็บได้หลายชุด เช่น "หลัก" กับ "เจอทีมแข็ง" กด "คัดลอกชุดนี้" เพื่อเริ่มจากแผนเดิม':'Plan sets: keep several, e.g. "Main" and "Strong enemy". Use "Duplicate set" to start from an existing plan.',
-'พายุหุบเขา แผน B: กด "ลิงก์ให้พันธมิตรกรอกชื่อ" ให้พันธมิตรอีกฝั่งใส่รายชื่อเองแล้วส่งกลับมา':'Canyon Storm Plan B: use "Link for ally to fill in names" so the other alliance adds their own roster and sends it back.',
+'สนามรบหุบเขา แผน B: กด "ลิงก์ให้พันธมิตรกรอกชื่อ" ให้พันธมิตรอีกฝั่งใส่รายชื่อเองแล้วส่งกลับมา':'Canyon Storm Plan B: use "Link for ally to fill in names" so the other alliance adds their own roster and sends it back.',
 'ข้อมูลอยู่ในเครื่องนี้เท่านั้น กด "สำรองข้อมูล" เก็บไฟล์ไว้เป็นระยะ ย้ายเครื่องก็ใช้ "นำเข้าข้อมูล"':'Data lives only on this device. Tap "Back up" regularly; use "Import" to move to another device.',
 'iPhone: Safari อาจลบข้อมูลเว็บที่ไม่ได้เปิดนานเกิน 7 วัน ให้เพิ่มไปที่หน้าจอโฮม (ปุ่มแชร์ → เพิ่มไปยังหน้าจอโฮม) แล้วเปิดจากไอคอนเสมอ':'iPhone: Safari may delete data of sites not opened for 7+ days. Add this site to your Home Screen (Share → Add to Home Screen) and always open it from the icon.',
 'แอปบนหน้าจอโฮมของ iPhone เก็บข้อมูลแยกจาก Safari ให้สำรองข้อมูลจาก Safari ก่อน แล้วนำเข้าในแอป':'On iPhone the Home Screen app keeps its data separate from Safari. Back up in Safari first, then import in the app.',
@@ -819,12 +832,23 @@ const I18N={en:{
 'Safari อาจลบข้อมูลเว็บที่ไม่ได้เปิดนานเกิน 7 วัน สำรองไฟล์ไว้ หรือเพิ่มเว็บนี้ไปที่หน้าจอโฮม (กด ? ดูวิธี)':'Safari may delete data of sites not opened for 7+ days. Save a backup file, or add this site to your Home Screen (tap ? for how).',
 'ข้อมูลอยู่ในเครื่องนี้เท่านั้น สำรองไฟล์ไว้กันหาย':'Your data lives only on this device. Save a backup file so it is not lost.'
 }};
-const DEF_NOTES={en:[
-'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting main buildings · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
+const OLD_EN_DSA10='1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. 27:00 (last 3 min): buildings with 2 players send 1 to swarm the Silo, the other stays on guard · Grab the supply crates around the Silo to swing the score';
+const OLD_SILO_A='0–10 นาที เคลื่อนที่อิสระ ไล่ตีศัตรูตัวแรง ช่วยโรงกลั่นก่อน แล้วโรงพยาบาล → 10:00 ไม่แย่งฐานยิง รักษาทหารไว้ → 26:00 รวมพลใกล้ฐานยิง ฟื้นทหารให้เต็ม → 27:00 รุมชิงฐานยิง';
+const OLD_SILO_A_EN='0–10 min: move freely, hit the strong enemies, help the Refineries first, then the Hospitals → 10:00 don\'t contest the Silo, preserve troops → 26:00 regroup near the Silo, heal to full → 27:00 swarm the Silo';
+const OLD_EN_DSB10='1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base';
+const OLD_EN_DS=['1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting the Nuclear Silo · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): buildings with 2 players send 1 to swarm the Silo, the other stays on guard · Grab the supply crates around the Silo to swing the score','1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting the Nuclear Silo · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base'];
+const OLD_EN_G0=['1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting main buildings · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
 'Our ally covers the opposite side; the center is shared\n1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Ally asks for help during 0–12 min: the Virus Lab team goes first\n4. Heal troops: use it once when troops are low, don\'t heal bit by bit\n5. Skills: save them for contesting main buildings · Enemy activates Judicator: spread out\n6. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
 '1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for main buildings · Judicator (5 min cooldown, lasts 2 min): only for contesting Power Tower or Virus Lab\n5. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
-'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting the Nuclear Silo · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): buildings with 2 players send 1 to swarm the Silo, the other stays on guard · Grab the supply crates around the Silo to swing the score',
-'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n3. Heal troops: use it once when troops are low, don\'t heal bit by bit\n4. Skills: save them for contesting the Nuclear Silo · Enemy activates Judicator: spread out\n5. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. After minute 15, at buildings with a sub: if your troops run out, call your building\'s sub to take over\n3. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n4. If the score is close, at 27:00 (last 3 min): buildings with 2 players send 1 to swarm the Nuclear Silo, the other stays on guard · Grab the supply crates around the Silo to swing the score',
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. After minute 15, at buildings with a sub: if your troops run out, call your building\'s sub to take over\n3. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n4. If the score is close, at 27:00 (last 3 min): buildings with 2 players send 1 to help defend the Nuclear Silo, the other stays on guard · Help grab the supply crates around the Silo',
+''];
+const DEF_NOTES={en:[
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Players with a grey name bar swap in and out with the subs; you can swap at any time (recommended: if your base gets knocked away and is on cooldown, let your sub play instead)\n4. Heal troops: use it once when troops are low, don\'t heal bit by bit\n5. Skills: save them for contesting main buildings · Enemy activates Judicator: spread out\n6. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
+'Our ally covers the opposite side; the center is shared\n1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Players with a grey name bar swap in and out with the subs; you can swap at any time (recommended: if your base gets knocked away and is on cooldown, let your sub play instead)\n4. Ally asks for help during 0–12 min: the Virus Lab team goes first\n5. Heal troops: use it once when troops are low, don\'t heal bit by bit\n6. Skills: save them for contesting main buildings · Enemy activates Judicator: spread out\n7. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. Under heavy attack: report in chat right away, the nearest building helps\n3. Players with a grey name bar swap in and out with the subs; you can swap at any time (recommended: if your base gets knocked away and is on cooldown, let your sub play instead)\n4. Heal troops: use it once when troops are low, don\'t heal bit by bit\n5. Skills: save them for main buildings · Judicator (5 min cooldown, lasts 2 min): only for contesting Power Tower or Virus Lab\n6. 27:00 (last 3 min): everyone stays at their post, do not go attack the enemy base',
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. After minute 15, players with a grey name bar swap with the subs, who take over your position\n3. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n4. If the score is close, at 27:00 (last 3 min): buildings with 2 players send 1 to swarm the Nuclear Silo, the other stays on guard · Grab the supply crates around the Silo to swing the score',
+'1. Arrive 3–5 min early · If a starter is missing when the game starts, that building\'s sub takes over right away · Several missing but only one sub: report in chat\n2. After minute 15, players with a grey name bar swap with the subs, who take over your position\n3. Under attack: report in chat right away · The strike team helps the Oil Refineries first, then the Field Hospitals\n4. If the score is close, at 27:00 (last 3 min): buildings with 2 players send 1 to help defend the Nuclear Silo, the other stays on guard · Help grab the supply crates around the Silo',
 ''
 ]};
 const DEF_DUTIES={en:i=>{
@@ -841,9 +865,9 @@ const DEF_DUTIES={en:i=>{
     const o={or1:DC+', never leave',or2:DC+', never leave',fh1:DC,fh2:DC,fh3:DC,fh4:DC,
       info:DC+' · Must not fall: it makes recaptured buildings score sooner',sci:DC};
     const OPEN0='0–10 min: move freely, hit the strong enemies, help the Refineries first, then the Hospitals';
-    if(i===3){o.silo=OPEN0+' → 10:00 don\'t contest the Silo, preserve troops → 26:00 regroup near the Silo, heal to full → 27:00 swarm the Silo';
+    if(i===3){o.silo=OPEN0+' → 10:00 don\'t contest the Silo, preserve troops → 26:00 regroup near the Silo, heal to full → 27:00 swarm the Silo\n(If the score is close: during minutes 20–27 let the enemy take the Nuclear Silo, then in the last 3 minutes attack the Silo and grab as many crates as you can, while making sure our buildings don\'t fall)';
       o.ars=o.merc='Enemy not strong: the strike team can stop by and capture'}
-    else{o.silo=OPEN0+' → 10:00 take the Silo and hold it · Enemy not strong: send 1–2 to capture the Arsenal and Mercenary Factory';
+    else{o.silo=OPEN0+' → 10:00 take the Silo and hold it · Enemy not strong: send 1–2 to capture the Arsenal and Mercenary Factory\n(Last 5 minutes: stay at the Silo. If we hold it and lead on points, watch for attacks and for the enemy grabbing crates to turn the game around)';
       o.ars=o.merc='The strike team sends players after 10:00 if the enemy is not strong'}
     return o}
   return{}}};
@@ -917,10 +941,10 @@ const OPEN_T={canyon:{sf1:5,sf2:5,df1:8,df2:8,vl:12},desert:{silo:10,ars:10,merc
 const openMin=id=>(OPEN_T[S.field]||{})[id]||0;
 const openTxt=id=>{const m=openMin(id);return m?t('เปิด {0}',String(m).padStart(2,'0')+':00'):t('เปิดทันที')};
 const FIELDS={
- canyon:{name:'พายุหุบเขา',slug:'canyon-storm',B:B_CANYON,ORDER:['vl','pt','dc1','dc2','df1','df2','sf1','sf2','wh1','wh2','wh3','wh4'],
+ canyon:{name:'สนามรบหุบเขา',slug:'canyon-storm',B:B_CANYON,ORDER:['vl','pt','dc1','dc2','df1','df2','sf1','sf2','wh1','wh2','wh3','wh4'],
   PRESET:[{vl:5,pt:3,dc1:2,dc2:2,df1:2,df2:2,sf1:2,sf2:2},{vl:5,pt:3,dc1:2,sf1:3,df1:3,wh1:2,wh2:2},{vl:5,pt:3,dc1:2,dc2:2,df1:2,df2:2,sf1:2,sf2:2}],
   cols:{L:['dc1','sf1','df1'],C:['pt','vl'],R:['dc2','df2','sf2'],Bot:['wh1','wh2','wh3','wh4']},ft:['vl','pt'],faction:true},
- desert:{name:'พายุทะเลทราย',slug:'desert-storm',B:B_DESERT,ORDER:['silo','ars','merc','or1','or2','fh1','fh2','fh3','fh4','sci','info'],
+ desert:{name:'สนามรบทะเลทราย',slug:'desert-storm',B:B_DESERT,ORDER:['silo','ars','merc','or1','or2','fh1','fh2','fh3','fh4','sci','info'],
   PRESET:[{silo:6,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,info:1,sci:1},{silo:6,or1:2,or2:2,fh1:2,fh2:2,fh3:2,fh4:2,info:1,sci:1},{}],
   cols:{L:['info','or1','fh1','fh2'],C:['ars','silo','merc'],R:['fh3','fh4','or2','sci'],Bot:[]},ft:['silo','ars','merc'],faction:false}
 };
@@ -928,7 +952,7 @@ function setField(f){const F=FIELDS[f];B=F.B;BM=Object.fromEntries(B.map(b=>[b.i
 const off=()=>S.field==='desert'?3:0;
 setField('canyon');
 const TIPS={
- desert:'พายุทะเลทราย: แข่ง 1 ต่อ 1 นาน 30 นาที ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ และโรงงานทหารรับจ้างเปิดนาทีที่ 10 โรงพยาบาลสนามช่วยเติมทหาร',
+ desert:'สนามรบทะเลทราย: แข่ง 1 ต่อ 1 นาน 30 นาที ฐานยิงนิวเคลียร์ โรงงานคลังแสงสรรพาวุธ และโรงงานทหารรับจ้างเปิดนาทีที่ 10 โรงพยาบาลสนามช่วยเติมทหาร',
  rule:'Rulebringers: คนน้อยกว่าแต่มีสกิล Judicator (คูลดาวน์ 300 วิ ใช้ได้ 120 วิ) ให้คนพลังสูงและตัดสินใจดีที่สุดถือ Judicator อย่าทิ้งไว้ตีจุดข้าง ควรเก็บไว้ช่วงชิง Power Tower หรือ Virus Lab',
  dawn:'Dawnbreakers: ได้เปรียบเรื่องจำนวน ตกลงกับอีกพันธมิตรก่อนเริ่มว่าใครบุก Virus Lab ใครเฝ้าอาคารอื่น เมื่ออีกฝ่ายเปิด Judicator ให้กระจายตัว อย่าจับกลุ่ม'
 };
@@ -960,7 +984,16 @@ const NOTE_CA8='1. มาก่อนเวลา 3–5 นาที · ตั�
 const NOTE_CB8='ฝั่งตรงข้ามพันธมิตรดูแล ตรงกลางดูแลร่วมกัน\n1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. พันธมิตรขอช่วยช่วง 0–12 นาที ทีมศูนย์วิจัยไวรัสไปก่อน\n4. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. สกิล: เก็บไว้ชิงอาคารหลัก · ศัตรูเปิด Judicator ให้กระจายตัว\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
 const NOTE_CR8='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงอาคารหลัก · Judicator (คูลดาวน์ 5 นาที ใช้ได้ 2 นาที) ใช้ชิงหอคอยหรือศูนย์วิจัยไวรัสเท่านั้น\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
 const NOTE_DSA9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงฐานยิงนิวเคลียร์ · ศัตรูเปิด Judicator ให้กระจายตัว\n5. 27:00 (3 นาทีสุดท้าย) จุดที่มี 2 คนส่ง 1 คนไปช่วยรุมฐานยิง อีกคนเฝ้าจุด · แย่งเก็บกล่องเสบียงรอบฐานยิงเพื่อพลิกแต้ม';
+const NOTE_DSA10='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. 27:00 (3 นาทีสุดท้าย) จุดที่มี 2 คนส่ง 1 คนไปช่วยรุมฐานยิง อีกคนเฝ้าจุด · แย่งเก็บกล่องเสบียงรอบฐานยิงเพื่อพลิกแต้ม';
 const NOTE_DSB9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n4. สกิล: เก็บไว้ชิงฐานยิงนิวเคลียร์ · ศัตรูเปิด Judicator ให้กระจายตัว\n5. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_DSA11='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. เมื่อผ่าน 15 นาที จุดที่มีผู้เล่นสำรอง คนที่ทหารหมดขอให้เรียกผู้เล่นสำรองในจุดของท่านเข้าแทน\n3. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n4. หากคะแนนสูสี 27:00 (3 นาทีสุดท้าย) จุดที่มีผู้เล่น 2 คนส่ง 1 คนไปช่วยรุมฐานยิงนิวเคลียร์ อีกคนเฝ้าจุด · แย่งเก็บกล่องเสบียงรอบฐานยิงเพื่อพลิกแต้ม';
+const NOTE_DSB11='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. เมื่อผ่าน 15 นาที จุดที่มีผู้เล่นสำรอง คนที่ทหารหมดขอให้เรียกผู้เล่นสำรองในจุดของท่านเข้าแทน\n3. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n4. หากคะแนนสูสี 27:00 (3 นาทีสุดท้าย) จุดที่มีผู้เล่น 2 คนส่ง 1 คนไปช่วยป้องกันฐานยิงนิวเคลียร์ อีกคนเฝ้าจุด ช่วยกันแย่งเก็บกล่องเสบียงรอบฐาน';
+const NOTE_CA9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. ผู้เล่นที่มีแถบชื่อสีเทา ให้สลับเข้าเล่นกับผู้เล่นสำรอง สามารถสลับกันเข้าเล่นได้ตลอดเวลา (แนะนำหากโดนตีปลิวและติดคูลดาวน์ให้สลับผู้เล่นสำรองเข้าเล่นแทน)\n4. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. สกิล: เก็บไว้ชิงอาคารหลัก · ศัตรูเปิด Judicator ให้กระจายตัว\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_CB9='ฝั่งตรงข้ามพันธมิตรดูแล ตรงกลางดูแลร่วมกัน\n1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. ผู้เล่นที่มีแถบชื่อสีเทา ให้สลับเข้าเล่นกับผู้เล่นสำรอง สามารถสลับกันเข้าเล่นได้ตลอดเวลา (แนะนำหากโดนตีปลิวและติดคูลดาวน์ให้สลับผู้เล่นสำรองเข้าเล่นแทน)\n4. พันธมิตรขอช่วยช่วง 0–12 นาที ทีมศูนย์วิจัยไวรัสไปก่อน\n5. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n6. สกิล: เก็บไว้ชิงอาคารหลัก · ศัตรูเปิด Judicator ให้กระจายตัว\n7. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_CR9='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที จุดใกล้สุดไปช่วย\n3. ผู้เล่นที่มีแถบชื่อสีเทา ให้สลับเข้าเล่นกับผู้เล่นสำรอง สามารถสลับกันเข้าเล่นได้ตลอดเวลา (แนะนำหากโดนตีปลิวและติดคูลดาวน์ให้สลับผู้เล่นสำรองเข้าเล่นแทน)\n4. รักษาทหาร: ใช้ครั้งเดียวตอนทหารเหลือน้อย ไม่รักษาทีละนิด\n5. สกิล: เก็บไว้ชิงอาคารหลัก · Judicator (คูลดาวน์ 5 นาที ใช้ได้ 2 นาที) ใช้ชิงหอคอยหรือศูนย์วิจัยไวรัสเท่านั้น\n6. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
+const NOTE_DSA12='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. เมื่อผ่าน 15 นาที ผู้เล่นที่มีแถบสีเทา ให้สลับกับผู้เล่นสำรอง เข้าแทนในตำแหน่งของท่าน\n3. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n4. หากคะแนนสูสี 27:00 (3 นาทีสุดท้าย) จุดที่มีผู้เล่น 2 คนส่ง 1 คนไปช่วยรุมฐานยิงนิวเคลียร์ อีกคนเฝ้าจุด · แย่งเก็บกล่องเสบียงรอบฐานยิงเพื่อพลิกแต้ม';
+const NOTE_DSB12='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. เมื่อผ่าน 15 นาที ผู้เล่นที่มีแถบสีเทา ให้สลับกับผู้เล่นสำรอง เข้าแทนในตำแหน่งของท่าน\n3. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n4. หากคะแนนสูสี 27:00 (3 นาทีสุดท้าย) จุดที่มีผู้เล่น 2 คนส่ง 1 คนไปช่วยป้องกันฐานยิงนิวเคลียร์ อีกคนเฝ้าจุด ช่วยกันแย่งเก็บกล่องเสบียงรอบฐาน';
+const NOTE_DSB10='1. มาก่อนเวลา 3–5 นาที · ตัวจริงไม่มาตอนเริ่ม สำรองของอาคารนั้นเข้าแทนทันที · ขาดหลายคนแต่มีสำรองคนเดียว ให้แจ้งในแชท\n2. โดนรุม แจ้งในแชททันที · ทีมบุกช่วยโรงกลั่นน้ำมันก่อน แล้วโรงพยาบาลสนาม\n3. 27:00 (3 นาทีสุดท้าย) ทุกคนอยู่ประจำจุด ห้ามออกไปตีฐานศัตรู';
 function defaultTL(i){
   switch(i){
   case 0:return TL_CA();
@@ -991,9 +1024,9 @@ function defaultDuties(i){
     const o={or1:HOLD+' ห้ามทิ้งจุด',or2:HOLD+' ห้ามทิ้งจุด',fh1:HOLD,fh2:HOLD,fh3:HOLD,fh4:HOLD,
       info:HOLD+' · ห้ามหลุด ช่วยให้อาคารที่ยึดคืนได้แต้มเร็วขึ้น',sci:HOLD};
     const OPEN0='0–10 นาที เคลื่อนที่อิสระ ไล่ตีศัตรูตัวแรง ช่วยโรงกลั่นก่อน แล้วโรงพยาบาล';
-    if(i===3){o.silo=OPEN0+' → 10:00 ไม่แย่งฐานยิง รักษาทหารไว้ → 26:00 รวมพลใกล้ฐานยิง ฟื้นทหารให้เต็ม → 27:00 รุมชิงฐานยิง';
+    if(i===3){o.silo=OPEN0+' → 10:00 ไม่แย่งฐานยิง รักษาทหารไว้ → 26:00 รวมพลใกล้ฐานยิง ฟื้นทหารให้เต็ม → 27:00 รุมชิงฐานยิง\n(หากคะแนนสูสี ในช่วงนาทีที่ 20–27 ให้ปล่อยศัตรูยึดฐานยิงนิวเคลียร์ และช่วง 3 นาทีสุดท้าย ให้โจมตีฐานยิงนิวเคลียร์และเก็บกล่องให้ได้มากที่สุด พร้อมทั้งป้องกันอย่าให้โดนตีแตก)';
       o.ars=o.merc='ศัตรูไม่แข็งแกร่ง ทีมบุกแวะยึดได้'}
-    else{o.silo=OPEN0+' → 10:00 ชิงฐานยิงแล้วเฝ้าไว้ · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนไปยึดคลังแสงและทหารรับจ้าง';
+    else{o.silo=OPEN0+' → 10:00 ชิงฐานยิงแล้วเฝ้าไว้ · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนไปยึดคลังแสงและทหารรับจ้าง\n(5 นาทีสุดท้าย ต้องประจำฐานยิง หากเป็นฝ่ายยึดอาคารและคะแนนนำ ระวังโดนโจมตีและโดนแย่งกล่องเพื่อพลิกสถานการณ์)';
       o.ars=o.merc='ทีมบุกส่งคนมายึดหลัง 10:00 ถ้าศัตรูไม่แข็งแกร่ง'}
     return o}
   return defaultDutiesV7(i)}
@@ -1116,7 +1149,7 @@ function dropOilFields(){
   (S.routes||[]).forEach((r,i)=>{if(r)S.routes[i]=r.filter(x=>!['of1','of2'].includes(x.from)&&!['of1','of2'].includes(x.to))});
 }
 function migrateDesertV9(){
-  if(S.desertV===9)return;
+  if(S.desertV>=9)return;
   [3,4].forEach(i=>{if([NOTE_DA,NOTE_DB,NOTE_DC].includes(S.notes[i]))S.notes[i]=i===3?NOTE_DSA9:NOTE_DSB9;
     if(S.duties&&(!S.duties[i]||!Object.keys(S.duties[i]).length))S.duties[i]=defaultDuties(i)});
   if(S.tlDur&&S.tlDur.desert===40)S.tlDur.desert=30;
@@ -1142,6 +1175,37 @@ function migrateFreeV11(){
   const d=S.duties&&S.duties[1];
   if(d){if(d.sf1==='เริ่ม → รอหน้าเซรุ่ม → 05:00 ยึดและเฝ้าตลอดเกม')d.sf1='0–5 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 05:00 ยึดและเฝ้าเซรุ่มตลอดเกม';if(d.df1==='เริ่ม → รอหน้าระบบป้องกัน → 08:00 ยึดและเฝ้าตลอดเกม')d.df1='0–8 นาที เคลื่อนที่อิสระ ช่วยจุดอื่น → 08:00 ยึดและเฝ้าระบบป้องกันตลอดเกม'}
   S.freeV=11;
+}
+function migrateDesertV10(){
+  if(S.desertV>=10)return;
+  if(S.notes[3]===NOTE_DSA9)S.notes[3]=NOTE_DSA10;if(S.notes[4]===NOTE_DSB9)S.notes[4]=NOTE_DSB10;
+  const en=S.i18n&&S.i18n.en;if(en&&en.notes){if(en.notes[3]===OLD_EN_DS[0])en.notes[3]=DEF_NOTES.en[3];if(en.notes[4]===OLD_EN_DS[1])en.notes[4]=DEF_NOTES.en[4]}
+  S.desertV=10;
+}
+function migrateDesertV11(){
+  if(S.desertV>=11)return;
+  if(S.notes[3]===NOTE_DSA10)S.notes[3]=NOTE_DSA11;
+  const oldSilo=OLD_SILO_A,d=S.duties&&S.duties[3];if(d&&d.silo===oldSilo)d.silo=defaultDuties(3).silo;
+  const en=S.i18n&&S.i18n.en;if(en){if(en.notes&&en.notes[3]===OLD_EN_DSA10)en.notes[3]=DEF_NOTES.en[3];
+    const ed=en.duties&&en.duties[3];if(ed&&ed.silo===OLD_SILO_A_EN)ed.silo=DEF_DUTIES.en(3).silo}
+  S.desertV=11;
+}
+function migrateDesertV12(){
+  if(S.desertV>=13)return;
+  const d=S.duties&&S.duties[4];if(d&&d.silo===OLD_SILO_B)d.silo=defaultDuties(4).silo;
+  const en=S.i18n&&S.i18n.en,ed=en&&en.duties&&en.duties[4];if(ed&&ed.silo===OLD_SILO_B_EN)ed.silo=DEF_DUTIES.en(4).silo;
+  if(S.notes[4]===NOTE_DSB10)S.notes[4]=NOTE_DSB11;
+  if(en&&en.notes&&en.notes[4]===OLD_EN_DSB10)en.notes[4]=DEF_NOTES.en[4];
+  S.desertV=13;
+}
+const OLD_SILO_B='0–10 นาที เคลื่อนที่อิสระ ไล่ตีศัตรูตัวแรง ช่วยโรงกลั่นก่อน แล้วโรงพยาบาล → 10:00 ชิงฐานยิงแล้วเฝ้าไว้ · ศัตรูไม่แข็งแกร่ง ส่ง 1–2 คนไปยึดคลังแสงและทหารรับจ้าง';
+const OLD_SILO_B_EN='0–10 min: move freely, hit the strong enemies, help the Refineries first, then the Hospitals → 10:00 take the Silo and hold it · Enemy not strong: send 1–2 to capture the Arsenal and Mercenary Factory';
+function migrateGrayV1(){
+  if(S.grayV===1)return;
+  const OLD=[NOTE_CA8,NOTE_CB8,NOTE_CR8,NOTE_DSA11,NOTE_DSB11],NEW=[NOTE_CA9,NOTE_CB9,NOTE_CR9,NOTE_DSA12,NOTE_DSB12];
+  OLD.forEach((o,i)=>{if(S.notes[i]===o)S.notes[i]=NEW[i]});
+  const en=S.i18n&&S.i18n.en;if(en&&en.notes)OLD_EN_G0.forEach((o,i)=>{if(o&&en.notes[i]===o)en.notes[i]=DEF_NOTES.en[i]});
+  S.grayV=1;
 }
 function normPhase(){const p=S.phase%3;if(S.field==='desert')S.phase=3+(p===2?0:p);else S.phase=S.faction==='rule'?2:(p===2?0:p)}
 function planName(){const p=S.phase%3;
@@ -1199,7 +1263,7 @@ if(S.plansV!==2){
   S.plansV=2;
 }
 if(LEGACY&&(S.notes[1]===NOTE_C_OLD||S.notes[1]===NOTE_C2_OLD))S.notes[1]=NOTE_C;
-function migrateAll(){padAssign(S.assign);ensureTL();migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();dropOilFields();migrateSplitV10();migrateFreeV11();normPhase();setField(S.field)}
+function migrateAll(){padAssign(S.assign);ensureTL();migrateV3();migrateRuleV2();migrateLabV1();migrateNotesV4();migrateNotesV5();migrateDawnV6();migrateWhV7();migrateTextV8();migrateDesertV9();migrateDesertV10();migrateDesertV11();migrateDesertV12();migrateGrayV1();dropOilFields();migrateSplitV10();migrateFreeV11();normPhase();setField(S.field)}
 migrateAll();
 if(!S.icons)S.icons={...ICON_DEFAULT};
 Object.entries(ICON_DESERT).forEach(([k,v])=>{if(!S.icons[k])S.icons[k]=v});
@@ -1212,7 +1276,8 @@ const fmt=n=>(Math.round(n*10)/10).toLocaleString('th-TH');
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800)}
 function cur(){return S.assign[S.phase]}
 function membersOf(bid){return S.players.filter(p=>cur()[p.id]===bid).sort((a,b)=>b.power-a.power)}
-function chipHTML(p){return `<span class="chip${p.sub?' sub':''}" data-pid="${p.id}" title="${esc(pn(p))} ${fmt(p.power)}M"><b>${esc(pn(p))}</b>${p.power?`<small>${fmt(p.power)}</small>`:''}</span>`}
+const isSwap=p=>{const i=S.players.indexOf(p);return i>=10&&i<30};
+function chipHTML(p){return `<span class="chip${p.sub?' sub':''}${isSwap(p)?' swap':''}" data-pid="${p.id}" title="${esc(pn(p))} ${fmt(p.power)}M"><b>${esc(pn(p))}</b>${p.power?`<small>${fmt(p.power)}</small>`:''}</span>`}
 
 function renderSideTags(){
   const m=$('#map');if(!m)return;m.querySelectorAll('.sidetag').forEach(n=>n.remove());
@@ -1376,14 +1441,14 @@ function renderPool(){
 }
 function optionList(sel){return `<option value="">${t('ยังไม่จัด')}</option>`+B.map(b=>`<option value="${b.id}"${sel===b.id?' selected':''}>${esc(L(b))}</option>`).join('')}
 function renderRoster(){
-  let h=`<thead><tr><th>${t('ชื่อ')}</th><th>${t('ทัพหลัก')}</th><th>${t('พลัง (M)')}</th><th>${t('อาคาร')}</th></tr></thead><tbody>`;
+  let h=`<thead><tr><th></th><th>${t('ชื่อ')}</th><th>${t('ทัพหลัก')}</th><th>${t('พลัง (M)')}</th><th>${t('อาคาร')}</th></tr></thead><tbody>`;
   S.players.forEach((p,i)=>{
-    if(i===0)h+='<tr class="sep"><td colspan="4">'+t('ตัวจริง 20 คน')+'</td></tr>';
-    if(i===20)h+='<tr class="sep"><td colspan="4">'+t('สำรอง 10 คน')+'</td></tr>';
-    h+=`<tr><td><input data-f="name" data-pid="${p.id}" value="${esc(pn(p))}" aria-label="${t('ชื่อผู้เล่น')}"></td><td><select class="tr" data-f="troop" data-pid="${p.id}" aria-label="${t('ทัพหลัก')}"><option value="">-</option>${TROOPS.map(k=>`<option value="${k}"${p.troop===k?' selected':''}>${trName(k)}</option>`).join('')}</select></td><td><input class="pw" type="number" step="0.1" min="0" data-f="power" data-pid="${p.id}" value="${p.power||''}" aria-label="${t('พลังรบ')}"></td><td><select data-f="as" data-pid="${p.id}" aria-label="${t('อาคาร')}">${optionList(cur()[p.id])}</select></td></tr>`;
+    if(i===0)h+='<tr class="sep"><td colspan="5">'+t('ตัวจริง 20 คน')+'</td></tr>';
+    if(i===20)h+='<tr class="sep"><td colspan="5">'+t('สำรอง 10 คน')+'</td></tr>';
+    h+=`<tr><td class="mv"><button type="button" data-mv="-1" data-pid="${p.id}" aria-label="${t('เลื่อนขึ้น')}"${i===0?' disabled':''}>▲</button><button type="button" data-mv="1" data-pid="${p.id}" aria-label="${t('เลื่อนลง')}"${i===S.players.length-1?' disabled':''}>▼</button></td><td class="nm${i>=10&&i<30?' swap':''}"><input data-f="name" data-pid="${p.id}" value="${esc(pn(p))}" aria-label="${t('ชื่อผู้เล่น')}"></td><td><select class="tr" data-f="troop" data-pid="${p.id}" aria-label="${t('ทัพหลัก')}"><option value="">-</option>${TROOPS.map(k=>`<option value="${k}"${p.troop===k?' selected':''}>${trName(k)}</option>`).join('')}</select></td><td><input class="pw" type="number" step="0.1" min="0" data-f="power" data-pid="${p.id}" value="${p.power||''}" aria-label="${t('พลังรบ')}"></td><td><select data-f="as" data-pid="${p.id}" aria-label="${t('อาคาร')}">${optionList(cur()[p.id])}</select></td></tr>`;
   });
   $('#roster').innerHTML=h+'</tbody>';
-  if(VIEW)$('#roster').querySelectorAll('input,select').forEach(x=>x.disabled=true);
+  if(VIEW)$('#roster').querySelectorAll('input,select,button').forEach(x=>x.disabled=true);
 }
 function renderSummary(){
   $('#sumPhase').textContent=t('ทีม {0}',S.team)+' · '+planName();
@@ -1399,7 +1464,7 @@ function renderTop(){
   document.querySelectorAll('[data-fac]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.fac===S.faction));
   document.querySelectorAll('[data-field]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.field===S.field));
   $('#facSeg').hidden=!FIELDS[S.field].faction;
-  $('#pageTitle').textContent=t('วางแผนสนามรบ{0}',fName());document.title=$('#pageTitle').textContent;
+  $('#pageTitle').textContent=t('วางแผนสนามรบทะเลทราย & สนามรบหุบเขา');document.title=$('#pageTitle').textContent;
   document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===LANG));
   document.querySelectorAll('[data-ph]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.ph===S.phase));
   document.querySelectorAll('[data-team]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.team===S.team));
@@ -1446,7 +1511,7 @@ $('#icons').addEventListener('change',e=>{
 });
 $('#icons').addEventListener('click',e=>{const id=e.target.dataset.rmicon;if(!id)return;delete S.icons[id];renderMap();renderIcons();save()});
 function growNote(){const t=$('#planNote');t.style.height='auto';t.style.height=Math.max(170,t.scrollHeight+4)+'px'}
-const DEFAULT_NOTES=()=>[NOTE_CA8,NOTE_CB8,NOTE_CR8,NOTE_DSA9,NOTE_DSB9,''];
+const DEFAULT_NOTES=()=>[NOTE_CA9,NOTE_CB9,NOTE_CR9,NOTE_DSA12,NOTE_DSB12,''];
 const defNotes=l=>l==='th'?DEFAULT_NOTES():[...(DEF_NOTES[l]||DEF_NOTES.en)];
 const defDuties=(l,i)=>l==='th'?defaultDuties(i):(DEF_DUTIES[l]||DEF_DUTIES.en)(i);
 function notesArr(){const o=locData();return o?o.notes:S.notes}
@@ -1471,6 +1536,14 @@ $('#roster').addEventListener('input',e=>{
   if(t.dataset.f==='name')p.name=t.value.trim()||window.t('ไม่มีชื่อ');
   if(t.dataset.f==='power')p.power=parseFloat(t.value)||0;
   refreshLive();save();
+});
+$('#roster').addEventListener('click',e=>{
+  const b=e.target.closest('[data-mv]');if(!b||VIEW)return;
+  const i=S.players.findIndex(p=>p.id===b.dataset.pid),j=i+ +b.dataset.mv;if(i<0||j<0||j>=S.players.length)return;
+  [S.players[i],S.players[j]]=[S.players[j],S.players[i]];
+  S.players.forEach((p,n)=>{p.sub=n>=20;if(isDefaultName(p.name))p.name=n<20?t('ตัวจริง {0}',n+1):t('สำรอง {0}',n-19)});
+  const sc=$('.rosterwrap').scrollTop;renderRoster();refreshLive();$('.rosterwrap').scrollTop=sc;save();
+  const nb=$(`#roster [data-mv="${b.dataset.mv}"][data-pid="${b.dataset.pid}"]`);if(nb&&!nb.disabled)nb.focus();
 });
 $('#roster').addEventListener('change',e=>{
   const t=e.target;
