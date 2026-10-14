@@ -881,8 +881,24 @@ const bn=b=>LANG==='th'?b.th:b.name;
 const pn=p=>{const m=/^(ตัวจริง|สำรอง|Starter|Sub) (\d+)$/.exec(p.name||'');return m?t(/^(ตัวจริง|Starter)$/.test(m[1])?'ตัวจริง {0}':'สำรอง {0}',m[2]):p.name};
 const TROOPS=['tank','air','missile'],TROOP_TH={tank:'รถถัง',air:'เครื่องบิน',missile:'ขีปนาวุธ'};
 const trName=k=>TROOP_TH[k]?t(TROOP_TH[k]):'';
+const TROOP_RE=/(รถ\s*ถัง|ยานเกราะ|tanks?|เครื่อง\s*บิน(?:รบ)?|อากาศยาน|aircraft|airplanes?|planes?|jets?|air|(?:ยาน|รถ)?\s*ขีปนาวุธ|missiles?(?:\s*vehicles?)?|rockets?)/i;
+/* one roster line → {name,power,troop}; accepts , tab ; | or spaces, troop before/after power, "74.5M", "74.5รถถัง" */
+function parseRosterLine(l){
+  l=String(l||'').replace(/[\u00a0\u3000]/g,' ').replace(/[，、]/g,',').trim();
+  let parts=l.split(/\s*[,\t;|]\s*/);
+  let name=(parts[0]||'').trim(),rest=parts.slice(1).join(' ');
+  if(parts.length===1){
+    /* no separator: peel troop word and power off the end of the line */
+    const m=l.match(/^(.+?)\s+(\d+(?:\.\d+)?\s*[mM]?\s*.*)$/);
+    if(m&&/^\d/.test(m[2])){name=m[1].trim();rest=m[2];
+      const nt=name.match(new RegExp('^(.+?)\\s+'+TROOP_RE.source+'$','i'));if(nt){name=nt[1].trim();rest+=' '+nt[2]}}
+    else{const tm=l.match(new RegExp('^(.+?)\\s+'+TROOP_RE.source+'\\s*(\\d.*)?$','i'));if(tm){name=tm[1].trim();rest=tm[2]+' '+(tm[3]||'')}}
+  }
+  const troop=parseTroop(rest);
+  const num=rest.replace(TROOP_RE,' ').match(/\d+(?:[.,]\d+)?/);
+  return{name,power:num?parseFloat(num[0].replace(',','.'))||0:0,troop}}
 function parseTroop(x){x=String(x||'').trim().toLowerCase();if(!x)return'';
-  if(/รถถัง|tank/.test(x))return'tank';if(/เครื่องบิน|aircraft|air|plane|jet/.test(x))return'air';if(/ขีปนาวุธ|missile|rocket/.test(x))return'missile';return''}
+  if(/รถ\s*ถัง|ยานเกราะ|tank/.test(x))return'tank';if(/ขีปนาวุธ|missile|rocket/.test(x))return'missile';if(/เครื่อง\s*บิน|อากาศยาน|aircraft|plane|jet|\bair\b/.test(x))return'air';return''}
 /* static HTML text: remember the Thai originals once, re-apply on language change */
 const STATIC_TX=[];
 (function collectStatic(){
@@ -1556,10 +1572,8 @@ $('#bulkBtn').onclick=()=>{
   const lines=$('#bulk').value.split('\n').map(l=>l.trim()).filter(Boolean);
   if(!lines.length){toast(t('ยังไม่มีรายชื่อในช่อง'));return}
   lines.slice(0,30).forEach((l,i)=>{
-    const parts=l.split(/[,\t]/);const p=S.players[i];
-    p.name=(parts[0]||'').trim()||p.name;
-    const rest=parts.slice(1).map(x=>x.trim());let pw=rest.find(x=>/\d/.test(x)&&!parseTroop(x));p.power=parseFloat((pw||'').replace(/[^\d.]/g,''))||0;
-    p.troop=rest.map(parseTroop).find(Boolean)||'';
+    const r=parseRosterLine(l),p=S.players[i];
+    p.name=r.name||p.name;p.power=r.power;p.troop=r.troop;
   });
   renderAll();save();toast(t('ใส่รายชื่อ {0} คนแล้ว',Math.min(lines.length,30)));
 };
